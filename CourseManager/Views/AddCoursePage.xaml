@@ -31,10 +31,15 @@
                     <Label Text="Anticipated End Date" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
                     <DatePicker MinimumDate="{Binding MinEndDate}" MaximumDate="{Binding MaxEndDate}" Date="{Binding EndDate}"/>
 
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="Enable Alerts" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="FillAndExpand"/>
+                        <Switch IsToggled="{Binding EnableAlerts}" ThumbColor="#4486a1" OnColor="CadetBlue"/>
+                    </StackLayout>
+
                     <Label Text="Course Status" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
                     <Picker ItemsSource="{Binding StatusList}" SelectedItem="{Binding Status}"/>
 
-                    <Label Text="Notes" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
+                    <Label Text="Notes (optional)" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
                     <Entry Text="{Binding CourseNotes}" MinimumHeightRequest="100"/>
 
                     <Button Text="Add Instructor" Command="{Binding NavigateAddInstructorCommand}"/>

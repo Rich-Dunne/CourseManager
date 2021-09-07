@@ -51,6 +51,9 @@ namespace CourseManager.ViewModels
             }
         }
 
+        private bool _enableAlerts;
+        public bool EnableAlerts { get => _enableAlerts; set => SetProperty(ref _enableAlerts, value); }
+
         private string _status;
         public string Status { get => _status; set => SetProperty(ref _status, value); }
 
