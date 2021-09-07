@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:viewmodel="clr-namespace:CourseManager.ViewModels"
+             x:Class="CourseManager.Views.AddInstructorPage"
+             x:DataType="viewmodel:AddInstructorViewModel"
+             Title="{Binding Title}"
+             Shell.PresentationMode="Modal">
+    <ContentPage.BindingContext>
+        <viewmodel:AddInstructorViewModel/>
+    </ContentPage.BindingContext>
+    
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <Frame HasShadow="True" BackgroundColor="#e9e6d9" BorderColor="DarkGray">
+                    <StackLayout HorizontalOptions="FillAndExpand" >
+                        <Label Text="Instructor Information" FontSize="Title" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#002f51"/>
+                    </StackLayout>
+                </Frame>
+
+                <StackLayout Padding="20">
+                    <Label Text="Instructor Name" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
+                    <Entry Text="{Binding InstructorName}" Keyboard="Text"/>
+
+                    <Label Text="Instructor Phone Number" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
+                    <Entry Text="{Binding InstructorPhoneNumber}" Keyboard="Telephone"/>
+
+                    <Label Text="Instructor Email" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
+                    <Entry Text="{Binding InstructorEmail}" Keyboard="Email"/>
+
+                    <Button Text="Add Assessments" Command="{Binding NavigateAddAssessmentsCommand}"/>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
