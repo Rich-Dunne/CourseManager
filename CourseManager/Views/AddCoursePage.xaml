@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:viewmodel="clr-namespace:CourseManager.ViewModels"
+             x:Class="CourseManager.Views.AddCoursePage"
+             x:DataType="viewmodel:AddCourseViewModel"
+             Title="{Binding Title}"
+             Shell.PresentationMode="Modal">
+    <ContentPage.BindingContext>
+        <viewmodel:AddCourseViewModel/>
+    </ContentPage.BindingContext>
+    
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="20">
+
+                <Label Text="Term"/>
+                <Picker ItemsSource="{Binding Terms}"/>
+
+                <Label Text="Course Name"/>
+                <Entry Text="{Binding CourseName}"/>
+
+                <Label Text="Start Date"/>
+                <DatePicker MinimumDate="{Binding MinStartDate}" MaximumDate="{Binding MaxStartDate}" Date="{Binding StartDate}"/>
+
+                <Label Text="Anticipated End Date"/>
+                <DatePicker MinimumDate="{Binding MinEndDate}" MaximumDate="{Binding MaxEndDate}" Date="{Binding EndDate}"/>
+
+                <Label Text="Course Status"/>
+                <Picker ItemsSource="{Binding StatusList}" SelectedItem="{Binding Status}"/>
+
+                <Label Text="Instructor Name"/>
+                <Entry Text="{Binding InstructorName}" Keyboard="Text"/>
+
+                <Label Text="Instructor Phone Number"/>
+                <Entry Text="{Binding InstructorPhoneNumber}" Keyboard="Telephone"/>
+
+                <Label Text="Instructor Email"/>
+                <Entry Text="{Binding InstructorEmail}" Keyboard="Email"/>
+
+                <Button Text="Add Course" Command="{Binding SaveCommand}"/>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
