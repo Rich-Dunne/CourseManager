@@ -57,6 +57,7 @@ namespace CourseManager.ViewModels
         public Command DropTableCommand { get; }
         public Command NavigateAddTermCommand { get; }
         public Command<TermGroup> NavigateModifyTermCommand { get; }
+        public Command NavigateAddCourseCommand { get; }
 
         public DegreePlanViewModel()
         {
@@ -71,6 +72,7 @@ namespace CourseManager.ViewModels
             DropTableCommand = new Command(DropTable);
             NavigateAddTermCommand = new Command(NavigateAddTerm);
             NavigateModifyTermCommand = new Command<TermGroup>(NavigateModifyTerm);
+            NavigateAddCourseCommand = new Command(NavigateAddCourse);
 
             ImportTerms();
         }
@@ -106,6 +108,12 @@ namespace CourseManager.ViewModels
         private async void NavigateModifyTerm(TermGroup termGroup)
         {
             var route = $"{nameof(ModifyTermPage)}?Id={termGroup.Id}";
+            await Shell.Current.GoToAsync(route);
+        }
+
+        private async void NavigateAddCourse()
+        {
+            var route = $"{nameof(AddCoursePage)}";
             await Shell.Current.GoToAsync(route);
         }
 
