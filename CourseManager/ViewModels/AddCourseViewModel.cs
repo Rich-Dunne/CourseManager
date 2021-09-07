@@ -1,4 +1,5 @@
 ﻿using CourseManager.Models;
+using CourseManager.Views;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -53,21 +54,16 @@ namespace CourseManager.ViewModels
         private string _status;
         public string Status { get => _status; set => SetProperty(ref _status, value); }
 
-        private string _instructorName;
-        public string InstructorName { get => _instructorName; set => SetProperty(ref _instructorName, value); }
+        public string _courseNotes;
+        public string CourseNotes { get => _courseNotes; set => SetProperty(ref _courseNotes, value); }
 
-        private string _instructorPhoneNumber;
-        public string InstructorPhoneNumber { get => _instructorPhoneNumber; set => SetProperty(ref _instructorPhoneNumber, value); }
 
-        private string _instructorEmail;
-        public string InstructorEmail { get => _instructorEmail; set => SetProperty(ref _instructorEmail, value); }
-
-        public Command SaveCommand { get; }
+        public Command NavigateAddInstructorCommand { get; }
 
         public AddCourseViewModel()
         {
             Title = "Add Course";
-            SaveCommand = new Command(Save);
+            NavigateAddInstructorCommand = new Command(NavigateAddInstructor);
 
             MinStartDate = DateTime.Now;
             StartDate = MinStartDate;
@@ -81,25 +77,27 @@ namespace CourseManager.ViewModels
             GetTerms();
         }
 
-        private async void GetTerms()
+        private void GetTerms()
         {
-            var terms = await Services.TermService.GetTerms();
-            foreach(Term term in terms)
+            var terms = Services.TermService.TermGroups;
+            foreach (TermGroup termGroup in terms)
             {
-                Terms.Add(term.TermName);
+                if (termGroup.Courses.Count < 6)
+                {
+                    Terms.Add(termGroup.Name);
+                }
             }
         }
 
-        private async void Save()
+        private async void NavigateAddInstructor()
         {
             if(string.IsNullOrWhiteSpace(_courseName))
             {
                 return;
             }
 
-            await Services.TermService.AddTerm(CourseName, StartDate, EndDate);
-
-            await Shell.Current.GoToAsync("..");
+            var route = $"{nameof(AddInstructorPage)}";
+            await Shell.Current.GoToAsync(route);
         }
     }
 }
