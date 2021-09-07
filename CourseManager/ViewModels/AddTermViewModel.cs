@@ -36,7 +36,15 @@ namespace CourseManager.ViewModels
         public DateTime MaxEndDate { get => _maxEndDate; set => SetProperty(ref _maxEndDate, value); }
 
         private DateTime _endDate;
-        public DateTime EndDate { get => _endDate; set => SetProperty(ref _endDate, value); }
+        public DateTime EndDate
+        {
+            get => _endDate;
+            set
+            { 
+                SetProperty(ref _endDate, value);
+                MaxStartDate = EndDate.AddDays(-1);
+            }
+        }
 
         public Command SaveCommand { get; }
 
@@ -46,12 +54,14 @@ namespace CourseManager.ViewModels
             SaveCommand = new Command(Save);
 
             MinStartDate = DateTime.Now;
-            MaxStartDate = DateTime.Now.AddDays(30);
             StartDate = MinStartDate;
 
             MinEndDate = StartDate.AddDays(1);
-            MaxEndDate = MaxStartDate.AddDays(30);
             EndDate = StartDate.AddDays(1);
+
+            MaxStartDate = EndDate;
+            MaxEndDate = MaxStartDate.AddDays(30);
+            
         }
 
         private async void Save()
