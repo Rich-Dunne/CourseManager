@@ -11,13 +11,8 @@ namespace CourseManager.Models
         public AssessmentType AssessmentType { get; set; }
         public DateTime DueDate { get; set; }
         public bool EnableNotifications { get; set; }
+        public int AssociatedCourseId { get; set; }
 
-        public Assessment(string name, AssessmentType assessmentType, DateTime dueDate, bool enableNotifications)
-        {
-            Name = name;
-            AssessmentType = assessmentType;
-            DueDate = dueDate;
-            EnableNotifications = enableNotifications;
-        }
+        public Assessment() { }
     }
 }
