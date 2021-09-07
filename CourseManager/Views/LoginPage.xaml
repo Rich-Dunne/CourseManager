@@ -8,7 +8,10 @@
              Shell.NavBarIsVisible="False">
     <ContentPage.Content>
         <StackLayout Padding="10,0,10,0" VerticalOptions="Center">
-            <Button VerticalOptions="Center" Text="Login" Command="{Binding LoginCommand}"/>
+            <Label Text="UNSECURE SIGN-IN" FontSize="Large" TextColor="#4486a1"/>
+            <Image Source="WGUlogo.png" Margin="0, 0, 50, 0"/>
+            <Entry Placeholder="Username"/>
+            <Button VerticalOptions="Center" Text="Sign in" Command="{Binding LoginCommand}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
