@@ -15,6 +15,7 @@ namespace CourseManager
             Routing.RegisterRoute(nameof(NewItemPage), typeof(NewItemPage));
             Routing.RegisterRoute(nameof(AddTermPage), typeof(AddTermPage));
             Routing.RegisterRoute(nameof(ModifyTermPage), typeof(ModifyTermPage));
+            Routing.RegisterRoute(nameof(AddCoursePage), typeof(AddCoursePage));
         }
 
         //private async void OnMenuItemClicked(object sender, EventArgs e)
