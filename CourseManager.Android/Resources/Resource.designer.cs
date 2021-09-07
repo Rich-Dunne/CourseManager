@@ -12212,7 +12212,10 @@ namespace CourseManager.Droid
 			public const int tooltip_frame_light = 2131165331;
 			
 			// aapt resource value: 0x7F070094
-			public const int xamarin_logo = 2131165332;
+			public const int WGUlogo = 2131165332;
+			
+			// aapt resource value: 0x7F070095
+			public const int xamarin_logo = 2131165333;
 			
 			static Drawable()
 			{
@@ -13766,6 +13769,9 @@ namespace CourseManager.Droid
 			
 			// aapt resource value: 0x7F0C0002
 			public const int launcher_foreground = 2131492866;
+			
+			// aapt resource value: 0x7F0C0003
+			public const int WGUicon = 2131492867;
 			
 			static Mipmap()
 			{
