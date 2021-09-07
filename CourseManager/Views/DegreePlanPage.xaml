@@ -12,7 +12,7 @@
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Clear Table" Command="{Binding ClearTableCommand}" />
-        <!--<ToolbarItem Text="Remove Term" Command="{Binding RemoveTermCommand}"/>-->
+        <ToolbarItem Text="Add Course" Command="{Binding NavigateAddCourseCommand}"/>
     </ContentPage.ToolbarItems>
 
     <!--<StackLayout VerticalOptions="Center">
