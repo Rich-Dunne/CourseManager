@@ -95,7 +95,6 @@ namespace CourseManager.Services
                 Instructor = new Instructor(),
                 Status = Status.Active,
                 Notes = "Some course notes",
-                CourseInformation = "Detailed course information",
                 EnableNotifications = true,
                 AssociatedTermId = associatedTermId
             };
