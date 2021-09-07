@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CourseManager.Views.DegreePlanPage"
+             Title="{Binding Title}"
+             xmlns:local="clr-namespace:CourseManager.ViewModels"  
+             xmlns:model="clr-namespace:CourseManager.Models"  
+             x:Name="degreePlanPage">
+    <ContentPage.BindingContext>
+        <local:DegreePlanViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Clear Table" Command="{Binding ClearTableCommand}" />
+        <!--<ToolbarItem Text="Remove Term" Command="{Binding RemoveTermCommand}"/>-->
+    </ContentPage.ToolbarItems>
+
+    <!--<StackLayout VerticalOptions="Center">
+        <Button Text="Show All Tables in DB" Command="{Binding GetTablesCommand}"/>
+        <Button Text="Show Table Objects" Command="{Binding ShowTableContentsCommand}"/>
+        <Button Text="Add Term" Command="{Binding AddTermCommand}"/>
+        <Button Text="Clear All Term Objects" Command="{Binding ClearTableCommand}"/>
+        <Button Text="Drop Table" Command="{Binding DropTableCommand}" />
+    </StackLayout>-->
+    
+    <!--
+      x:DataType enables compiled bindings for better performance and compile time validation of binding expressions.
+      https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/data-binding/compiled-bindings
+    -->
+    <RefreshView x:DataType="local:DegreePlanViewModel" Command="{Binding LoadItemsCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
+        <StackLayout>
+            <CollectionView x:Name="TermsListView"
+                ItemsSource="{Binding TermGroups}"
+                IsGrouped="True"
+                SelectionMode="Single"
+                SelectedItem="{Binding SelectedCourse, Mode=TwoWay}"
+                EmptyView="No terms found.">
+                <CollectionView.GroupHeaderTemplate>
+                    <DataTemplate x:Name="TermGroupDataTemplate" x:DataType="model:TermGroup">
+                        <StackLayout Orientation="Horizontal" 
+                                     BackgroundColor="#4486a1" Padding="5">
+                            <StackLayout HorizontalOptions="FillAndExpand">
+                                <Label Text="{Binding Name}" FontSize="Title" TextColor="White"/>
+                                <Label TextColor="White">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding StartDate, StringFormat='{}{0:MM/dd/yyyy}'}" FontSize="Subtitle"/>
+                                            <Span Text=" to " FontSize="Subtitle"/>
+                                            <Span Text="{Binding EndDate, StringFormat='{}{0:MM/dd/yyyy}'}" FontSize="Subtitle"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                            </StackLayout>
+                            <Button Text="Edit" Command="{Binding Source={RelativeSource AncestorType={x:Type local:DegreePlanViewModel}}, Path=NavigateModifyTermCommand}"
+                                    CommandParameter="{Binding .}"/>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.GroupHeaderTemplate>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Padding="10">
+                            <Frame Padding="0">
+                                <StackLayout x:DataType="model:Course" HorizontalOptions="FillAndExpand" BackgroundColor="#f2f2f2" Padding="5">
+                                    <Label Text="{Binding CourseName}" FontSize="Title" TextColor="#0066a2"/>
+                                    <Label>
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding StartDate.Date, StringFormat='{}{0:MM/dd/yyyy}'}" FontSize="Subtitle"/>
+                                                <Span Text=" to " FontSize="Subtitle"/>
+                                                <Span Text="{Binding EndDate.Date, StringFormat='{}{0:MM/dd/yyyy}'}" FontSize="Subtitle"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+
+                                </StackLayout>
+                            </Frame>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <Button Text="Add Term" Command="{Binding NavigateAddTermCommand}"/>
+        </StackLayout>
+        
+    </RefreshView>
+</ContentPage>
