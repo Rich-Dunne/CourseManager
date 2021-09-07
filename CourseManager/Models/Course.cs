@@ -1,12 +1,16 @@
 ﻿using CourseManager.Enums;
+using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace CourseManager.Models
 {
+    [Table("Courses")]
     public class Course
     {
+        [PrimaryKey, AutoIncrement]
+        public int Id { get; set; }
         public string CourseName { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
@@ -14,20 +18,9 @@ namespace CourseManager.Models
         public Status Status { get; set; }
         public string Notes { get; set; }
         public string CourseInformation { get; set; }
-        public List<Assessment> Assessments { get; set; }
         public bool EnableNotifications { get; set; }
+        public int AssociatedTermId { get; set; }
 
-        public Course(string courseName, DateTime startDate, DateTime endDate, Instructor instructor, Status status, string notes, string courseInformation, List<Assessment> assessments, bool enableNotifications)
-        {
-            CourseName = courseName;
-            StartDate = startDate;
-            EndDate = endDate;
-            Instructor = instructor;
-            Status = status;
-            Notes = notes;
-            CourseInformation = courseInformation;
-            Assessments = assessments;
-            EnableNotifications = enableNotifications;
-        }
+        public Course() { }
     }
 }
