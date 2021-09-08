@@ -57,16 +57,24 @@ namespace CourseManager.ViewModels
         private string _status;
         public string Status { get => _status; set => SetProperty(ref _status, value); }
 
+        private int _pickerIndex = 0;
+        public int PickerIndex { get => _pickerIndex; set => SetProperty(ref _pickerIndex, value); }
+
+        private Term _selectedTerm;
+        public Term SelectedTerm { get => _selectedTerm; set => SetProperty(ref _selectedTerm, value); }
+
         public string _courseNotes;
         public string CourseNotes { get => _courseNotes; set => SetProperty(ref _courseNotes, value); }
 
 
         public Command NavigateAddInstructorCommand { get; }
+        public Command NavigateBackCommand { get; }
 
         public AddCourseViewModel()
         {
             Title = "Add Course";
             NavigateAddInstructorCommand = new Command(NavigateAddInstructor);
+            NavigateBackCommand = new Command(NavigateBack);
 
             MinStartDate = DateTime.Now;
             StartDate = MinStartDate;
@@ -101,6 +109,11 @@ namespace CourseManager.ViewModels
 
             var route = $"{nameof(AddInstructorPage)}";
             await Shell.Current.GoToAsync(route);
+        }
+
+        private async void NavigateBack()
+        {
+            await Shell.Current.GoToAsync("..");
         }
     }
 }

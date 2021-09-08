@@ -9,7 +9,12 @@
     <ContentPage.BindingContext>
         <viewmodel:AddCourseViewModel/>
     </ContentPage.BindingContext>
-    
+
+    <!-- Non-modal page only -->
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Next" Command="{Binding NavigateAddInstructorCommand}"/>
+    </ContentPage.ToolbarItems>
+
     <ContentPage.Content>
         <ScrollView>
             <StackLayout>
@@ -18,9 +23,10 @@
                         <Label Text="New Course Information" FontSize="Title" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#002f51"/>
                     </StackLayout>
                 </Frame>
+                
                 <StackLayout Padding="20">
                     <Label Text="Term" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
-                    <Picker ItemsSource="{Binding Terms}"/>
+                    <Picker ItemsSource="{Binding Terms}" SelectedItem="{Binding SelectedTerm}" SelectedIndex="{Binding PickerIndex}"/>
 
                     <Label Text="Course Name" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
                     <Entry Text="{Binding CourseName}"/>
@@ -37,12 +43,15 @@
                     </StackLayout>
 
                     <Label Text="Course Status" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
-                    <Picker ItemsSource="{Binding StatusList}" SelectedItem="{Binding Status}"/>
+                    <Picker ItemsSource="{Binding StatusList}" SelectedItem="{Binding Status}" SelectedIndex="{Binding PickerIndex}"/>
 
                     <Label Text="Notes (optional)" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
                     <Entry Text="{Binding CourseNotes}" MinimumHeightRequest="100"/>
 
-                    <Button Text="Add Instructor" Command="{Binding NavigateAddInstructorCommand}"/>
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                        <Button Text="Cancel" BackgroundColor="Gray" Command="{Binding NavigateBackCommand}"/>
+                        <Button Text="Add Instructor" Command="{Binding NavigateAddInstructorCommand}"/>
+                    </StackLayout>
                 </StackLayout>
             </StackLayout>
         </ScrollView>
