@@ -47,11 +47,13 @@ namespace CourseManager.ViewModels
         }
 
         public Command SaveCommand { get; }
+        public Command NavigateBackCommand { get; }
 
         public AddTermViewModel()
         {
             Title = "Add Term";
             SaveCommand = new Command(Save);
+            NavigateBackCommand = new Command(NavigateBack);
 
             MinStartDate = DateTime.Now;
             StartDate = MinStartDate;
@@ -73,6 +75,11 @@ namespace CourseManager.ViewModels
 
             await Services.TermService.AddTerm(TermName, StartDate, EndDate);
 
+            await Shell.Current.GoToAsync("..");
+        }
+
+        public async void NavigateBack()
+        {
             await Shell.Current.GoToAsync("..");
         }
     }
