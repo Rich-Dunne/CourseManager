@@ -1,4 +1,5 @@
 ﻿using CourseManager.Models;
+using CourseManager.Views;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -19,11 +20,13 @@ namespace CourseManager.ViewModels
         public string InstructorEmail { get => _instructorEmail; set => SetProperty(ref _instructorEmail, value); }
 
         public Command NavigateAddAssessmentsCommand { get; }
+        public Command NavigateBackCommand { get; }
 
         public AddInstructorViewModel()
         {
             Title = "Add Instructor";
             NavigateAddAssessmentsCommand = new Command(NavigateAddAssessments);
+            NavigateBackCommand = new Command(NavigateBack);
 
         }
 
@@ -34,8 +37,13 @@ namespace CourseManager.ViewModels
                 return;
             }
 
-            //var route = $"{nameof(AddInstructorPage)}";
-            //await Shell.Current.GoToAsync(route);
+            var route = $"{nameof(AddAssessmentsPage)}";
+            await Shell.Current.GoToAsync(route);
+        }
+
+        private async void NavigateBack()
+        {
+            await Shell.Current.GoToAsync("..");
         }
     }
 }

@@ -29,7 +29,10 @@
                     <Label Text="Instructor Email" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
                     <Entry Text="{Binding InstructorEmail}" Keyboard="Email"/>
 
-                    <Button Text="Add Assessments" Command="{Binding NavigateAddAssessmentsCommand}"/>
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                        <Button Text="Back" BackgroundColor="Gray" Command="{Binding NavigateBackCommand}"/>
+                        <Button Text="Add Assessments" Command="{Binding NavigateAddAssessmentsCommand}"/>
+                    </StackLayout>
                 </StackLayout>
             </StackLayout>
         </ScrollView>
