@@ -11,19 +11,27 @@
     </ContentPage.BindingContext>
     
     <ContentPage.Content>
-        <StackLayout Padding="20">
-            <Label Text="Term Name"/>
-            <Entry Text="{Binding TermName}"/>
-            <Label Text="Start Date"/>
-            <DatePicker MinimumDate="{Binding MinStartDate}" MaximumDate="{Binding MaxStartDate}" Date="{Binding StartDate}"/>
-            <Label Text="End Date"/>
-            <DatePicker MinimumDate="{Binding MinEndDate}" MaximumDate="{Binding MaxEndDate}" Date="{Binding EndDate}"/>
+        <StackLayout>
+            <Frame HasShadow="True" BackgroundColor="#e9e6d9" BorderColor="DarkGray">
+                <StackLayout HorizontalOptions="FillAndExpand" >
+                    <Label Text="Edit Term Information" FontSize="Title" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#002f51"/>
+                </StackLayout>
+            </Frame>
+            <StackLayout Padding="20">
+                <Label Text="Term Name" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
+                <Entry Text="{Binding TermName}"/>
+                <Label Text="Start Date" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
+                <DatePicker MinimumDate="{Binding MinStartDate}" MaximumDate="{Binding MaxStartDate}" Date="{Binding StartDate}"/>
+                <Label Text="End Date" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
+                <DatePicker MinimumDate="{Binding MinEndDate}" MaximumDate="{Binding MaxEndDate}" Date="{Binding EndDate}"/>
 
-            <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="0, 20, 0, 0">
-                <Button Text="Delete" BackgroundColor="DarkRed" Command="{Binding RemoveCommand}"/>
-                <Button Text="Save" Command="{Binding SaveCommand}"/>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="0, 20, 0, 0">
+                    <Button Text="Back" BackgroundColor="Gray" Command="{Binding NavigateBackCommand}"/>
+                    <Button Text="Delete" BackgroundColor="DarkRed" Command="{Binding RemoveCommand}"/>
+                    <Button Text="Save" Command="{Binding SaveCommand}"/>
+                </StackLayout>
+
             </StackLayout>
-
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

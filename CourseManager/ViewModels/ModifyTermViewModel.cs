@@ -56,22 +56,34 @@ namespace CourseManager.ViewModels
         public DateTime MaxEndDate { get => _maxEndDate; set => SetProperty(ref _maxEndDate, value); }
 
         private DateTime _endDate;
-        public DateTime EndDate { get => _endDate; set => SetProperty(ref _endDate, value); }
+        public DateTime EndDate 
+        { 
+            get => _endDate;
+            set
+            {
+                SetProperty(ref _endDate, value);
+                MaxStartDate = EndDate.AddDays(-1);
+            }
+        }
 
         public Command SaveCommand { get; }
         public Command RemoveCommand { get; }
+        public Command NavigateBackCommand { get; }
 
         public ModifyTermViewModel()
         {
             Title = "Modify Term";
             SaveCommand = new Command(Save);
             RemoveCommand = new Command(Remove);
+            NavigateBackCommand = new Command(NavigateBack);
 
-            StartDate = DateTime.Now;
-            EndDate = DateTime.Now.AddDays(30);
             MinStartDate = DateTime.Now;
-            MaxStartDate = StartDate.AddDays(30);
+            StartDate = MinStartDate;
+
             MinEndDate = StartDate.AddDays(1);
+            EndDate = StartDate.AddDays(1);
+
+            MaxStartDate = EndDate;
             MaxEndDate = MaxStartDate.AddDays(30);
         }
 
@@ -97,6 +109,11 @@ namespace CourseManager.ViewModels
             var termToRemove = Services.TermService.GetTerm(Id);
             await Services.TermService.RemoveTerm(termToRemove);
 
+            await Shell.Current.GoToAsync("..");
+        }
+
+        private async void NavigateBack()
+        {
             await Shell.Current.GoToAsync("..");
         }
 
