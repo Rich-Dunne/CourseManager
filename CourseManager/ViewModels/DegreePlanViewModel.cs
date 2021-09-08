@@ -47,14 +47,17 @@ namespace CourseManager.ViewModels
             }
         }
 
+        private bool _termsExist = false;
+        public bool TermsExist { get => _termsExist; set => SetProperty(ref _termsExist, value); }
+
         public ObservableCollection<TermGroup> TermGroups { get; } = Services.TermService.TermGroups;
         public ObservableCollection<Course> Courses { get; } = Services.CourseService.Courses;
         public Command LoadItemsCommand { get; }
-        public Command<Term> TermTapped { get; }
-        public Command GetTablesCommand { get; }
-        public Command ShowTableContentsCommand { get; }
+        //public Command<Term> TermTapped { get; }
+        //public Command GetTablesCommand { get; }
+        //public Command ShowTableContentsCommand { get; }
+        //public Command DropTableCommand { get; }
         public Command ClearTableCommand { get; }
-        public Command DropTableCommand { get; }
         public Command NavigateAddTermCommand { get; }
         public Command<TermGroup> NavigateModifyTermCommand { get; }
         public Command NavigateAddCourseCommand { get; }
@@ -66,33 +69,35 @@ namespace CourseManager.ViewModels
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
 
             var init = Services.TermService.Init();
-            GetTablesCommand = new Command(ListTables);
-            ShowTableContentsCommand = new Command(ShowTableContents);
+            //GetTablesCommand = new Command(ListTables);
+            //ShowTableContentsCommand = new Command(ShowTableContents);
+            //DropTableCommand = new Command(DropTable);
             ClearTableCommand = new Command(ClearTable);
-            DropTableCommand = new Command(DropTable);
             NavigateAddTermCommand = new Command(NavigateAddTerm);
             NavigateModifyTermCommand = new Command<TermGroup>(NavigateModifyTerm);
             NavigateAddCourseCommand = new Command(NavigateAddCourse);
 
-            ImportTerms();
+            PopulateTermsView();
+            Debug.WriteLine($"TermGroups Count: {TermGroups.Count}");
+            TermsExist = TermGroups.Count > 0;
         }
 
-        private async void ImportTerms() => await Services.TermService.ImportTerms();
+        private async void PopulateTermsView() => await Services.TermService.ImportTerms();
 
-        private async void ListTables()
-        {
-            await Services.TermService.ListTables();
-        }
+        //private async void ListTables()
+        //{
+        //    await Services.TermService.ListTables();
+        //}
 
-        private void ShowTableContents()
-        {
-            Services.TermService.GetTables();
-        }
+        //private void ShowTableContents()
+        //{
+        //    Services.TermService.GetTables();
+        //}
 
-        private void DropTable()
-        {
-            var dropTable = Services.TermService.DropTable();
-        }
+        //private void DropTable()
+        //{
+        //    var dropTable = Services.TermService.DropTable();
+        //}
 
         private async void ClearTable()
         {
@@ -117,10 +122,10 @@ namespace CourseManager.ViewModels
             await Shell.Current.GoToAsync(route);
         }
 
-        private async void ClearDatabase()
-        {
-            await Services.TermService.DropTable();
-        }
+        //private async void ClearDatabase()
+        //{
+        //    await Services.TermService.DropTable();
+        //}
 
         async Task ExecuteLoadItemsCommand()
         {

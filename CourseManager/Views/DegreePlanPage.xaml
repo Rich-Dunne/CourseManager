@@ -51,8 +51,10 @@
                                     </Label.FormattedText>
                                 </Label>
                             </StackLayout>
-                            <Button Text="Edit" Command="{Binding Source={RelativeSource AncestorType={x:Type local:DegreePlanViewModel}}, Path=NavigateModifyTermCommand}"
+                            <StackLayout VerticalOptions="Center">
+                                <Button Text="Edit" CornerRadius="5" HeightRequest="40" Command="{Binding Source={RelativeSource AncestorType={x:Type local:DegreePlanViewModel}}, Path=NavigateModifyTermCommand}"
                                     CommandParameter="{Binding .}"/>
+                            </StackLayout>
                         </StackLayout>
                     </DataTemplate>
                 </CollectionView.GroupHeaderTemplate>
@@ -71,7 +73,6 @@
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
-
                                 </StackLayout>
                             </Frame>
                         </StackLayout>
