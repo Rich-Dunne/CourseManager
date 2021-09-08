@@ -12,6 +12,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\AddAssessmentsPage.xaml.cs">
+      <DependentUpon>AddAssessmentsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\AddInstructorPage.xaml.cs">
       <DependentUpon>AddInstructorPage.xaml</DependentUpon>
     </Compile>
