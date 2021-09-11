@@ -2,14 +2,41 @@
 using CourseManager.Views;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace CourseManager.ViewModels
 {
+    [QueryProperty(nameof(CourseValues), nameof(CourseValues))]
+    [QueryProperty(nameof(InstructorValues), nameof(InstructorValues))]
     public class AddAssessmentsViewModel : BaseViewModel
     {
+        #region Passed Form Values
+        private string _courseValues;
+        public string CourseValues
+        {
+            get => _courseValues;
+            set
+            {
+                SetProperty(ref _courseValues, value);
+                InitializeCourseProperties();
+            }
+        }
+
+        private string _instructorValues;
+        public string InstructorValues
+        {
+            get => _instructorValues;
+            set
+            {
+                SetProperty(ref _instructorValues, value);
+                InitializeInstructorProperties();
+            }
+        }
+        #endregion
+
         private string _assessmentName;
         public string AssessmentName { get => _assessmentName; set => SetProperty(ref _assessmentName, value); }
 
@@ -47,10 +74,14 @@ namespace CourseManager.ViewModels
         public string SecondAssessmentType { get => _secondAssessmentType; set => SetProperty(ref _secondAssessmentType, value); }
 
         private bool _secondAssessment = false;
-        public bool SecondAssessment { get => _secondAssessment; set => SetProperty(ref _secondAssessment, value); }
+        public bool HasSecondAssessment { get => _secondAssessment; set => SetProperty(ref _secondAssessment, value); }
 
         private bool _showAddAssessmentButton = true;
         public bool ShowAddAssessmentButton { get => _showAddAssessmentButton; set => SetProperty(ref _showAddAssessmentButton, value); }
+
+        public Course Course;
+        public Instructor Instructor;
+        public Assessment FirstAssessment, SecondAssessment;
 
         public Command SaveCommand { get; }
         public Command NavigateBackCommand { get; }
@@ -62,8 +93,8 @@ namespace CourseManager.ViewModels
             Title = "Add Assessments";
             SaveCommand = new Command(Save);
             NavigateBackCommand = new Command(NavigateBack);
-            AddSecondAssessmentCommand = new Command(() => { SecondAssessment = true; ShowAddAssessmentButton = false; });
-            RemoveSecondAssessmentCommand = new Command(() => { SecondAssessment = false; ShowAddAssessmentButton = true; });
+            AddSecondAssessmentCommand = new Command(() => { HasSecondAssessment = true; ShowAddAssessmentButton = false; });
+            RemoveSecondAssessmentCommand = new Command(() => { HasSecondAssessment = false; ShowAddAssessmentButton = true; });
 
             MinDueDate = DateTime.Today;
             MaxDueDate = DateTime.Today.AddDays(30);
@@ -76,7 +107,12 @@ namespace CourseManager.ViewModels
                 return;
             }
 
-            var route = $"/{nameof(DegreePlanPage)}";
+            CreateAssessments();
+
+            await Services.CourseService.AddCourse(Course);
+            await Services.TermService.AddCourseToTerm(Course);
+
+            var route = $"///{nameof(DegreePlanPage)}";
             await Shell.Current.GoToAsync(route);
         }
 
@@ -88,6 +124,81 @@ namespace CourseManager.ViewModels
         private void AddSecondAssessment()
         {
             _secondAssessment = true;
+        }
+        private void InitializeCourseProperties()
+        {
+            string[] courseValues = CourseValues.Split(',');
+            var status = Enum.TryParse(courseValues[4], out Enums.Status myStatus);
+
+            Course = new Course
+            {
+                CourseName = courseValues[0],
+                StartDate = DateTime.Parse(courseValues[1]),
+                EndDate = DateTime.Parse(courseValues[2]),
+                EnableNotifications = bool.Parse(courseValues[3]),
+                Status = myStatus,
+                Notes = courseValues[5],
+                AssociatedTermId = int.Parse(courseValues[6])
+            };
+
+            MinDueDate = Course.StartDate.AddDays(1);
+            MaxDueDate = Course.EndDate;
+
+            Debug.WriteLine($"Course/Id: {Course.CourseName}/{Course.Id}");
+            Debug.WriteLine($"Start: {Course.StartDate}");
+            Debug.WriteLine($"End: {Course.EndDate}");
+            Debug.WriteLine($"Notifications: {Course.EnableNotifications}");
+            Debug.WriteLine($"Status: {Course.Status}");
+            Debug.WriteLine($"Notes: {Course.Notes}");
+            Debug.WriteLine($"Associated Term: {Course.AssociatedTermId}");
+        }
+
+        private void InitializeInstructorProperties()
+        {
+            string[] instructorValues = InstructorValues.Split(',');
+
+            Instructor = new Instructor
+            {
+                FirstName = instructorValues[0],
+                LastName = instructorValues[1],
+                PhoneNumber = instructorValues[2],
+                Email = instructorValues[3],
+                AssociatedCourseId = Course.Id
+            };
+
+            Debug.WriteLine($"Instructor First Name: {Instructor.FirstName}");
+            Debug.WriteLine($"Instructor Last Name: {Instructor.LastName}");
+            Debug.WriteLine($"Phone Number: {Instructor.PhoneNumber}");
+            Debug.WriteLine($"Email: {Instructor.Email}");
+            Debug.WriteLine($"Associated Course Id: {Instructor.AssociatedCourseId}");
+        }
+
+        private void CreateAssessments()
+        {
+            var assessmentType = Enum.TryParse(AssessmentType, out Enums.AssessmentType firstAssessmentType);
+            FirstAssessment = new Assessment
+            {
+                Name = AssessmentName,
+                AssessmentType = firstAssessmentType,
+                DueDate = DueDate,
+                EnableNotifications = EnableAlerts,
+                AssociatedCourseId = Course.Id
+            };
+            Debug.WriteLine($"First assessment created: {FirstAssessment.Name}");
+
+            if (HasSecondAssessment)
+            {
+                assessmentType = Enum.TryParse(AssessmentType, out Enums.AssessmentType secondAssessmentType);
+                SecondAssessment = new Assessment
+                {
+                    Name = SecondAssessmentName,
+                    AssessmentType = secondAssessmentType,
+                    DueDate = SecondDueDate,
+                    EnableNotifications = EnableAlerts,
+                    AssociatedCourseId = Course.Id
+                };
+                Debug.WriteLine($"Second assessment created: {SecondAssessment.Name}");
+            }
         }
     }
 }
