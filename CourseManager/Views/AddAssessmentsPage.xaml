@@ -31,7 +31,7 @@
                         <DatePicker MinimumDate="{Binding MinDueDate}" MaximumDate="{Binding MaxDueDate}" Date="{Binding DueDate}"/>
                     </StackLayout>
 
-                    <StackLayout Padding="20, 0, 20, 20" IsVisible="{Binding SecondAssessment}">
+                    <StackLayout Padding="20, 0, 20, 20" IsVisible="{Binding HasSecondAssessment}">
                         <BoxView HorizontalOptions="FillAndExpand" WidthRequest="1" HeightRequest="1" Color="#e9e6d9"/>
 
                         <Label Text="Assessment Name" Padding="0, 10, 0, 0" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
@@ -51,7 +51,7 @@
                         </StackLayout>
                         
                         <Button Text="+ Assessment" FontSize="Small" HorizontalOptions="End" BackgroundColor="#4486a1" Command="{Binding AddSecondAssessmentCommand}" IsVisible="{Binding ShowAddAssessmentButton}"/>
-                        <Button Text="- Assessment" FontSize="Small" HorizontalOptions="End" BackgroundColor="#4486a1" Command="{Binding RemoveSecondAssessmentCommand}" IsVisible="{Binding SecondAssessment}"/>
+                        <Button Text="- Assessment" FontSize="Small" HorizontalOptions="End" BackgroundColor="#4486a1" Command="{Binding RemoveSecondAssessmentCommand}" IsVisible="{Binding HasSecondAssessment}"/>
                     </StackLayout>
 
                     <StackLayout Padding="20">
