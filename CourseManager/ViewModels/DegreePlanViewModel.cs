@@ -2,6 +2,7 @@
 using CourseManager.Views;
 using SQLite;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
@@ -57,7 +58,8 @@ namespace CourseManager.ViewModels
         //public Command GetTablesCommand { get; }
         //public Command ShowTableContentsCommand { get; }
         //public Command DropTableCommand { get; }
-        public Command ClearTableCommand { get; }
+        public Command ClearTermTableCommand { get; }
+        public Command ClearCourseTableCommand { get; }
         public Command NavigateAddTermCommand { get; }
         public Command<TermGroup> NavigateModifyTermCommand { get; }
         public Command NavigateAddCourseCommand { get; }
@@ -68,11 +70,13 @@ namespace CourseManager.ViewModels
 
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
 
-            var init = Services.TermService.Init();
+            var initCourses = Services.CourseService.Init();
+            var initTerms = Services.TermService.Init();
             //GetTablesCommand = new Command(ListTables);
             //ShowTableContentsCommand = new Command(ShowTableContents);
             //DropTableCommand = new Command(DropTable);
-            ClearTableCommand = new Command(ClearTable);
+            ClearTermTableCommand = new Command(ClearTermTable);
+            ClearCourseTableCommand = new Command(ClearCourseTable);
             NavigateAddTermCommand = new Command(NavigateAddTerm);
             NavigateModifyTermCommand = new Command<TermGroup>(NavigateModifyTerm);
             NavigateAddCourseCommand = new Command(NavigateAddCourse);
@@ -82,26 +86,36 @@ namespace CourseManager.ViewModels
             TermsExist = TermGroups.Count > 0;
         }
 
-        private async void PopulateTermsView() => await Services.TermService.ImportTerms();
+        private async void PopulateTermsView()
+        {
+            await Services.CourseService.ImportCourses();
+            await Services.TermService.ImportTerms();
+        }
 
-        //private async void ListTables()
-        //{
-        //    await Services.TermService.ListTables();
-        //}
+            //private async void ListTables()
+            //{
+            //    await Services.TermService.ListTables();
+            //}
 
-        //private void ShowTableContents()
-        //{
-        //    Services.TermService.GetTables();
-        //}
+            //private void ShowTableContents()
+            //{
+            //    Services.TermService.GetTables();
+            //}
 
-        //private void DropTable()
-        //{
-        //    var dropTable = Services.TermService.DropTable();
-        //}
+            //private void DropTable()
+            //{
+            //    var dropTable = Services.TermService.DropTable();
+            //}
 
-        private async void ClearTable()
+        private async void ClearTermTable()
         {
             await Services.TermService.ClearTable();
+        }
+
+        private async void ClearCourseTable()
+        {
+            await Services.CourseService.ClearTable();
+            await Services.TermService.ImportTerms();
         }
 
         private async void NavigateAddTerm()
@@ -118,6 +132,11 @@ namespace CourseManager.ViewModels
 
         private async void NavigateAddCourse()
         {
+            if(TermGroups.Count == 0)
+            {
+                return;
+            }
+
             var route = $"{nameof(AddCoursePage)}";
             await Shell.Current.GoToAsync(route);
         }
