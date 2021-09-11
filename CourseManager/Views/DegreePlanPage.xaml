@@ -11,8 +11,9 @@
     </ContentPage.BindingContext>
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Clear Table" Command="{Binding ClearTableCommand}" />
-        <ToolbarItem Text="Add Course" Command="{Binding NavigateAddCourseCommand}"/>
+        <ToolbarItem Text="Clear Term Table" Command="{Binding ClearTermTableCommand}" Order="Secondary"/>
+        <ToolbarItem Text="Clear Course Table" Command="{Binding ClearCourseTableCommand}" Order="Secondary"/>
+        <ToolbarItem Text="Add Course" Command="{Binding NavigateAddCourseCommand}" Clicked="ToolbarItem_Clicked"/>
     </ContentPage.ToolbarItems>
 
     <!--<StackLayout VerticalOptions="Center">
