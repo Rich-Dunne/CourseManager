@@ -2,6 +2,8 @@
 using CourseManager.Views;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -60,8 +62,16 @@ namespace CourseManager.ViewModels
         private int _pickerIndex = 0;
         public int PickerIndex { get => _pickerIndex; set => SetProperty(ref _pickerIndex, value); }
 
-        private Term _selectedTerm;
-        public Term SelectedTerm { get => _selectedTerm; set => SetProperty(ref _selectedTerm, value); }
+        private string _selectedTerm;
+        public string SelectedTerm 
+        { 
+            get => _selectedTerm;
+            set
+            {
+                SetProperty(ref _selectedTerm, value);
+                InitializeSelectedTerm();
+            }
+        }
 
         public string _courseNotes;
         public string CourseNotes { get => _courseNotes; set => SetProperty(ref _courseNotes, value); }
@@ -83,7 +93,6 @@ namespace CourseManager.ViewModels
             EndDate = StartDate.AddDays(1);
 
             MaxStartDate = EndDate;
-            MaxEndDate = MaxStartDate.AddDays(30);
 
             GetTerms();
         }
@@ -93,7 +102,7 @@ namespace CourseManager.ViewModels
             var terms = Services.TermService.TermGroups;
             foreach (TermGroup termGroup in terms)
             {
-                if (termGroup.Courses.Count < 6)
+                if (termGroup.Count < 6)
                 {
                     Terms.Add(termGroup.Name);
                 }
@@ -107,13 +116,26 @@ namespace CourseManager.ViewModels
                 return;
             }
 
-            var route = $"{nameof(AddInstructorPage)}";
+            var termID = Services.TermService.TermGroups.FirstOrDefault(x => x.Name == SelectedTerm).Id;
+            string courseValues = $"{CourseName},{StartDate.ToShortDateString()},{EndDate.ToShortDateString()},{EnableAlerts},{Status},{CourseNotes},{termID}";
+            var route = $"{nameof(AddInstructorPage)}?CourseValues={courseValues}";
             await Shell.Current.GoToAsync(route);
         }
 
         private async void NavigateBack()
         {
             await Shell.Current.GoToAsync("..");
+        }
+
+        private void InitializeSelectedTerm()
+        {
+            var term = Services.TermService.TermGroups.FirstOrDefault(x => x.Name == SelectedTerm);
+            if(term == null)
+            {
+                Debug.WriteLine($"Term doesn't exist");
+                return;
+            }
+            MaxEndDate = term.EndDate;
         }
     }
 }
