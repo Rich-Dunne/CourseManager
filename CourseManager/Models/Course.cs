@@ -14,7 +14,6 @@ namespace CourseManager.Models
         public string CourseName { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public Instructor Instructor { get; set; }
         public Status Status { get; set; }
         public string Notes { get; set; }
         public bool EnableNotifications { get; set; }
