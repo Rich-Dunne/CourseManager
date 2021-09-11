@@ -23,5 +23,14 @@ namespace CourseManager.Views
         {
             base.OnAppearing();
         }
+
+        private void ToolbarItem_Clicked(object sender, EventArgs e)
+        {
+            var model = BindingContext as DegreePlanViewModel;
+            if(model.TermGroups.Count == 0)
+            {
+                DisplayAlert("Term required", "You must add a term first.", "Ok");
+            }
+        }
     }
 }
