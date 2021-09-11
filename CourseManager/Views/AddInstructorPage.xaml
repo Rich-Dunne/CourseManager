@@ -20,8 +20,11 @@
                 </Frame>
 
                 <StackLayout Padding="20">
-                    <Label Text="Instructor Name" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
-                    <Entry Text="{Binding InstructorName}" Keyboard="Text"/>
+                    <Label Text="Instructor First Name" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
+                    <Entry Text="{Binding InstructorFirstName}" Keyboard="Text"/>
+
+                    <Label Text="Instructor Last Name" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
+                    <Entry Text="{Binding InstructorLastName}" Keyboard="Text"/>
 
                     <Label Text="Instructor Phone Number" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
                     <Entry Text="{Binding InstructorPhoneNumber}" Keyboard="Telephone"/>
