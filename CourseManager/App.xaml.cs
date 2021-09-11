@@ -12,7 +12,6 @@ namespace CourseManager
 
         public App()
         {
-            DataStore.InitializeData();
             InitializeComponent();
 
             DependencyService.Register<MockDataStore>();
