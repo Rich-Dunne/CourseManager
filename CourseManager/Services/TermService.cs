@@ -61,17 +61,21 @@ namespace CourseManager.Services
                 var existingTermGroup = TermGroups.FirstOrDefault(x => x.Name == result.TermName);
                 if (existingTermGroup == null)
                 {
-                    var newCourse = new Course
+                    var courses = new ObservableCollection<Course>();
+                    foreach (Course course in CourseService.Courses)
                     {
-                        CourseName = "Test Course",
-                        StartDate = DateTime.Now,
-                        EndDate = new DateTime(2021, 10, 15)
-                    };
+                        if (course.AssociatedTermId == result.Id)
+                        {
+                            courses.Add(course);
+                            Debug.WriteLine($"Added \"{course.CourseName}\" to term group's course collection.");
+                        }
+                    }
 
-                    TermGroups.Add(new TermGroup(result.Id, result.TermName, result.StartDate, result.EndDate, new List<Course>() { newCourse }));
-                    Debug.WriteLine($"Added new term group to collection.");
+                    var newTermGroup = new TermGroup(result.Id, result.TermName, result.StartDate, result.EndDate, courses);
+
+                    TermGroups.Add(newTermGroup);
+                    Debug.WriteLine($"Added \"{newTermGroup.Name}\" to collection.");
                 }
-                // Else get courses with matching Term ID and add them to the existingTermGroup courses
             }
         }
 
@@ -134,6 +138,7 @@ namespace CourseManager.Services
             if(matchingGroup == null)
             {
                 Debug.WriteLine($"Matching group not found.");
+                return;
             }
             TermGroups.Remove(matchingGroup);
 
@@ -155,15 +160,30 @@ namespace CourseManager.Services
             Debug.WriteLine($"({term.Id}) \"{term.TermName}\" removed.");
         }
 
-        public static async Task AddCourseToTerm(Term term, Course newCourse)
+        public static async Task AddCourseToTerm(Course course)
         {
-            var matchingGroup = TermGroups.FirstOrDefault(x => x.Id == term.Id);
+            var matchingGroup = TermGroups.FirstOrDefault(x => x.Id == course.AssociatedTermId);
             if (matchingGroup == null)
             {
                 Debug.WriteLine($"Matching group not found.");
+                return;
             }
 
-            matchingGroup.Courses.Add(newCourse);
+            matchingGroup.Add(course);
+            await ImportTerms();
+        }
+
+        public static async Task RemoveCourseFromTerm(Course course)
+        {
+            var matchingGroup = TermGroups.FirstOrDefault(x => x.Id == course.AssociatedTermId);
+            if (matchingGroup == null)
+            {
+                Debug.WriteLine($"Matching group not found.");
+                return;
+            }
+
+            matchingGroup.Remove(course);
+            Debug.WriteLine($"Course \"{course.CourseName}\" removed from term \"{matchingGroup.Name}\".");
             await ImportTerms();
         }
 
