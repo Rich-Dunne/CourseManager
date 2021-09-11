@@ -11,15 +11,13 @@ namespace CourseManager.Models
         public string Name { get; private set; }
         public DateTime StartDate { get; private set; }
         public DateTime EndDate { get; private set; }
-        public List<Course> Courses { get; set; }
-
-        public TermGroup(int id, string name, DateTime startDate, DateTime endDate, List<Course> courses) : base(courses)
+        
+        public TermGroup(int id, string name, DateTime startDate, DateTime endDate, ObservableCollection<Course> courses) : base(courses)
         {
             Id = id;
             Name = name;
             StartDate = startDate;
             EndDate = endDate;
-            Courses = courses;
         }
     }
 }
