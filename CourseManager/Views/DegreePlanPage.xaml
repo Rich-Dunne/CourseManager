@@ -61,7 +61,7 @@
                 </CollectionView.GroupHeaderTemplate>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <StackLayout Padding="10">
+                        <StackLayout Padding="10" BackgroundColor="White">
                             <Frame Padding="0">
                                 <StackLayout x:DataType="model:Course" HorizontalOptions="FillAndExpand" BackgroundColor="#f2f2f2" Padding="5">
                                     <Label Text="{Binding CourseName}" FontSize="Title" TextColor="#0066a2"/>

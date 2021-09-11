@@ -20,7 +20,6 @@ namespace CourseManager.ViewModels
             set
             {
                 SetProperty(ref _selectedTerm, value);
-                //OnItemSelected(value);
             }
         }
 
@@ -34,17 +33,16 @@ namespace CourseManager.ViewModels
             }
         }
 
-        private Course _selectedCourse;
+        private Course _selectedCourse = null;
         public Course SelectedCourse
         {
             get => _selectedCourse;
             set
             {
                 RecentlySelectedCourse = value;
-                value = null;
-                _selectedCourse = value;
-                //SetProperty(ref _selectedCourse, value);
-                //OnItemSelected(value);
+                SetProperty(ref _selectedCourse, value);
+                if (value != null)
+                    _selectedCourse = null;
             }
         }
 
