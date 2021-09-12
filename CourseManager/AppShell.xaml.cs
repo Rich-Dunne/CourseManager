@@ -2,6 +2,7 @@
 using CourseManager.Views;
 using System;
 using System.Collections.Generic;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace CourseManager
@@ -11,13 +12,12 @@ namespace CourseManager
         public AppShell()
         {
             InitializeComponent();
-            Routing.RegisterRoute(nameof(ItemDetailPage), typeof(ItemDetailPage));
-            Routing.RegisterRoute(nameof(NewItemPage), typeof(NewItemPage));
             Routing.RegisterRoute(nameof(AddTermPage), typeof(AddTermPage));
             Routing.RegisterRoute(nameof(ModifyTermPage), typeof(ModifyTermPage));
             Routing.RegisterRoute(nameof(AddCoursePage), typeof(AddCoursePage));
             Routing.RegisterRoute(nameof(AddInstructorPage), typeof(AddInstructorPage));
             Routing.RegisterRoute(nameof(AddAssessmentsPage), typeof(AddAssessmentsPage));
+            Routing.RegisterRoute(nameof(ViewCoursePage), typeof(ViewCoursePage));
         }
 
         //private async void OnMenuItemClicked(object sender, EventArgs e)
