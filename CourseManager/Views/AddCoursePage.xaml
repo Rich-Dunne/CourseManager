@@ -26,10 +26,13 @@
                 
                 <StackLayout Padding="20">
                     <Label Text="Term" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
-                    <Picker ItemsSource="{Binding Terms}" SelectedItem="{Binding SelectedTerm}" SelectedIndex="{Binding PickerIndex}"/>
+                    <Picker ItemsSource="{Binding Terms}" SelectedItem="{Binding SelectedTerm}" FontAttributes="Italic"/>
 
                     <Label Text="Course Name" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
                     <Entry Text="{Binding CourseName}"/>
+
+                    <Label Text="Instructor" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
+                    <Picker ItemsSource="{Binding Instructors}" SelectedItem="{Binding SelectedInstructor}" FontAttributes="Italic"/>
 
                     <Label Text="Start Date" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
                     <DatePicker MinimumDate="{Binding MinStartDate}" MaximumDate="{Binding MaxStartDate}" Date="{Binding StartDate}"/>
@@ -43,7 +46,7 @@
                     </StackLayout>
 
                     <Label Text="Course Status" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
-                    <Picker ItemsSource="{Binding StatusList}" SelectedItem="{Binding Status}" SelectedIndex="{Binding PickerIndex}"/>
+                    <Picker ItemsSource="{Binding StatusList}" SelectedItem="{Binding Status}" FontAttributes="Italic"/>
 
                     <Label Text="Notes (optional)" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
                     <Entry Text="{Binding CourseNotes}" MinimumHeightRequest="100"/>

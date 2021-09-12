@@ -14,6 +14,7 @@ namespace CourseManager.ViewModels
     public class AddCourseViewModel : BaseViewModel
     {
         public List<string> StatusList { get; } = new List<string>() { "Inactive", "Active", "Planned", "Dropped", "Completed" };
+        public List<string> Instructors { get; } = new List<string>() { "New Instructor" };
         public List<string> Terms { get; } = new List<string>();
 
         private string _courseName;
@@ -56,7 +57,7 @@ namespace CourseManager.ViewModels
         private bool _enableAlerts;
         public bool EnableAlerts { get => _enableAlerts; set => SetProperty(ref _enableAlerts, value); }
 
-        private string _status;
+        private string _status = "Inactive";
         public string Status { get => _status; set => SetProperty(ref _status, value); }
 
         private int _pickerIndex = 0;
@@ -70,6 +71,16 @@ namespace CourseManager.ViewModels
             {
                 SetProperty(ref _selectedTerm, value);
                 InitializeSelectedTerm();
+            }
+        }
+
+        private string _selectedInstructor;
+        public string SelectedInstructor
+        {
+            get => _selectedInstructor;
+            set
+            {
+                SetProperty(ref _selectedInstructor, value);
             }
         }
 
@@ -95,6 +106,10 @@ namespace CourseManager.ViewModels
             MaxStartDate = EndDate;
 
             GetTerms();
+            GetInstructors();
+
+            SelectedTerm = Terms.First();
+            SelectedInstructor = Instructors.First();
         }
 
         private void GetTerms()
@@ -106,6 +121,15 @@ namespace CourseManager.ViewModels
                 {
                     Terms.Add(termGroup.Name);
                 }
+            }
+        }
+
+        private void GetInstructors()
+        {
+            var instructors = Services.InstructorService.Instructors;
+            foreach (Instructor instructor in instructors)
+            {
+                Instructors.Add($"{instructor.FirstName} {instructor.LastName}");
             }
         }
 
