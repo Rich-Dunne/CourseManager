@@ -18,6 +18,9 @@ namespace CourseManager.Models
         public string Notes { get; set; }
         public bool EnableNotifications { get; set; }
         public int AssociatedTermId { get; set; }
+        public int AssociatedInstructorId { get; set; }
+        public int FirstAssessmentId { get; set; }
+        public int SecondAssessmentId { get; set; }
 
         public Course() { }
     }
