@@ -52,11 +52,13 @@ namespace CourseManager.Services
                 return;
             }
 
+            TermGroups.Clear();
+
             var query = database.Table<Term>().ToListAsync();
-            Debug.WriteLine($"Terms being imported from DB: {query.Result.Count}.");
+            //Debug.WriteLine($"Terms being imported from DB: {query.Result.Count}.");
             foreach (var result in query.Result)
             {
-                Debug.WriteLine($"ID: {result.Id}, Name: {result.TermName}");
+                //Debug.WriteLine($"ID: {result.Id}, Name: {result.TermName}");
 
                 var existingTermGroup = TermGroups.FirstOrDefault(x => x.Name == result.TermName);
                 if (existingTermGroup == null)
@@ -64,7 +66,7 @@ namespace CourseManager.Services
                     var courses = new ObservableCollection<Course>();
                     foreach (Course course in CourseService.Courses)
                     {
-                        if (course.AssociatedTermId == result.Id)
+                        if (course.AssociatedTermId == result.Id && !courses.Any(x => x.Id == course.Id))
                         {
                             courses.Add(course);
                             Debug.WriteLine($"Added \"{course.CourseName}\" to term group's course collection.");
@@ -140,7 +142,7 @@ namespace CourseManager.Services
                 Debug.WriteLine($"Matching group not found.");
                 return;
             }
-            TermGroups.Remove(matchingGroup);
+            //TermGroups.Remove(matchingGroup);
 
             await database.UpdateAsync(term);
             await ImportTerms();
