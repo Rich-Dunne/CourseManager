@@ -11,8 +11,19 @@ using Xamarin.Forms;
 
 namespace CourseManager.ViewModels
 {
+    [QueryProperty(nameof(Username), nameof(Username))]
     public class DegreePlanViewModel : BaseViewModel
     {
+        private string _username;
+        public string Username
+        {
+            get => _username;
+            set
+            {
+                SetProperty(ref _username, value);
+            }
+        }
+
         private Term _selectedTerm;
         public Term SelectedTerm
         {
@@ -42,7 +53,10 @@ namespace CourseManager.ViewModels
                 RecentlySelectedCourse = value;
                 SetProperty(ref _selectedCourse, value);
                 if (value != null)
+                {
+                    NavigateViewCourse();
                     _selectedCourse = null;
+                }
             }
         }
 
@@ -58,9 +72,12 @@ namespace CourseManager.ViewModels
         //public Command DropTableCommand { get; }
         public Command ClearTermTableCommand { get; }
         public Command ClearCourseTableCommand { get; }
+        public Command ClearInstructorTableCommand { get; }
+        public Command ClearAssessmentTableCommand { get; }
         public Command NavigateAddTermCommand { get; }
         public Command<TermGroup> NavigateModifyTermCommand { get; }
         public Command NavigateAddCourseCommand { get; }
+        public Command NavigateViewCourseCommand { get; }
 
         public DegreePlanViewModel()
         {
@@ -68,25 +85,36 @@ namespace CourseManager.ViewModels
 
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
 
+            var initInstructors = Services.InstructorService.Init();
             var initCourses = Services.CourseService.Init();
+            var initAssessments = Services.AssessmentService.Init();
             var initTerms = Services.TermService.Init();
+
             //GetTablesCommand = new Command(ListTables);
             //ShowTableContentsCommand = new Command(ShowTableContents);
             //DropTableCommand = new Command(DropTable);
+
             ClearTermTableCommand = new Command(ClearTermTable);
             ClearCourseTableCommand = new Command(ClearCourseTable);
+            ClearInstructorTableCommand = new Command(ClearInstructorTable);
+            ClearAssessmentTableCommand = new Command(ClearAssessmentTable);
+
+
             NavigateAddTermCommand = new Command(NavigateAddTerm);
             NavigateModifyTermCommand = new Command<TermGroup>(NavigateModifyTerm);
             NavigateAddCourseCommand = new Command(NavigateAddCourse);
+            NavigateViewCourseCommand = new Command(NavigateViewCourse);
 
             PopulateTermsView();
-            Debug.WriteLine($"TermGroups Count: {TermGroups.Count}");
+            //Debug.WriteLine($"SelectedCourse: {SelectedCourse}");
             TermsExist = TermGroups.Count > 0;
         }
 
         private async void PopulateTermsView()
         {
+            await Services.InstructorService.ImportInstructors();
             await Services.CourseService.ImportCourses();
+            await Services.AssessmentService.ImportAssessments();
             await Services.TermService.ImportTerms();
         }
 
@@ -114,6 +142,16 @@ namespace CourseManager.ViewModels
         {
             await Services.CourseService.ClearTable();
             await Services.TermService.ImportTerms();
+        }
+
+        private async void ClearInstructorTable()
+        {
+            await Services.InstructorService.ClearTable();
+        }
+
+        private async void ClearAssessmentTable()
+        {
+            await Services.AssessmentService.ClearTable();
         }
 
         private async void NavigateAddTerm()
@@ -147,6 +185,7 @@ namespace CourseManager.ViewModels
         async Task ExecuteLoadItemsCommand()
         {
             IsBusy = true;
+            await Task.Delay(1000);
             await Services.TermService.ImportTerms();
 
             IsBusy = false;
@@ -158,18 +197,10 @@ namespace CourseManager.ViewModels
             SelectedTerm = null;
         }
 
-        private async void OnAddItem(object obj)
+        async void NavigateViewCourse()
         {
-            await Shell.Current.GoToAsync(nameof(NewItemPage));
-        }
-
-        async void OnItemSelected(Term term)
-        {
-            if (term == null)
-                return;
-
-            // This will push the ItemDetailPage onto the navigation stack
-            await Shell.Current.GoToAsync($"{nameof(ItemDetailPage)}?{nameof(ItemDetailViewModel.ItemId)}={term.Id}");
+            var route = $"{nameof(ViewCoursePage)}?CourseId={SelectedCourse.Id}";
+            await Shell.Current.GoToAsync(route);
         }
     }
 }
