@@ -52,11 +52,13 @@ namespace CourseManager.Services
                 return;
             }
 
+            Courses.Clear();
+
             var query = await database.Table<Course>().ToListAsync();
             Debug.WriteLine($"Courses being imported from DB: {query.Count}.");
             foreach (var result in query)
             {
-                Debug.WriteLine($"ID: {result.Id}, Name: {result.CourseName}, Associated term: {result.AssociatedTermId}");
+                Debug.WriteLine($"ID: {result.Id}, Name: {result.CourseName}, Associated term: {result.AssociatedTermId}, Associated Instructor: {result.AssociatedInstructorId}");
                 Courses.Add(result);
             }
         }
@@ -115,8 +117,8 @@ namespace CourseManager.Services
                 Debug.WriteLine($"Matching course not found.");
                 return;
             }
-            Courses.Remove(matchingCourse);
 
+            //Courses.Remove(matchingCourse);
             await database.UpdateAsync(course);
             await ImportCourses();
         }
@@ -130,6 +132,8 @@ namespace CourseManager.Services
             {
                 Courses.Remove(matchingCourse);
             }
+
+            await TermService.RemoveCourseFromTerm(course);
 
             await database.DeleteAsync<Course>(course.Id);
             Debug.WriteLine($"({course.Id}) \"{course.CourseName}\" removed.");
@@ -167,6 +171,47 @@ namespace CourseManager.Services
             Courses.Clear();
             await database.DeleteAllAsync<Course>();
             Debug.WriteLine($"The Courses table has been cleared.");
+        }
+
+        public static async void RemoveInstructorFromCourse(Instructor instructor)
+        {
+            foreach(Course course in Courses)
+            {
+                if(course.AssociatedInstructorId == instructor.Id)
+                {
+                    course.AssociatedInstructorId = 0;
+                }
+                await database.UpdateAsync(course);
+            }
+        }
+
+        public static async void AddInstructorToCourse(Instructor instructor, int courseId)
+        {
+            var course = Courses.FirstOrDefault(x => x.Id == courseId);
+            if(course == null)
+            {
+                Debug.WriteLine($"No matching course found.");
+                return;
+            }
+
+            course.AssociatedInstructorId = instructor.Id;
+            await UpdateCourse(course);
+        }
+
+        public static async void RemoveAssessmentFromCourse(Assessment assessment)
+        {
+            foreach (Course course in Courses)
+            {
+                if (course.FirstAssessmentId == assessment.Id)
+                {
+                    course.FirstAssessmentId = 0;
+                }
+                else if (course.SecondAssessmentId == assessment.Id)
+                {
+                    course.SecondAssessmentId = 0;
+                }
+                await database.UpdateAsync(course);
+            }
         }
 
         //public static void GetTableRows()
