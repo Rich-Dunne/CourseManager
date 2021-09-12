@@ -71,9 +71,9 @@
                                     <Label>
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="{Binding StartDate.Date, StringFormat='{}{0:MM/dd/yyyy}'}" FontSize="Subtitle"/>
+                                                <Span Text="{Binding StartDate, StringFormat='{}{0:MM/dd/yyyy}'}" FontSize="Subtitle"/>
                                                 <Span Text=" to " FontSize="Subtitle"/>
-                                                <Span Text="{Binding EndDate.Date, StringFormat='{}{0:MM/dd/yyyy}'}" FontSize="Subtitle"/>
+                                                <Span Text="{Binding EndDate, StringFormat='{}{0:MM/dd/yyyy}'}" FontSize="Subtitle"/>
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>

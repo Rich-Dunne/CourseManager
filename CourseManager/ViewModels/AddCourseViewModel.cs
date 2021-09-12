@@ -20,7 +20,7 @@ namespace CourseManager.ViewModels
         private string _courseName;
         public string CourseName { get => _courseName; set => SetProperty(ref _courseName, value); }
 
-        private DateTime _minStartDate = DateTime.Now;
+        private DateTime _minStartDate;
         public DateTime MinStartDate { get => _minStartDate; set => SetProperty(ref _minStartDate, value); }
 
         private DateTime _maxStartDate;
@@ -63,7 +63,7 @@ namespace CourseManager.ViewModels
         private int _pickerIndex = 0;
         public int PickerIndex { get => _pickerIndex; set => SetProperty(ref _pickerIndex, value); }
 
-        private string _selectedTerm;
+        private string _selectedTerm = Services.TermService.TermGroups.First().Name;
         public string SelectedTerm 
         { 
             get => _selectedTerm;
@@ -108,7 +108,6 @@ namespace CourseManager.ViewModels
             GetTerms();
             GetInstructors();
 
-            SelectedTerm = Terms.First();
             SelectedInstructor = Instructors.First();
         }
 
@@ -159,7 +158,20 @@ namespace CourseManager.ViewModels
                 Debug.WriteLine($"Term doesn't exist");
                 return;
             }
-            MaxEndDate = term.EndDate;
+
+            // Initial values must be initialized in such a way that changing max/min start/end dates does not constrain themselves, or cause invalid values (min being more than max for example)
+            MinStartDate = DateTime.Now.AddDays(-365);
+            MaxEndDate = DateTime.Now.AddDays(365);
+            MaxStartDate = MaxEndDate.AddDays(-1);
+            MinEndDate = MinStartDate.AddDays(1);
+
+            EndDate = term.EndDate;
+            MaxEndDate = EndDate;
+            MaxStartDate = MaxEndDate.AddDays(-1);
+
+            StartDate = term.StartDate;
+            MinStartDate = StartDate;
+            MinEndDate = StartDate.AddDays(1);
         }
     }
 }
