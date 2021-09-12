@@ -108,8 +108,20 @@ namespace CourseManager.ViewModels
             }
 
             CreateAssessments();
+            await Services.AssessmentService.AddAssessment(FirstAssessment);
+            //Debug.WriteLine($"First Assessment ID: {FirstAssessment.Id}");
+
+            Course.FirstAssessmentId = FirstAssessment.Id;
+            //Debug.WriteLine($"Course first assessment ID: {Course.FirstAssessmentId}");
+
+            await Services.InstructorService.AddInstructor(Instructor);
+            //Debug.WriteLine($"Instructor ID: {Instructor.Id}");          
+            Course.AssociatedInstructorId = Instructor.Id;
+            //Debug.WriteLine($"Course instructor ID: {Course.AssociatedInstructorId}");
 
             await Services.CourseService.AddCourse(Course);
+            //Debug.WriteLine($"Course ID: {Course.Id}");
+
             await Services.TermService.AddCourseToTerm(Course);
 
             var route = $"///{nameof(DegreePlanPage)}";
@@ -138,7 +150,7 @@ namespace CourseManager.ViewModels
                 EnableNotifications = bool.Parse(courseValues[3]),
                 Status = myStatus,
                 Notes = courseValues[5],
-                AssociatedTermId = int.Parse(courseValues[6])
+                AssociatedTermId = int.Parse(courseValues[6]),
             };
 
             MinDueDate = Course.StartDate.AddDays(1);
@@ -151,6 +163,7 @@ namespace CourseManager.ViewModels
             Debug.WriteLine($"Status: {Course.Status}");
             Debug.WriteLine($"Notes: {Course.Notes}");
             Debug.WriteLine($"Associated Term: {Course.AssociatedTermId}");
+            Debug.WriteLine($"Associated Instructor: {Course.AssociatedInstructorId}");
         }
 
         private void InitializeInstructorProperties()
@@ -163,14 +176,13 @@ namespace CourseManager.ViewModels
                 LastName = instructorValues[1],
                 PhoneNumber = instructorValues[2],
                 Email = instructorValues[3],
-                AssociatedCourseId = Course.Id
             };
 
+            Debug.WriteLine($"Instructor Id: {Instructor.Id}");
             Debug.WriteLine($"Instructor First Name: {Instructor.FirstName}");
             Debug.WriteLine($"Instructor Last Name: {Instructor.LastName}");
             Debug.WriteLine($"Phone Number: {Instructor.PhoneNumber}");
             Debug.WriteLine($"Email: {Instructor.Email}");
-            Debug.WriteLine($"Associated Course Id: {Instructor.AssociatedCourseId}");
         }
 
         private void CreateAssessments()
@@ -182,7 +194,6 @@ namespace CourseManager.ViewModels
                 AssessmentType = firstAssessmentType,
                 DueDate = DueDate,
                 EnableNotifications = EnableAlerts,
-                AssociatedCourseId = Course.Id
             };
             Debug.WriteLine($"First assessment created: {FirstAssessment.Name}");
 
@@ -195,7 +206,6 @@ namespace CourseManager.ViewModels
                     AssessmentType = secondAssessmentType,
                     DueDate = SecondDueDate,
                     EnableNotifications = EnableAlerts,
-                    AssociatedCourseId = Course.Id
                 };
                 Debug.WriteLine($"Second assessment created: {SecondAssessment.Name}");
             }
