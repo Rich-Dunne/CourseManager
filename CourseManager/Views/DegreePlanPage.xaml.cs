@@ -32,5 +32,10 @@ namespace CourseManager.Views
                 DisplayAlert("Term required", "You must add a term first.", "Ok");
             }
         }
+
+        private void TermsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ((CollectionView)sender).SelectedItem = null;
+        }
     }
 }

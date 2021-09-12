@@ -13,6 +13,8 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Clear Term Table" Command="{Binding ClearTermTableCommand}" Order="Secondary"/>
         <ToolbarItem Text="Clear Course Table" Command="{Binding ClearCourseTableCommand}" Order="Secondary"/>
+        <ToolbarItem Text="Clear Instructor Table" Command="{Binding ClearInstructorTableCommand}" Order="Secondary"/>
+        <ToolbarItem Text="Clear Assessment Table" Command="{Binding ClearAssessmentTableCommand}" Order="Secondary"/>
         <ToolbarItem Text="Add Course" Command="{Binding NavigateAddCourseCommand}" Clicked="ToolbarItem_Clicked"/>
     </ContentPage.ToolbarItems>
 
@@ -35,6 +37,7 @@
                 IsGrouped="True"
                 SelectionMode="Single"
                 SelectedItem="{Binding SelectedCourse, Mode=TwoWay}"
+                SelectionChanged="TermsListView_SelectionChanged"
                 EmptyView="No terms found.">
                 <CollectionView.GroupHeaderTemplate>
                     <DataTemplate x:Name="TermGroupDataTemplate" x:DataType="model:TermGroup">

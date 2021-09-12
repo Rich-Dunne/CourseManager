@@ -33,7 +33,7 @@
                     <Label.FormattedText>
                         <FormattedString>
                             <Span Text="Hello " />
-                            <Span Text="Student" FontAttributes="Bold" FontSize="Title"/>
+                            <Span Text="{Binding Username, Mode=OneWay}" FontAttributes="Bold" FontSize="Title"/>
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>

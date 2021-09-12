@@ -3,15 +3,20 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:CourseManager.ViewModels" 
              mc:Ignorable="d"
              x:Class="CourseManager.Views.LoginPage"
              Shell.NavBarIsVisible="False">
+    <ContentPage.BindingContext>
+        <local:LoginViewModel />
+    </ContentPage.BindingContext>
+    
     <ContentPage.Content>
         <StackLayout Padding="10,0,10,0" VerticalOptions="Center">
             <Label Text="UNSECURE SIGN-IN" FontSize="Large" TextColor="#4486a1"/>
             <Image Source="WGUlogo.png" Margin="0, 0, 50, 0"/>
-            <Entry Placeholder="Username"/>
-            <Button VerticalOptions="Center" Text="Sign in" Command="{Binding LoginCommand}"/>
+            <Entry Placeholder="Username" Text="{Binding Username}"/>
+            <Button VerticalOptions="Center" Text="Sign in" Command="{Binding LoginCommand}" BackgroundColor="#ffcc5b" TextColor="#002f51"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

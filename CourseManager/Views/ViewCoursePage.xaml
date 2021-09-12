@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:viewmodel="clr-namespace:CourseManager.ViewModels"
+             x:Class="CourseManager.Views.ViewCoursePage"
+             x:DataType="viewmodel:ViewCourseViewModel"
+             Title="{Binding Title}">
+    <ContentPage.BindingContext>
+        <viewmodel:ViewCourseViewModel/>
+    </ContentPage.BindingContext>
+
+    <!-- Non-modal page only -->
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Edit course details" Command="{Binding EditCourseCommand}" Order="Secondary"/>
+        <ToolbarItem Text="Remove course" Command="{Binding RemoveCourseCommand}" Order="Secondary"/>
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <Frame HasShadow="True" BackgroundColor="#e9e6d9" BorderColor="DarkGray">
+                    <StackLayout HorizontalOptions="FillAndExpand" >
+                        <Label TextColor="#333" HorizontalOptions="StartAndExpand">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="{Binding SelectedCourse.CourseName}" FontSize="Title" FontAttributes="Bold"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+
+                        <StackLayout Orientation="Horizontal">
+                            <Label TextColor="#333" HorizontalOptions="StartAndExpand">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="{Binding SelectedCourse.StartDate, StringFormat='{}{0:MM/dd/yyyy}'}" FontSize="Subtitle"/>
+                                        <Span Text=" to " FontSize="Subtitle"/>
+                                        <Span Text="{Binding SelectedCourse.EndDate, StringFormat='{}{0:MM/dd/yyyy}'}" FontSize="Subtitle"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label Text="{Binding SelectedCourse.Status}" HorizontalOptions="End" VerticalOptions="Center" FontSize="Subtitle" FontAttributes="Italic"/>
+                        </StackLayout>
+                    </StackLayout>
+                </Frame>
+                
+                <Frame HasShadow="False">
+                    <StackLayout>
+                        <Label Text="Instructor" FontSize="Title" TextColor="{StaticResource Primary}" FontAttributes="Bold"/>
+                        <Label>
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding Instructor.FirstName}" FontSize="Medium" FontAttributes="Bold"/>
+                                    <Span Text=" " FontSize="Medium" FontAttributes="Bold"/>
+                                    <Span Text="{Binding Instructor.LastName}" FontSize="Medium" FontAttributes="Bold"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Label Text="{Binding Instructor.PhoneNumber}" FontSize="Medium" TextColor="#0066a2"/>
+                        <Label Text="{Binding Instructor.Email}" FontSize="Medium" TextColor="#0066a2"/>
+                    </StackLayout>
+                </Frame>
+
+                <Frame HasShadow="False">
+                    <StackLayout>
+                        <Label Text="Assessments" FontSize="Title" TextColor="{StaticResource Primary}" FontAttributes="Bold"/>
+                        <Label>
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding FirstAssessment.Name}" FontSize="Medium" FontAttributes="Bold"/>
+                                    <Span Text=" (" FontSize="Medium"/>
+                                    <Span Text="{Binding FirstAssessment.AssessmentType}" FontSize="Medium" FontAttributes="Italic"/>
+                                    <Span Text=")" FontSize="Medium"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Label>
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="Due: " FontSize="Medium"/>
+                                    <Span Text="{Binding FirstAssessmentDueDate}" FontSize="Medium"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </StackLayout>
+                </Frame>
+
+                <Frame HasShadow="False">
+                    <StackLayout>
+                        <Label Text="Course Notes" FontSize="Title" TextColor="{StaticResource Primary}" FontAttributes="Bold"/>
+                        <Label Text="{Binding SelectedCourse.Notes}" FontSize="Medium"/>
+                    </StackLayout>
+                </Frame>
+
+                <StackLayout Padding="20">
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                        <Button Text="Back" BackgroundColor="Gray" Command="{Binding NavigateBackCommand}"/>
+                    </StackLayout>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
