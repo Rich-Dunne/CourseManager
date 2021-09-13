@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-             xmlns:viewmodel="clr-namespace:CourseManager.ViewModels"
+             xmlns:viewmodel="clr-namespace:CourseManager.ViewModels" 
+             xmlns:Helpers="clr-namespace:CourseManager.Helpers"
              x:Class="CourseManager.Views.AddCoursePage"
              x:DataType="viewmodel:AddCourseViewModel"
              Title="{Binding Title}"
@@ -53,7 +54,8 @@
 
                     <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
                         <Button Text="Cancel" BackgroundColor="Gray" Command="{Binding NavigateBackCommand}"/>
-                        <Button Text="Add Instructor" Command="{Binding NavigateAddInstructorCommand}"/>
+                        <Button Text="Add Instructor" Command="{Binding NavigateAddInstructorCommand}" IsVisible="{Binding NewInstructor}"/>
+                        <Button Text="Add Assessments" Command="{Binding NavigateAddAssessmentsCommand}" IsVisible="{Binding NewInstructor, Converter={Helpers:InverseBoolConverter}}"/>
                     </StackLayout>
                 </StackLayout>
             </StackLayout>

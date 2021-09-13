@@ -14,7 +14,7 @@ namespace CourseManager.ViewModels
     public class AddCourseViewModel : BaseViewModel
     {
         public List<string> StatusList { get; } = new List<string>() { "Inactive", "Active", "Planned", "Dropped", "Completed" };
-        public List<string> Instructors { get; } = new List<string>() { "New Instructor" };
+        public List<string> Instructors { get; } = new List<string>() {  "New Instructor"  };
         public List<string> Terms { get; } = new List<string>();
 
         private string _courseName;
@@ -64,8 +64,8 @@ namespace CourseManager.ViewModels
         public int PickerIndex { get => _pickerIndex; set => SetProperty(ref _pickerIndex, value); }
 
         private string _selectedTerm = Services.TermService.TermGroups.First().Name;
-        public string SelectedTerm 
-        { 
+        public string SelectedTerm
+        {
             get => _selectedTerm;
             set
             {
@@ -81,20 +81,33 @@ namespace CourseManager.ViewModels
             set
             {
                 SetProperty(ref _selectedInstructor, value);
+                if(SelectedInstructor == "New Instructor")
+                {
+                    NewInstructor = true;
+                }
+                else
+                {
+                    NewInstructor = false;
+                }
             }
         }
 
         public string _courseNotes;
         public string CourseNotes { get => _courseNotes; set => SetProperty(ref _courseNotes, value); }
 
+        private bool _newInstructor = true;
+        public bool NewInstructor { get => _newInstructor; set => SetProperty(ref _newInstructor, value); }
+
 
         public Command NavigateAddInstructorCommand { get; }
+        public Command NavigateAddAssessmentsCommand { get; }
         public Command NavigateBackCommand { get; }
 
         public AddCourseViewModel()
         {
             Title = "Add Course";
             NavigateAddInstructorCommand = new Command(NavigateAddInstructor);
+            NavigateAddAssessmentsCommand = new Command(NavigateAddAssessments);
             NavigateBackCommand = new Command(NavigateBack);
 
             MinStartDate = DateTime.Now;
@@ -142,6 +155,27 @@ namespace CourseManager.ViewModels
             var termID = Services.TermService.TermGroups.FirstOrDefault(x => x.Name == SelectedTerm).Id;
             string courseValues = $"{CourseName},{StartDate.ToShortDateString()},{EndDate.ToShortDateString()},{EnableAlerts},{Status},{CourseNotes},{termID}";
             var route = $"{nameof(AddInstructorPage)}?CourseValues={courseValues}";
+            await Shell.Current.GoToAsync(route);
+        }
+
+        private async void NavigateAddAssessments()
+        {
+            if (string.IsNullOrWhiteSpace(_courseName))
+            {
+                return;
+            }
+
+            var termID = Services.TermService.TermGroups.FirstOrDefault(x => x.Name == SelectedTerm).Id;
+            string courseValues = $"{CourseName},{StartDate.ToShortDateString()},{EndDate.ToShortDateString()},{EnableAlerts},{Status},{CourseNotes},{termID}";
+            var instructor = Services.InstructorService.Instructors.FirstOrDefault(x => $"{x.FirstName} {x.LastName}" == SelectedInstructor);
+            if (instructor == null)
+            {
+                Debug.WriteLine($"Instructor \"{SelectedInstructor}\" doesn't exist.");
+                return;
+            }
+
+            var instructorValues = $"{instructor.FirstName},{instructor.LastName},{instructor.PhoneNumber},{instructor.Email}";
+            var route = $"{nameof(AddAssessmentsPage)}?CourseValues={courseValues}&InstructorValues={instructorValues}";
             await Shell.Current.GoToAsync(route);
         }
 
