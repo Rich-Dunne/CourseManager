@@ -12,7 +12,7 @@
     </ContentPage.BindingContext>
     
     <ContentPage.Content>
-        <StackLayout Padding="10,0,10,0" VerticalOptions="Center">
+        <StackLayout Padding="30,0,30,0" VerticalOptions="Center">
             <Label Text="UNSECURE SIGN-IN" FontSize="Large" TextColor="#4486a1"/>
             <Image Source="WGUlogo.png" Margin="0, 0, 50, 0"/>
             <Entry Placeholder="Username" Text="{Binding Username}"/>
