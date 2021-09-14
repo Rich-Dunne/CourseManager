@@ -38,7 +38,7 @@
                         <Entry Text="{Binding SecondAssessmentName}" Keyboard="Text"/>
 
                         <Label Text="Assessment Type" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
-                        <Picker ItemsSource="{Binding AssessmentTypes}" SelectedItem="{Binding SecondAssessmentType}" SelectedIndex="{Binding SecondPickerIndex}"/>
+                        <Picker ItemsSource="{Binding AssessmentTypes}" SelectedItem="{Binding SecondAssessmentType}" SelectedIndex="{Binding SecondPickerIndex}" IsEnabled="False"/>
 
                         <Label Text="Due Date" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
                         <DatePicker MinimumDate="{Binding MinDueDate}" MaximumDate="{Binding MaxDueDate}" Date="{Binding SecondDueDate}"/>
