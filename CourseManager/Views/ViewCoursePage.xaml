@@ -42,52 +42,89 @@
                         </StackLayout>
                     </StackLayout>
                 </Frame>
-                
-                <Frame HasShadow="False">
+
+                <Frame HasShadow="False" Padding="20,5,20,0" BorderColor="Transparent">
                     <StackLayout>
-                        <Label Text="Instructor" FontSize="Title" TextColor="{StaticResource Primary}" FontAttributes="Bold"/>
-                        <Label>
-                            <Label.FormattedText>
-                                <FormattedString>
-                                    <Span Text="{Binding Instructor.FirstName}" FontSize="Medium" FontAttributes="Bold"/>
-                                    <Span Text=" " FontSize="Medium" FontAttributes="Bold"/>
-                                    <Span Text="{Binding Instructor.LastName}" FontSize="Medium" FontAttributes="Bold"/>
-                                </FormattedString>
-                            </Label.FormattedText>
-                        </Label>
-                        <Label Text="{Binding Instructor.PhoneNumber}" FontSize="Medium" TextColor="#0066a2"/>
-                        <Label Text="{Binding Instructor.Email}" FontSize="Medium" TextColor="#0066a2"/>
+                        <Frame BackgroundColor="#82bcd4" CornerRadius="5" HorizontalOptions="FillAndExpand" Padding="10">
+                            <Label Text="INSTRUCTOR" FontSize="Large" TextColor="White"/>
+                        </Frame>
+                        <Frame CornerRadius="5" BorderColor="#e2dccb">
+                            <StackLayout>
+                                <Label TextColor="#333">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding Instructor.FirstName}" FontSize="Medium" FontAttributes="Bold"/>
+                                            <Span Text=" " FontSize="Medium" FontAttributes="Bold"/>
+                                            <Span Text="{Binding Instructor.LastName}" FontSize="Medium" FontAttributes="Bold"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                                <Label Text="{Binding Instructor.PhoneNumber}" FontSize="Medium" TextColor="#0066a2"/>
+                                <Label Text="{Binding Instructor.Email}" FontSize="Medium" TextColor="#0066a2"/>
+                            </StackLayout>
+                        </Frame>
                     </StackLayout>
                 </Frame>
 
-                <Frame HasShadow="False">
+                <Frame HasShadow="False" Padding="20,5,20,0" BorderColor="Transparent">
                     <StackLayout>
-                        <Label Text="Assessments" FontSize="Title" TextColor="{StaticResource Primary}" FontAttributes="Bold"/>
-                        <Label>
-                            <Label.FormattedText>
-                                <FormattedString>
-                                    <Span Text="{Binding FirstAssessment.Name}" FontSize="Medium" FontAttributes="Bold"/>
-                                    <Span Text=" (" FontSize="Medium"/>
-                                    <Span Text="{Binding FirstAssessment.AssessmentType}" FontSize="Medium" FontAttributes="Italic"/>
-                                    <Span Text=")" FontSize="Medium"/>
-                                </FormattedString>
-                            </Label.FormattedText>
-                        </Label>
-                        <Label>
-                            <Label.FormattedText>
-                                <FormattedString>
-                                    <Span Text="Due: " FontSize="Medium"/>
-                                    <Span Text="{Binding FirstAssessmentDueDate}" FontSize="Medium"/>
-                                </FormattedString>
-                            </Label.FormattedText>
-                        </Label>
+                        <Frame BackgroundColor="#82bcd4" CornerRadius="5" HorizontalOptions="FillAndExpand" Padding="10">
+                            <Label Text="ASSESSMENTS" FontSize="Large" TextColor="White"/>
+                        </Frame>
+                        <Frame CornerRadius="5" BorderColor="#e2dccb">
+                            <StackLayout>
+                                <Label>
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding FirstAssessment.Name}" FontSize="Medium" FontAttributes="Bold"/>
+                                            <Span Text=" (" FontSize="Medium"/>
+                                            <Span Text="{Binding FirstAssessment.AssessmentType}" FontSize="Medium" FontAttributes="Italic"/>
+                                            <Span Text=")" FontSize="Medium"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                                <Label>
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="Due: " FontSize="Medium"/>
+                                            <Span Text="{Binding FirstAssessmentDueDate}" FontSize="Medium"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+
+                                <Label IsVisible="{Binding HasSecondAssessment}">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding SecondAssessment.Name}" FontSize="Medium" FontAttributes="Bold"/>
+                                            <Span Text=" (" FontSize="Medium"/>
+                                            <Span Text="{Binding SecondAssessment.AssessmentType}" FontSize="Medium" FontAttributes="Italic"/>
+                                            <Span Text=")" FontSize="Medium"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                                <Label IsVisible="{Binding HasSecondAssessment}">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="Due: " FontSize="Medium"/>
+                                            <Span Text="{Binding SecondAssessmentDueDate}" FontSize="Medium"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                            </StackLayout>
+                        </Frame>
                     </StackLayout>
                 </Frame>
 
-                <Frame HasShadow="False">
+                <Frame HasShadow="False" Padding="20,5,20,0" BorderColor="Transparent">
                     <StackLayout>
-                        <Label Text="Course Notes" FontSize="Title" TextColor="{StaticResource Primary}" FontAttributes="Bold"/>
-                        <Label Text="{Binding SelectedCourse.Notes}" FontSize="Medium"/>
+                        <Frame BackgroundColor="#82bcd4" CornerRadius="5" HorizontalOptions="FillAndExpand" Padding="10">
+                            <Label Text="COURSE NOTES" FontSize="Large" TextColor="White"/>
+                        </Frame>
+                        <Frame  CornerRadius="5" BorderColor="#e2dccb">
+                            <StackLayout>
+                                <Label Text="{Binding SelectedCourse.Notes}" FontSize="Medium"/>
+                            </StackLayout>
+                        </Frame>
                     </StackLayout>
                 </Frame>
 
