@@ -52,6 +52,19 @@ namespace CourseManager.ViewModels
         private string _firstAssessmentDueDate;
         public string FirstAssessmentDueDate { get => _firstAssessmentDueDate; set => SetProperty(ref _firstAssessmentDueDate, value); }
 
+        private Assessment _secondAssessment;
+        public Assessment SecondAssessment
+        {
+            get => _secondAssessment;
+            set
+            {
+                SetProperty(ref _secondAssessment, value);
+            }
+        }
+
+        private string _secondAssessmentDueDate;
+        public string SecondAssessmentDueDate { get => _secondAssessmentDueDate; set => SetProperty(ref _secondAssessmentDueDate, value); }
+
         private Course _selectedCourse;
         public Course SelectedCourse 
         { 
@@ -61,6 +74,9 @@ namespace CourseManager.ViewModels
                 SetProperty(ref _selectedCourse, value);
             }
         }
+
+        private bool _hasSecondAssessment = false;
+        public bool HasSecondAssessment { get => _hasSecondAssessment; set => SetProperty(ref _hasSecondAssessment, value); }
 
         public Command NavigateBackCommand { get; }
         public Command EditCourseCommand { get; }
@@ -96,6 +112,13 @@ namespace CourseManager.ViewModels
             {
                 FirstAssessment = Services.AssessmentService.GetAssessment(SelectedCourse.FirstAssessmentId);
                 FirstAssessmentDueDate = FirstAssessment.DueDate.ToShortDateString();
+            }
+
+            if(SelectedCourse.SecondAssessmentId != 0)
+            {
+                HasSecondAssessment = true;
+                SecondAssessment = Services.AssessmentService.GetAssessment(SelectedCourse.SecondAssessmentId);
+                SecondAssessmentDueDate = SecondAssessment.DueDate.ToShortDateString();
             }
 
             Debug.WriteLine($"Viewing course \"{SelectedCourse.CourseName}\"");
