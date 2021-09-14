@@ -174,8 +174,7 @@ namespace CourseManager.ViewModels
                 return;
             }
 
-            var instructorValues = $"{instructor.FirstName},{instructor.LastName},{instructor.PhoneNumber},{instructor.Email}";
-            var route = $"{nameof(AddAssessmentsPage)}?CourseValues={courseValues}&InstructorValues={instructorValues}";
+            var route = $"{nameof(AddAssessmentsPage)}?CourseValues={courseValues}&InstructorValues={instructor.Id}";
             await Shell.Current.GoToAsync(route);
         }
 
