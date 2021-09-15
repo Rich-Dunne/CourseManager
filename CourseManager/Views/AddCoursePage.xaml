@@ -29,7 +29,10 @@
                     <Label Text="Term" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
                     <Picker ItemsSource="{Binding Terms}" SelectedItem="{Binding SelectedTerm}" FontAttributes="Italic"/>
 
-                    <Label Text="Course Name" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="Course Name" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
+                        <Label Text="{Binding CourseNameErrorMessage}" IsVisible="{Binding ShowCourseNameErrorMessage}" TextColor="Red" FontSize="Small" VerticalTextAlignment="Center"/>
+                    </StackLayout>
                     <Entry Text="{Binding CourseName}"/>
 
                     <Label Text="Instructor" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>

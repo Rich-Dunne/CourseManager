@@ -20,16 +20,28 @@
                 </Frame>
 
                 <StackLayout Padding="20">
-                    <Label Text="Instructor First Name" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
-                    <Entry Text="{Binding InstructorFirstName}" Keyboard="Text"/>
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="Instructor First Name" TextColor="{StaticResource Primary}"  FontSize="Subtitle" FontAttributes="Bold"/>
+                        <Label Text="{Binding FirstNameErrorMessage}" IsVisible="{Binding ShowFirstNameErrorMessage}" TextColor="Red" FontSize="Small" VerticalTextAlignment="Center"/>
+                    </StackLayout>
+                    <Entry Text="{Binding InstructorFirstName}" Keyboard="Text" BackgroundColor="{Binding BackgroundColor}"/>
 
-                    <Label Text="Instructor Last Name" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="Instructor Last Name" TextColor="{StaticResource Primary}" FontSize="Subtitle" FontAttributes="Bold"/>
+                        <Label Text="{Binding LastNameErrorMessage}" IsVisible="{Binding ShowLastNameErrorMessage}" TextColor="Red" FontSize="Small" VerticalTextAlignment="Center"/>
+                    </StackLayout>
                     <Entry Text="{Binding InstructorLastName}" Keyboard="Text"/>
 
-                    <Label Text="Instructor Phone Number" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="Instructor Phone Number" TextColor="{StaticResource Primary}" FontSize="Subtitle" FontAttributes="Bold"/>
+                        <Label Text="{Binding PhoneNumberErrorMessage}" IsVisible="{Binding ShowPhoneNumberErrorMessage}" TextColor="Red" FontSize="Small" VerticalTextAlignment="Center"/>
+                    </StackLayout>
                     <Entry Text="{Binding InstructorPhoneNumber}" Keyboard="Telephone"/>
 
-                    <Label Text="Instructor Email" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="Instructor Email" TextColor="{StaticResource Primary}" FontSize="Subtitle" FontAttributes="Bold"/>
+                        <Label Text="{Binding EmailErrorMessage}" IsVisible="{Binding ShowEmailErrorMessage}" TextColor="Red" FontSize="Small" VerticalTextAlignment="Center"/>
+                    </StackLayout>
                     <Entry Text="{Binding InstructorEmail}" Keyboard="Email"/>
 
                     <StackLayout Orientation="Horizontal" HorizontalOptions="Center">

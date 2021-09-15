@@ -39,10 +39,26 @@ namespace CourseManager.ViewModels
         #endregion
 
         private string _assessmentName;
-        public string AssessmentName { get => _assessmentName; set => SetProperty(ref _assessmentName, value); }
+        public string AssessmentName 
+        { 
+            get => _assessmentName;
+            set
+            {
+                SetProperty(ref _assessmentName, value);
+                ShowAssessmentNameErrorMessage = string.IsNullOrWhiteSpace(AssessmentName);
+            }
+        }
 
         private string _secondAssessmentName;
-        public string SecondAssessmentName { get => _secondAssessmentName; set => SetProperty(ref _secondAssessmentName, value); }
+        public string SecondAssessmentName 
+        { 
+            get => _secondAssessmentName;
+            set
+            {
+                SetProperty(ref _secondAssessmentName, value);
+                ShowSecondAssessmentNameErrorMessage = string.IsNullOrWhiteSpace(SecondAssessmentName);
+            }
+        }
 
         private DateTime _minDueDate;
         public DateTime MinDueDate { get => _minDueDate; set => SetProperty(ref _minDueDate, value); }
@@ -104,6 +120,17 @@ namespace CourseManager.ViewModels
         private bool _showAddAssessmentButton = true;
         public bool ShowAddAssessmentButton { get => _showAddAssessmentButton; set => SetProperty(ref _showAddAssessmentButton, value); }
 
+        private bool _hasErrors = false;
+        public bool HasErrors { get => _hasErrors; set => SetProperty(ref _hasErrors, value); }
+
+        public string AssessmentNameErrorMessage { get; } = "Required";
+
+        private bool _showAssessmentNameErrorMessage = false;
+        public bool ShowAssessmentNameErrorMessage { get => _showAssessmentNameErrorMessage; set => SetProperty(ref _showAssessmentNameErrorMessage, value); }
+
+        private bool _showSecondAssessmentNameErrorMessage = false;
+        public bool ShowSecondAssessmentNameErrorMessage { get => _showSecondAssessmentNameErrorMessage; set => SetProperty(ref _showSecondAssessmentNameErrorMessage, value); }
+
         public Course Course;
         public Instructor Instructor;
         public Assessment FirstAssessment, SecondAssessment;
@@ -130,8 +157,10 @@ namespace CourseManager.ViewModels
 
         private async void Save()
         {
-            if (string.IsNullOrWhiteSpace(_assessmentName))
+            Validate();
+            if(HasErrors)
             {
+                await Shell.Current.DisplayAlert("Oops!", "It looks like your form has some errors that need to be fixed before continuing.", "OK");
                 return;
             }
 
@@ -193,8 +222,21 @@ namespace CourseManager.ViewModels
 
         private void InitializeInstructorProperties()
         {
-            int.TryParse(InstructorValues, out int instructorID);
-            Instructor = Services.InstructorService.GetInstructor(instructorID);
+            if (int.TryParse(InstructorValues, out int instructorID))
+            {
+                Instructor = Services.InstructorService.GetInstructor(instructorID);
+            }
+            else
+            {
+                string[] instructorValues = InstructorValues.Split(',');
+                Instructor = new Instructor()
+                {
+                    FirstName = instructorValues[0],
+                    LastName = instructorValues[1],
+                    PhoneNumber = instructorValues[2],
+                    Email = instructorValues[3]
+                };
+            }
 
             Debug.WriteLine($"Instructor Id: {Instructor.Id}");
             Debug.WriteLine($"Instructor First Name: {Instructor.FirstName}");
@@ -226,6 +268,24 @@ namespace CourseManager.ViewModels
                     EnableNotifications = EnableAlerts,
                 };
                 Debug.WriteLine($"Second assessment created: {SecondAssessment.Name}");
+            }
+        }
+
+        private void Validate()
+        {
+            HasErrors = false;
+
+            ShowAssessmentNameErrorMessage = string.IsNullOrWhiteSpace(AssessmentName);
+
+            if (HasSecondAssessment)
+            {
+                ShowSecondAssessmentNameErrorMessage = string.IsNullOrWhiteSpace(SecondAssessmentName);
+            }
+
+
+            if(ShowAssessmentNameErrorMessage || (HasSecondAssessment && ShowSecondAssessmentNameErrorMessage))
+            {
+                HasErrors = true;
             }
         }
     }

@@ -21,7 +21,10 @@
                     </Frame>
 
                     <StackLayout Padding="20">
-                        <Label Text="Assessment Name" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Assessment Name" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
+                            <Label Text="{Binding AssessmentNameErrorMessage}" IsVisible="{Binding ShowAssessmentNameErrorMessage}" TextColor="Red" FontSize="Small" VerticalTextAlignment="Center"/>
+                        </StackLayout>
                         <Entry Text="{Binding AssessmentName}" Keyboard="Text"/>
 
                         <Label Text="Assessment Type" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
@@ -34,7 +37,10 @@
                     <StackLayout Padding="20, 0, 20, 20" IsVisible="{Binding HasSecondAssessment}">
                         <BoxView HorizontalOptions="FillAndExpand" WidthRequest="1" HeightRequest="1" Color="#e9e6d9"/>
 
-                        <Label Text="Assessment Name" Padding="0, 10, 0, 0" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Assessment Name" Padding="0, 10, 0, 0" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
+                            <Label Text="{Binding AssessmentNameErrorMessage}" IsVisible="{Binding ShowSecondAssessmentNameErrorMessage}" TextColor="Red" FontSize="Small" VerticalTextAlignment="Center"/>
+                        </StackLayout>
                         <Entry Text="{Binding SecondAssessmentName}" Keyboard="Text"/>
 
                         <Label Text="Assessment Type" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>

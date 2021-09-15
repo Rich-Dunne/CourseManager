@@ -18,7 +18,15 @@ namespace CourseManager.ViewModels
         public List<string> Terms { get; } = new List<string>();
 
         private string _courseName;
-        public string CourseName { get => _courseName; set => SetProperty(ref _courseName, value); }
+        public string CourseName 
+        { 
+            get => _courseName;
+            set
+            {
+                SetProperty(ref _courseName, value);
+                Validate();
+            }
+        }
 
         private DateTime _minStartDate;
         public DateTime MinStartDate { get => _minStartDate; set => SetProperty(ref _minStartDate, value); }
@@ -98,6 +106,14 @@ namespace CourseManager.ViewModels
         private bool _newInstructor = true;
         public bool NewInstructor { get => _newInstructor; set => SetProperty(ref _newInstructor, value); }
 
+        private bool _hasErrors = false;
+        public bool HasErrors { get => _hasErrors; set => SetProperty(ref _hasErrors, value); }
+
+        public string CourseNameErrorMessage { get; } = "Required";
+
+        private bool _showCourseNameErrorMessage = false;
+        public bool ShowCourseNameErrorMessage { get => _showCourseNameErrorMessage; set => SetProperty(ref _showCourseNameErrorMessage, value); }
+
 
         public Command NavigateAddInstructorCommand { get; }
         public Command NavigateAddAssessmentsCommand { get; }
@@ -147,8 +163,10 @@ namespace CourseManager.ViewModels
 
         private async void NavigateAddInstructor()
         {
-            if(string.IsNullOrWhiteSpace(_courseName))
+            Validate();
+            if(HasErrors)
             {
+                await Shell.Current.DisplayAlert("Oops!", "It looks like your form has some errors that need to be fixed before continuing.", "OK");
                 return;
             }
 
@@ -160,11 +178,12 @@ namespace CourseManager.ViewModels
 
         private async void NavigateAddAssessments()
         {
-            if (string.IsNullOrWhiteSpace(_courseName))
+            Validate();
+            if(HasErrors)
             {
+                await Shell.Current.DisplayAlert("Oops!", "It looks like your form has some errors that need to be fixed before continuing.", "OK");
                 return;
             }
-
             var termID = Services.TermService.TermGroups.FirstOrDefault(x => x.Name == SelectedTerm).Id;
             string courseValues = $"{CourseName},{StartDate.ToShortDateString()},{EndDate.ToShortDateString()},{EnableAlerts},{Status},{CourseNotes},{termID}";
             var instructor = Services.InstructorService.Instructors.FirstOrDefault(x => $"{x.FirstName} {x.LastName}" == SelectedInstructor);
@@ -205,6 +224,12 @@ namespace CourseManager.ViewModels
             StartDate = term.StartDate;
             MinStartDate = StartDate;
             MinEndDate = StartDate.AddDays(1);
+        }
+
+        private void Validate()
+        {
+            ShowCourseNameErrorMessage = string.IsNullOrWhiteSpace(CourseName);
+            HasErrors = ShowCourseNameErrorMessage;
         }
     }
 }
