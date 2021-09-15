@@ -18,8 +18,12 @@
                 </StackLayout>
             </Frame>
             <StackLayout Padding="20">
-                <Label Text="Term Name" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Term Name" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
+                    <Label Text="{Binding TermNameErrorMessage}" IsVisible="{Binding ShowTermNameErrorMessage}" TextColor="Red" FontSize="Small" VerticalTextAlignment="Center"/>
+                </StackLayout>
                 <Entry Text="{Binding TermName}"/>
+                
                 <Label Text="Start Date" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
                 <DatePicker MinimumDate="{Binding MinStartDate}" MaximumDate="{Binding MaxStartDate}" Date="{Binding StartDate}"/>
                 <Label Text="End Date" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>

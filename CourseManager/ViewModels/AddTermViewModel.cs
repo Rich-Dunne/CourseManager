@@ -10,7 +10,15 @@ namespace CourseManager.ViewModels
     public class AddTermViewModel : BaseViewModel
     {
         private string _termName;
-        public string TermName { get => _termName; set => SetProperty(ref _termName, value); }
+        public string TermName 
+        { 
+            get => _termName;
+            set
+            {
+                SetProperty(ref _termName, value);
+                Validate();
+            }
+        }
 
         private DateTime _minStartDate = DateTime.Now;
         public DateTime MinStartDate { get => _minStartDate; set => SetProperty(ref _minStartDate, value); }
@@ -46,6 +54,14 @@ namespace CourseManager.ViewModels
             }
         }
 
+        private bool _hasErrors = false;
+        public bool HasErrors { get => _hasErrors; set => SetProperty(ref _hasErrors, value); }
+
+        public string TermNameErrorMessage { get; } = "Required";
+
+        private bool _showTermNameErrorMessage = false;
+        public bool ShowTermNameErrorMessage { get => _showTermNameErrorMessage; set => SetProperty(ref _showTermNameErrorMessage, value); }
+
         public Command SaveCommand { get; }
         public Command NavigateBackCommand { get; }
 
@@ -68,8 +84,10 @@ namespace CourseManager.ViewModels
 
         private async void Save()
         {
-            if(string.IsNullOrWhiteSpace(_termName))
+            Validate();
+            if(HasErrors)
             {
+                await Shell.Current.DisplayAlert("Oops!", "It looks like your form has some errors that need to be fixed before continuing.", "OK");
                 return;
             }
 
@@ -81,6 +99,12 @@ namespace CourseManager.ViewModels
         public async void NavigateBack()
         {
             await Shell.Current.GoToAsync("..");
+        }
+
+        private void Validate()
+        {
+            ShowTermNameErrorMessage = string.IsNullOrWhiteSpace(TermName);
+            HasErrors = ShowTermNameErrorMessage;
         }
     }
 }
