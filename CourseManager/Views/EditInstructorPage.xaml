@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:viewmodel="clr-namespace:CourseManager.ViewModels"
+             xmlns:Helpers="clr-namespace:CourseManager.Helpers"
+             x:Class="CourseManager.Views.EditInstructorPage"
+             x:DataType="viewmodel:EditInstructorViewModel"
+             Title="{Binding Title}"
+             Shell.PresentationMode="ModalAnimated">
+    <ContentPage.BindingContext>
+        <viewmodel:EditInstructorViewModel/>
+    </ContentPage.BindingContext>
+    
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <Frame HasShadow="True" BackgroundColor="#e9e6d9" BorderColor="DarkGray">
+                    <StackLayout HorizontalOptions="FillAndExpand" >
+                        <Label Text="Edit Instructor Information" FontSize="Title" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#002f51"/>
+                    </StackLayout>
+                </Frame>
+
+                <StackLayout Padding="20">
+                    <StackLayout Orientation="Horizontal" Padding="0, 0, 0, 20">
+                        <RadioButton Content="Current Instructor" IsChecked="{Binding CurrentInstructorChecked}"/>
+                        <RadioButton Content="New Instructor" IsChecked="{Binding NewInstructorChecked}"/>
+                    </StackLayout>
+                    
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="Instructor First Name" TextColor="{StaticResource Primary}"  FontSize="Subtitle" FontAttributes="Bold"/>
+                        <Label Text="{Binding FirstNameErrorMessage}" IsVisible="{Binding ShowFirstNameErrorMessage}" TextColor="Red" FontSize="Small" VerticalTextAlignment="Center"/>
+                    </StackLayout>
+                    <Entry Text="{Binding InstructorFirstName}" Keyboard="Text"/>
+
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="Instructor Last Name" TextColor="{StaticResource Primary}" FontSize="Subtitle" FontAttributes="Bold"/>
+                        <Label Text="{Binding LastNameErrorMessage}" IsVisible="{Binding ShowLastNameErrorMessage}" TextColor="Red" FontSize="Small" VerticalTextAlignment="Center"/>
+                    </StackLayout>
+                    <Entry Text="{Binding InstructorLastName}" Keyboard="Text"/>
+
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="Instructor Phone Number" TextColor="{StaticResource Primary}" FontSize="Subtitle" FontAttributes="Bold"/>
+                        <Label Text="{Binding PhoneNumberErrorMessage}" IsVisible="{Binding ShowPhoneNumberErrorMessage}" TextColor="Red" FontSize="Small" VerticalTextAlignment="Center"/>
+                    </StackLayout>
+                    <Entry Text="{Binding InstructorPhoneNumber}" Keyboard="Telephone"/>
+
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="Instructor Email" TextColor="{StaticResource Primary}" FontSize="Subtitle" FontAttributes="Bold"/>
+                        <Label Text="{Binding EmailErrorMessage}" IsVisible="{Binding ShowEmailErrorMessage}" TextColor="Red" FontSize="Small" VerticalTextAlignment="Center"/>
+                    </StackLayout>
+                    <Entry Text="{Binding InstructorEmail}" Keyboard="Email"/>
+
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                        <Button Text="Back" BackgroundColor="Gray" Command="{Binding NavigateBackCommand}"/>
+                        <Button Text="Update" BackgroundColor="{StaticResource Primary}" Command="{Binding NavigateSaveCommand}"/>
+                    </StackLayout>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
