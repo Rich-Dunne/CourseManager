@@ -21,11 +21,7 @@ namespace CourseManager.ViewModels
             set
             {
                 SetProperty(ref _courseId, value);
-                if (!_propertiesInitialized)
-                {
-                    InitializeSelectedCourse();
-                    _propertiesInitialized = true;
-                }
+                InitializeSelectedCourse();
             }
         }
 
@@ -79,6 +75,7 @@ namespace CourseManager.ViewModels
         public bool HasSecondAssessment { get => _hasSecondAssessment; set => SetProperty(ref _hasSecondAssessment, value); }
 
         public Command NavigateBackCommand { get; }
+        public Command NavigateEditInstructorCommand { get; }
         public Command EditCourseCommand { get; }
         public Command RemoveCourseCommand { get; }
 
@@ -86,13 +83,26 @@ namespace CourseManager.ViewModels
         {
             Title = "View Course";
             NavigateBackCommand = new Command(NavigateBack);
+            NavigateEditInstructorCommand = new Command(NavigateEditInstructor);
             EditCourseCommand = new Command(EditCourse);
             RemoveCourseCommand = new Command(RemoveCourse);
+
+            if(!_propertiesInitialized)
+            {
+                InitializeSelectedCourse();
+                _propertiesInitialized = true;
+            }
         }
 
         private async void NavigateBack()
         {
             await Shell.Current.GoToAsync("..");
+        }
+
+        private async void NavigateEditInstructor()
+        {
+            var route = $"{nameof(EditInstructorPage)}?InstructorId={Instructor.Id}";
+            await Shell.Current.GoToAsync(route);
         }
 
         private void InitializeSelectedCourse()
