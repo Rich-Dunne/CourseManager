@@ -18,6 +18,7 @@ namespace CourseManager
             Routing.RegisterRoute(nameof(AddInstructorPage), typeof(AddInstructorPage));
             Routing.RegisterRoute(nameof(AddAssessmentsPage), typeof(AddAssessmentsPage));
             Routing.RegisterRoute(nameof(ViewCoursePage), typeof(ViewCoursePage));
+            Routing.RegisterRoute(nameof(EditInstructorPage), typeof(EditInstructorPage));
         }
 
         //private async void OnMenuItemClicked(object sender, EventArgs e)
