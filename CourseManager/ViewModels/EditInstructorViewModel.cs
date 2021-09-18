@@ -10,9 +10,21 @@ using Xamarin.Forms;
 
 namespace CourseManager.ViewModels
 {
+    [QueryProperty(nameof(CourseId), nameof(CourseId))]
     [QueryProperty(nameof(InstructorId), nameof(InstructorId))]
     public class EditInstructorViewModel : BaseViewModel
     {
+        private int _courseId;
+        public int CourseId
+        {
+            get => _courseId;
+            set
+            {
+                SetProperty(ref _courseId, value);
+                GetCourseInformation();
+            }
+        }
+
         private int _instructorId;
         public int InstructorId
         {
@@ -163,6 +175,16 @@ namespace CourseManager.ViewModels
             }
         }
 
+        private Course _associatedCourse;
+        public Course AssociatedCourse
+        {
+            get => _associatedCourse;
+            set
+            {
+                SetProperty(ref _associatedCourse, value);
+            }
+        }
+
         public Command NavigateBackCommand { get; }
         public Command NavigateSaveCommand { get; }
 
@@ -173,10 +195,7 @@ namespace CourseManager.ViewModels
             NavigateSaveCommand = new Command(Save);
         }
 
-        private async void NavigateBack()
-        {
-            await Shell.Current.GoToAsync("..");
-        }
+        private async void NavigateBack() => await Shell.Current.GoToAsync("..");
 
         private void GetInstructorInformation()
         {
@@ -193,6 +212,16 @@ namespace CourseManager.ViewModels
             InstructorEmail = CurrentInstructor.Email;
         }
 
+        private void GetCourseInformation()
+        {
+            AssociatedCourse = Services.CourseService.GetCourse(CourseId);
+            if(AssociatedCourse == null)
+            {
+                Debug.WriteLine($"AssociatedCourse not found.");
+                return;
+            }
+        }
+
         private async void Save()
         {
             ValidateInput();
@@ -207,8 +236,27 @@ namespace CourseManager.ViewModels
             CurrentInstructor.PhoneNumber = InstructorPhoneNumber;
             CurrentInstructor.Email = InstructorEmail;
 
-            await Services.InstructorService.UpdateInstructor(CurrentInstructor);
-            Debug.WriteLine($"Updated instructor {CurrentInstructor.FirstName} {CurrentInstructor.LastName}");
+            if (CurrentInstructorChecked)
+            {
+                await Services.InstructorService.UpdateInstructor(CurrentInstructor);
+                Debug.WriteLine($"Updated instructor {CurrentInstructor.FirstName} {CurrentInstructor.LastName}");
+            }
+            else if (NewInstructorChecked)
+            {
+                var newInstructor = new Instructor
+                {
+                    FirstName = InstructorFirstName,
+                    LastName = InstructorLastName,
+                    PhoneNumber = InstructorPhoneNumber,
+                    Email = InstructorEmail
+                };
+                await Services.InstructorService.AddInstructor(newInstructor);
+                AssociatedCourse.AssociatedInstructorId = newInstructor.Id;
+
+                await Services.CourseService.UpdateCourse(AssociatedCourse);
+
+                Debug.WriteLine($"Added new instructor {newInstructor.FirstName} {newInstructor.LastName}");
+            }
 
             await Shell.Current.GoToAsync("..");
         }
