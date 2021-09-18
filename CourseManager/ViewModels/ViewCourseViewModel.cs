@@ -77,6 +77,7 @@ namespace CourseManager.ViewModels
         public Command NavigateBackCommand { get; }
         public Command NavigateEditInstructorCommand { get; }
         public Command NavigateEditAssessmentsCommand { get; }
+        public Command NavigateEditCourseNotesCommand { get; }
         public Command EditCourseCommand { get; }
         public Command RemoveCourseCommand { get; }
 
@@ -86,6 +87,7 @@ namespace CourseManager.ViewModels
             NavigateBackCommand = new Command(NavigateBack);
             NavigateEditInstructorCommand = new Command(NavigateEditInstructor);
             NavigateEditAssessmentsCommand = new Command(NavigateEditAssessments);
+            NavigateEditCourseNotesCommand = new Command(NavigateEditCourseNotes);
             EditCourseCommand = new Command(EditCourse);
             RemoveCourseCommand = new Command(RemoveCourse);
 
@@ -116,6 +118,12 @@ namespace CourseManager.ViewModels
             }
 
             var route = $"{nameof(EditAssessmentsPage)}?CourseId={CourseId}&FirstAssessmentId={FirstAssessment.Id}&SecondAssessmentId={secondAssessmentId}";
+            await Shell.Current.GoToAsync(route);
+        }
+
+        private async void NavigateEditCourseNotes()
+        {
+            var route = $"{nameof(EditCourseNotesPage)}?CourseId={CourseId}";
             await Shell.Current.GoToAsync(route);
         }
 
