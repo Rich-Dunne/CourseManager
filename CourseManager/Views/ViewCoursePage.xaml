@@ -29,7 +29,7 @@
                             </Label>
 
                         <StackLayout Orientation="Horizontal">
-                            <Label TextColor="#333" HorizontalOptions="StartAndExpand">
+                            <Label TextColor="#333" HorizontalOptions="Start">
                                 <Label.FormattedText>
                                     <FormattedString>
                                         <Span Text="{Binding SelectedCourse.StartDate, StringFormat='{}{0:MM/dd/yyyy}'}" FontSize="Subtitle"/>
@@ -38,6 +38,7 @@
                                     </FormattedString>
                                 </Label.FormattedText>
                             </Label>
+                            <Image Source="notification_colored.png" BackgroundColor="Transparent" HeightRequest="15" HorizontalOptions="StartAndExpand" IsVisible="{Binding SelectedCourse.EnableNotifications}"/>
                             <Label Text="{Binding SelectedCourse.Status}" HorizontalOptions="End" VerticalOptions="Center" FontSize="Subtitle" FontAttributes="Italic"/>
                         </StackLayout>
                     </StackLayout>
@@ -73,7 +74,8 @@
                     <StackLayout>
                         <Frame BackgroundColor="#82bcd4" CornerRadius="5" HorizontalOptions="FillAndExpand" Padding="10">
                             <StackLayout Orientation="Horizontal">
-                                <Label Text="ASSESSMENTS" FontSize="Large" TextColor="White" HorizontalOptions="StartAndExpand"/>
+                                <Label Text="ASSESSMENTS" FontSize="Large" TextColor="White" HorizontalOptions="Start"/>
+                                <Image Source="notification_colored.png" BackgroundColor="Transparent" HeightRequest="15" HorizontalOptions="StartAndExpand" IsVisible="{Binding FirstAssessment.EnableNotifications}"/>
                                 <ImageButton Source="edit_icon.png" BackgroundColor="Transparent" HeightRequest="30" Command="{Binding NavigateEditAssessmentsCommand}"/>
                             </StackLayout>
                         </Frame>
@@ -98,7 +100,7 @@
                                     </Label.FormattedText>
                                 </Label>
 
-                                <Label IsVisible="{Binding HasSecondAssessment}">
+                                    <Label IsVisible="{Binding HasSecondAssessment}">
                                     <Label.FormattedText>
                                         <FormattedString>
                                             <Span Text="{Binding SecondAssessment.Name}" FontSize="Medium" FontAttributes="Bold"/>
@@ -124,11 +126,15 @@
                 <Frame HasShadow="False" Padding="20,5,20,0" BorderColor="Transparent">
                     <StackLayout>
                         <Frame BackgroundColor="#82bcd4" CornerRadius="5" HorizontalOptions="FillAndExpand" Padding="10">
-                            <Label Text="COURSE NOTES" FontSize="Large" TextColor="White"/>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="COURSE NOTES" FontSize="Large" TextColor="White" HorizontalOptions="Start"/>
+                                <ImageButton Source="share_icon.png" BackgroundColor="Transparent" HeightRequest="15" HorizontalOptions="StartAndExpand"/>
+                                <ImageButton Source="edit_icon.png" BackgroundColor="Transparent" HeightRequest="30" Command="{Binding NavigateEditCourseNotesCommand}"/>
+                            </StackLayout>
                         </Frame>
                         <Frame  CornerRadius="5" BorderColor="#e2dccb">
                             <StackLayout>
-                                <Label Text="{Binding SelectedCourse.Notes}" FontSize="Medium"/>
+                                <Label Text="{Binding SelectedCourse.Notes, FallbackValue='This course has no notes.'}" FontSize="Medium"/>
                             </StackLayout>
                         </Frame>
                     </StackLayout>
