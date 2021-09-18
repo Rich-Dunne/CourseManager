@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:viewmodel="clr-namespace:CourseManager.ViewModels" 
+             xmlns:Helpers="clr-namespace:CourseManager.Helpers"
+             x:Class="CourseManager.Views.EditCourseNotesPage"
+             x:DataType="viewmodel:EditCourseNotesViewModel"
+             Title="{Binding Title}"
+             Shell.PresentationMode="Modal">
+    <ContentPage.BindingContext>
+        <viewmodel:EditCourseNotesViewModel/>
+    </ContentPage.BindingContext>
+
+    <!-- Non-modal page only -->
+    <!--<ContentPage.ToolbarItems>
+        <ToolbarItem Text="Next" Command="{Binding NavigateAddInstructorCommand}"/>
+    </ContentPage.ToolbarItems>-->
+
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <Frame HasShadow="True" BackgroundColor="#e9e6d9" BorderColor="DarkGray">
+                    <StackLayout HorizontalOptions="FillAndExpand" >
+                        <Label Text="Edit Course Notes" FontSize="Title" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#002f51"/>
+                    </StackLayout>
+                </Frame>
+                
+                <StackLayout Padding="20">
+                    <Label Text="Notes (optional)" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
+                    <Editor Text="{Binding CourseNotes}" HeightRequest="100"/>
+
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                        <Button Text="Cancel" BackgroundColor="Gray" Command="{Binding NavigateBackCommand}"/>
+                        <Button Text="Save" Command="{Binding SaveCommand}"/>
+                    </StackLayout>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
