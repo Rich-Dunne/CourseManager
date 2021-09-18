@@ -76,6 +76,7 @@ namespace CourseManager.ViewModels
 
         public Command NavigateBackCommand { get; }
         public Command NavigateEditInstructorCommand { get; }
+        public Command NavigateEditAssessmentsCommand { get; }
         public Command EditCourseCommand { get; }
         public Command RemoveCourseCommand { get; }
 
@@ -84,6 +85,7 @@ namespace CourseManager.ViewModels
             Title = "View Course";
             NavigateBackCommand = new Command(NavigateBack);
             NavigateEditInstructorCommand = new Command(NavigateEditInstructor);
+            NavigateEditAssessmentsCommand = new Command(NavigateEditAssessments);
             EditCourseCommand = new Command(EditCourse);
             RemoveCourseCommand = new Command(RemoveCourse);
 
@@ -101,14 +103,26 @@ namespace CourseManager.ViewModels
 
         private async void NavigateEditInstructor()
         {
-            var route = $"{nameof(EditInstructorPage)}?InstructorId={Instructor.Id}";
+            var route = $"{nameof(EditInstructorPage)}?InstructorId={Instructor.Id}&CourseId={CourseId}";
+            await Shell.Current.GoToAsync(route);
+        }
+
+        private async void NavigateEditAssessments()
+        {
+            int secondAssessmentId = 0;
+            if(SecondAssessment != null)
+            {
+                secondAssessmentId = SecondAssessment.Id;
+            }
+
+            var route = $"{nameof(EditAssessmentsPage)}?CourseId={CourseId}&FirstAssessmentId={FirstAssessment.Id}&SecondAssessmentId={secondAssessmentId}";
             await Shell.Current.GoToAsync(route);
         }
 
         private void InitializeSelectedCourse()
         {
             SelectedCourse = Services.CourseService.GetCourse(CourseId);
-            if(SelectedCourse == null)
+            if (SelectedCourse == null)
             {
                 return;
             }
@@ -124,11 +138,16 @@ namespace CourseManager.ViewModels
                 FirstAssessmentDueDate = FirstAssessment.DueDate.ToShortDateString();
             }
 
-            if(SelectedCourse.SecondAssessmentId != 0)
+            if (SelectedCourse.SecondAssessmentId != 0)
             {
                 HasSecondAssessment = true;
                 SecondAssessment = Services.AssessmentService.GetAssessment(SelectedCourse.SecondAssessmentId);
                 SecondAssessmentDueDate = SecondAssessment.DueDate.ToShortDateString();
+            }
+            else
+            {
+                HasSecondAssessment = false;
+                SecondAssessment = null;
             }
 
             Debug.WriteLine($"Viewing course \"{SelectedCourse.CourseName}\"");
