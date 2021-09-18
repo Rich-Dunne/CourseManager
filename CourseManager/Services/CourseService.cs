@@ -111,14 +111,6 @@ namespace CourseManager.Services
 
         public static async Task UpdateCourse(Course course)
         {
-            var matchingCourse = Courses.FirstOrDefault(x => x.Id == course.Id);
-            if (matchingCourse == null)
-            {
-                Debug.WriteLine($"Matching course not found.");
-                return;
-            }
-
-            //Courses.Remove(matchingCourse);
             await database.UpdateAsync(course);
             await ImportCourses();
         }
