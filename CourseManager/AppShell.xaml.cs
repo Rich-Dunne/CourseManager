@@ -20,6 +20,7 @@ namespace CourseManager
             Routing.RegisterRoute(nameof(ViewCoursePage), typeof(ViewCoursePage));
             Routing.RegisterRoute(nameof(EditInstructorPage), typeof(EditInstructorPage));
             Routing.RegisterRoute(nameof(EditAssessmentsPage), typeof(EditAssessmentsPage));
+            Routing.RegisterRoute(nameof(EditCourseNotesPage), typeof(EditCourseNotesPage));
         }
 
         //private async void OnMenuItemClicked(object sender, EventArgs e)
