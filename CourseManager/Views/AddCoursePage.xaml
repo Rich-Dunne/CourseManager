@@ -53,7 +53,7 @@
                     <Picker ItemsSource="{Binding StatusList}" SelectedItem="{Binding Status}" FontAttributes="Italic"/>
 
                     <Label Text="Notes (optional)" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
-                    <Entry Text="{Binding CourseNotes}" MinimumHeightRequest="100"/>
+                    <Editor Text="{Binding CourseNotes}" HeightRequest="100"/>
 
                     <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
                         <Button Text="Cancel" BackgroundColor="Gray" Command="{Binding NavigateBackCommand}"/>
