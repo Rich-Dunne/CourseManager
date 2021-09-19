@@ -112,6 +112,8 @@ namespace CourseManager.Services
         public static async Task UpdateCourse(Course course)
         {
             await database.UpdateAsync(course);
+            Debug.WriteLine($"({course.Id}) \"{course.CourseName}\" updated.");
+
             await ImportCourses();
         }
 
