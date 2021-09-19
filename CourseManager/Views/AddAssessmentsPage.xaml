@@ -24,6 +24,7 @@
                         <StackLayout Orientation="Horizontal">
                             <Label Text="Assessment Name" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
                             <Label Text="{Binding AssessmentNameErrorMessage}" IsVisible="{Binding ShowAssessmentNameErrorMessage}" TextColor="Red" FontSize="Small" VerticalTextAlignment="Center"/>
+                            <Label Text="{Binding ASSESSMENT_NAME_TAKEN}" IsVisible="{Binding ShowNameTakenErrorMessage}" TextColor="Red" FontSize="Small" VerticalTextAlignment="Center"/>
                         </StackLayout>
                         <Entry Text="{Binding AssessmentName}" Keyboard="Text"/>
 
@@ -40,6 +41,7 @@
                         <StackLayout Orientation="Horizontal">
                             <Label Text="Assessment Name" Padding="0, 10, 0, 0" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
                             <Label Text="{Binding AssessmentNameErrorMessage}" IsVisible="{Binding ShowSecondAssessmentNameErrorMessage}" TextColor="Red" FontSize="Small" VerticalTextAlignment="Center"/>
+                            <Label Text="{Binding ASSESSMENT_NAME_TAKEN}" IsVisible="{Binding ShowSecondNameTakenErrorMessage}" TextColor="Red" FontSize="Small" VerticalTextAlignment="Center"/>
                         </StackLayout>
                         <Entry Text="{Binding SecondAssessmentName}" Keyboard="Text"/>
 

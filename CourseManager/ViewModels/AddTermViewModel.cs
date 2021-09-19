@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -57,10 +58,14 @@ namespace CourseManager.ViewModels
         private bool _hasErrors = false;
         public bool HasErrors { get => _hasErrors; set => SetProperty(ref _hasErrors, value); }
 
-        public string TermNameErrorMessage { get; } = "Required";
+        public string TERM_NAME_REQUIRED { get; } = "Required";
+        public string TERM_NAME_TAKEN { get; } = "A term with this name already exists";
 
-        private bool _showTermNameErrorMessage = false;
-        public bool ShowTermNameErrorMessage { get => _showTermNameErrorMessage; set => SetProperty(ref _showTermNameErrorMessage, value); }
+        private bool _showTermNameRequiredErrorMessage = false;
+        public bool ShowTermNameRequiredErrorMessage { get => _showTermNameRequiredErrorMessage; set => SetProperty(ref _showTermNameRequiredErrorMessage, value); }
+
+        private bool _showTermNameTakenErrorMessage = false;
+        public bool ShowTermNameTakenErrorMessage { get => _showTermNameTakenErrorMessage; set => SetProperty(ref _showTermNameTakenErrorMessage, value); }
 
         public Command SaveCommand { get; }
         public Command NavigateBackCommand { get; }
@@ -103,8 +108,10 @@ namespace CourseManager.ViewModels
 
         private void Validate()
         {
-            ShowTermNameErrorMessage = string.IsNullOrWhiteSpace(TermName);
-            HasErrors = ShowTermNameErrorMessage;
+            ShowTermNameRequiredErrorMessage = string.IsNullOrWhiteSpace(TermName);
+            ShowTermNameTakenErrorMessage = Services.TermService.TermGroups.Any(x => x.Name == TermName);
+            
+            HasErrors = ShowTermNameRequiredErrorMessage || ShowTermNameTakenErrorMessage;
         }
     }
 }

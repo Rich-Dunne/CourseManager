@@ -154,7 +154,7 @@ namespace CourseManager.ViewModels
 
         private async void NavigateModifyTerm(TermGroup termGroup)
         {
-            var route = $"{nameof(ModifyTermPage)}?Id={termGroup.Id}";
+            var route = $"{nameof(EditTermPage)}?Id={termGroup.Id}";
             await Shell.Current.GoToAsync(route);
         }
 

@@ -23,7 +23,8 @@
                 <StackLayout Padding="20">
                     <StackLayout Orientation="Horizontal">
                         <Label Text="Course Name" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
-                        <Label Text="{Binding CourseNameErrorMessage}" IsVisible="{Binding ShowCourseNameErrorMessage}" TextColor="Red" FontSize="Small" VerticalTextAlignment="Center"/>
+                        <Label Text="{Binding COURSE_NAME_REQUIRED}" IsVisible="{Binding ShowCourseNameRequiredErrorMessage}" TextColor="Red" FontSize="Small" VerticalTextAlignment="Center"/>
+                        <Label Text="{Binding COURSE_NAME_TAKEN}" IsVisible="{Binding ShowCourseNameTakenErrorMessage}" TextColor="Red" FontSize="Small" VerticalTextAlignment="Center"/>
                     </StackLayout>
                     <Entry Text="{Binding CourseName}"/>
 

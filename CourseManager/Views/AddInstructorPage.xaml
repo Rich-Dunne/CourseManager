@@ -23,12 +23,14 @@
                     <StackLayout Orientation="Horizontal">
                         <Label Text="Instructor First Name" TextColor="{StaticResource Primary}"  FontSize="Subtitle" FontAttributes="Bold"/>
                         <Label Text="{Binding FirstNameErrorMessage}" IsVisible="{Binding ShowFirstNameErrorMessage}" TextColor="Red" FontSize="Small" VerticalTextAlignment="Center"/>
+                        <Label Text="{Binding INSTRUCTOR_NAME_TAKEN}" IsVisible="{Binding ShowNameTakenErrorMessage}" TextColor="Red" FontSize="Small" VerticalTextAlignment="Center"/>
                     </StackLayout>
                     <Entry Text="{Binding InstructorFirstName}" Keyboard="Text" BackgroundColor="{Binding BackgroundColor}"/>
 
                     <StackLayout Orientation="Horizontal">
                         <Label Text="Instructor Last Name" TextColor="{StaticResource Primary}" FontSize="Subtitle" FontAttributes="Bold"/>
                         <Label Text="{Binding LastNameErrorMessage}" IsVisible="{Binding ShowLastNameErrorMessage}" TextColor="Red" FontSize="Small" VerticalTextAlignment="Center"/>
+                        <Label Text="{Binding INSTRUCTOR_NAME_TAKEN}" IsVisible="{Binding ShowNameTakenErrorMessage}" TextColor="Red" FontSize="Small" VerticalTextAlignment="Center"/>
                     </StackLayout>
                     <Entry Text="{Binding InstructorLastName}" Keyboard="Text"/>
 

@@ -3,6 +3,7 @@ using CourseManager.Views;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -31,7 +32,8 @@ namespace CourseManager.ViewModels
             {
                 SetProperty(ref _instructorFirstName, value);
                 ShowFirstNameErrorMessage = string.IsNullOrWhiteSpace(InstructorFirstName);
-                HasErrors = ShowFirstNameErrorMessage;
+                ShowNameTakenErrorMessage = Services.InstructorService.Instructors.Any(x => x.FirstName == InstructorFirstName && x.LastName == InstructorLastName);
+                HasErrors = ShowFirstNameErrorMessage || ShowNameTakenErrorMessage;
             }
         }
 
@@ -43,7 +45,8 @@ namespace CourseManager.ViewModels
             {
                 SetProperty(ref _instructorLastName, value);
                 ShowLastNameErrorMessage = string.IsNullOrWhiteSpace(InstructorLastName);
-                HasErrors = ShowLastNameErrorMessage;
+                ShowNameTakenErrorMessage = Services.InstructorService.Instructors.Any(x => x.FirstName == InstructorFirstName && x.LastName == InstructorLastName);
+                HasErrors = ShowFirstNameErrorMessage || ShowNameTakenErrorMessage;
             }
         }
 
@@ -97,6 +100,9 @@ namespace CourseManager.ViewModels
         private bool _showLastNameErrorMessage;
         public bool ShowLastNameErrorMessage { get => _showLastNameErrorMessage; set => SetProperty(ref _showLastNameErrorMessage, value); }
 
+        private bool _showNameTakenErrorMessage;
+        public bool ShowNameTakenErrorMessage { get => _showNameTakenErrorMessage; set => SetProperty(ref _showNameTakenErrorMessage, value); }
+
         private bool _showPhoneNumberErrorMessage;
         public bool ShowPhoneNumberErrorMessage { get => _showPhoneNumberErrorMessage; set => SetProperty(ref _showPhoneNumberErrorMessage, value); }
 
@@ -112,6 +118,7 @@ namespace CourseManager.ViewModels
 
         public string FirstNameErrorMessage { get; } = "Required";
         public string LastNameErrorMessage { get; } = "Required";
+        public string INSTRUCTOR_NAME_TAKEN { get; } = "An instructor with this first and last name already exists";
         
         private string _phoneNumberErrorMessage;
         public string PhoneNumberErrorMessage { get => _phoneNumberErrorMessage; private set => SetProperty(ref _phoneNumberErrorMessage, value); }
@@ -162,6 +169,7 @@ namespace CourseManager.ViewModels
         {
             ShowFirstNameErrorMessage = string.IsNullOrWhiteSpace(InstructorFirstName);
             ShowLastNameErrorMessage = string.IsNullOrWhiteSpace(InstructorLastName);
+            ShowNameTakenErrorMessage = Services.InstructorService.Instructors.Any(x => x.FirstName == InstructorFirstName && x.LastName == InstructorLastName);
 
             ShowPhoneNumberErrorMessage = string.IsNullOrWhiteSpace(InstructorPhoneNumber);
             PhoneNumberErrorMessage = "Required";
@@ -181,7 +189,7 @@ namespace CourseManager.ViewModels
                 EmailErrorMessage = "Invalid format";
             }
 
-            if(ShowFirstNameErrorMessage || ShowLastNameErrorMessage || ShowPhoneNumberErrorMessage || ShowEmailErrorMessage)
+            if(ShowFirstNameErrorMessage || ShowLastNameErrorMessage || ShowPhoneNumberErrorMessage || ShowEmailErrorMessage || ShowNameTakenErrorMessage)
             {
                 HasErrors = true;
             }

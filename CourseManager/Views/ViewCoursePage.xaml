@@ -76,7 +76,7 @@
                             <StackLayout Orientation="Horizontal">
                                 <Label Text="ASSESSMENTS" FontSize="Large" TextColor="White" HorizontalOptions="Start"/>
                                 <Image Source="notification_colored.png" BackgroundColor="Transparent" HeightRequest="15" HorizontalOptions="StartAndExpand" IsVisible="{Binding FirstAssessment.EnableNotifications}"/>
-                                <ImageButton Source="edit_icon.png" BackgroundColor="Transparent" HeightRequest="30" Command="{Binding NavigateEditAssessmentsCommand}"/>
+                                <ImageButton Source="edit_icon.png" BackgroundColor="Transparent" HeightRequest="30" HorizontalOptions="EndAndExpand" Command="{Binding NavigateEditAssessmentsCommand}"/>
                             </StackLayout>
                         </Frame>
                         <Frame CornerRadius="5" BorderColor="#e2dccb">

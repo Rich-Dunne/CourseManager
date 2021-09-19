@@ -46,6 +46,8 @@ namespace CourseManager.ViewModels
             {
                 SetProperty(ref _assessmentName, value);
                 ShowAssessmentNameErrorMessage = string.IsNullOrWhiteSpace(AssessmentName);
+                ShowNameTakenErrorMessage = Services.AssessmentService.Assessments.Any(x => x.Name == AssessmentName);
+                ShowSecondNameTakenErrorMessage = AssessmentName == SecondAssessmentName;
             }
         }
 
@@ -57,6 +59,7 @@ namespace CourseManager.ViewModels
             {
                 SetProperty(ref _secondAssessmentName, value);
                 ShowSecondAssessmentNameErrorMessage = string.IsNullOrWhiteSpace(SecondAssessmentName);
+                ShowSecondNameTakenErrorMessage = SecondAssessmentName == AssessmentName || Services.AssessmentService.Assessments.Any(x => x.Name == SecondAssessmentName);
             }
         }
 
@@ -124,12 +127,19 @@ namespace CourseManager.ViewModels
         public bool HasErrors { get => _hasErrors; set => SetProperty(ref _hasErrors, value); }
 
         public string AssessmentNameErrorMessage { get; } = "Required";
+        public string ASSESSMENT_NAME_TAKEN { get; } = "An assessment with this name already exists";
 
         private bool _showAssessmentNameErrorMessage = false;
         public bool ShowAssessmentNameErrorMessage { get => _showAssessmentNameErrorMessage; set => SetProperty(ref _showAssessmentNameErrorMessage, value); }
 
         private bool _showSecondAssessmentNameErrorMessage = false;
         public bool ShowSecondAssessmentNameErrorMessage { get => _showSecondAssessmentNameErrorMessage; set => SetProperty(ref _showSecondAssessmentNameErrorMessage, value); }
+
+        private bool _showNameTakenErrorMessage;
+        public bool ShowNameTakenErrorMessage { get => _showNameTakenErrorMessage; set => SetProperty(ref _showNameTakenErrorMessage, value); }
+
+        private bool _showSecondNameTakenErrorMessage;
+        public bool ShowSecondNameTakenErrorMessage { get => _showSecondNameTakenErrorMessage; set => SetProperty(ref _showSecondNameTakenErrorMessage, value); }
 
         public Course Course;
         public Instructor Instructor;
@@ -276,14 +286,16 @@ namespace CourseManager.ViewModels
             HasErrors = false;
 
             ShowAssessmentNameErrorMessage = string.IsNullOrWhiteSpace(AssessmentName);
+            ShowNameTakenErrorMessage = Services.AssessmentService.Assessments.Any(x => x.Name == AssessmentName);
 
             if (HasSecondAssessment)
             {
                 ShowSecondAssessmentNameErrorMessage = string.IsNullOrWhiteSpace(SecondAssessmentName);
+                ShowSecondNameTakenErrorMessage = SecondAssessmentName == AssessmentName || Services.AssessmentService.Assessments.Any(x => x.Name == SecondAssessmentName);
             }
 
 
-            if(ShowAssessmentNameErrorMessage || (HasSecondAssessment && ShowSecondAssessmentNameErrorMessage))
+            if(ShowAssessmentNameErrorMessage || ShowNameTakenErrorMessage || (HasSecondAssessment && (ShowSecondAssessmentNameErrorMessage || ShowSecondNameTakenErrorMessage)))
             {
                 HasErrors = true;
             }

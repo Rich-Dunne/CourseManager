@@ -109,11 +109,14 @@ namespace CourseManager.ViewModels
         private bool _hasErrors = false;
         public bool HasErrors { get => _hasErrors; set => SetProperty(ref _hasErrors, value); }
 
-        public string CourseNameErrorMessage { get; } = "Required";
+        public string COURSE_NAME_REQUIRED { get; } = "Required";
+        public string COURSE_NAME_TAKEN { get; } = "A course with that name already exists";
 
-        private bool _showCourseNameErrorMessage = false;
-        public bool ShowCourseNameErrorMessage { get => _showCourseNameErrorMessage; set => SetProperty(ref _showCourseNameErrorMessage, value); }
+        private bool _showCourseNameRequiredErrorMessage = false;
+        public bool ShowCourseNameRequiredErrorMessage { get => _showCourseNameRequiredErrorMessage; set => SetProperty(ref _showCourseNameRequiredErrorMessage, value); }
 
+        private bool _showCourseNameTakenErrorMessage = false;
+        public bool ShowCourseNameTakenErrorMessage { get => _showCourseNameTakenErrorMessage; set => SetProperty(ref _showCourseNameTakenErrorMessage, value); }
 
         public Command NavigateAddInstructorCommand { get; }
         public Command NavigateAddAssessmentsCommand { get; }
@@ -228,8 +231,10 @@ namespace CourseManager.ViewModels
 
         private void Validate()
         {
-            ShowCourseNameErrorMessage = string.IsNullOrWhiteSpace(CourseName);
-            HasErrors = ShowCourseNameErrorMessage;
+            ShowCourseNameRequiredErrorMessage = string.IsNullOrWhiteSpace(CourseName);
+            ShowCourseNameTakenErrorMessage = Services.CourseService.Courses.Any(x => x.CourseName == CourseName);
+            
+            HasErrors = ShowCourseNameRequiredErrorMessage || ShowCourseNameTakenErrorMessage;
         }
     }
 }
