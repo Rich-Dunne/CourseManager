@@ -2,12 +2,12 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              xmlns:viewmodel="clr-namespace:CourseManager.ViewModels"
-             x:Class="CourseManager.Views.ModifyTermPage"
-             x:DataType="viewmodel:ModifyTermViewModel"
+             x:Class="CourseManager.Views.EditTermPage"
+             x:DataType="viewmodel:EditTermViewModel"
              Title="{Binding Title}"
              Shell.PresentationMode="Modal">
     <ContentPage.BindingContext>
-        <viewmodel:ModifyTermViewModel/>
+        <viewmodel:EditTermViewModel/>
     </ContentPage.BindingContext>
     
     <ContentPage.Content>
@@ -20,7 +20,8 @@
             <StackLayout Padding="20">
                 <StackLayout Orientation="Horizontal">
                     <Label Text="Term Name" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
-                    <Label Text="{Binding TermNameErrorMessage}" IsVisible="{Binding ShowTermNameErrorMessage}" TextColor="Red" FontSize="Small" VerticalTextAlignment="Center"/>
+                    <Label Text="{Binding TERM_NAME_REQUIRED}" IsVisible="{Binding ShowTermNameRequiredErrorMessage}" TextColor="Red" FontSize="Small" VerticalTextAlignment="Center"/>
+                    <Label Text="{Binding TERM_NAME_TAKEN}" IsVisible="{Binding ShowTermNameTakenErrorMessage}" TextColor="Red" FontSize="Small" VerticalTextAlignment="Center"/>
                 </StackLayout>
                 <Entry Text="{Binding TermName}"/>
                 

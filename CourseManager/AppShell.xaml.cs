@@ -13,7 +13,7 @@ namespace CourseManager
         {
             InitializeComponent();
             Routing.RegisterRoute(nameof(AddTermPage), typeof(AddTermPage));
-            Routing.RegisterRoute(nameof(ModifyTermPage), typeof(ModifyTermPage));
+            Routing.RegisterRoute(nameof(EditTermPage), typeof(EditTermPage));
             Routing.RegisterRoute(nameof(AddCoursePage), typeof(AddCoursePage));
             Routing.RegisterRoute(nameof(AddInstructorPage), typeof(AddInstructorPage));
             Routing.RegisterRoute(nameof(AddAssessmentsPage), typeof(AddAssessmentsPage));

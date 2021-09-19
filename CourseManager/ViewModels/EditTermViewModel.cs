@@ -10,10 +10,8 @@ using Xamarin.Forms;
 namespace CourseManager.ViewModels
 {
     [QueryProperty(nameof(Id), nameof(Id))]
-    public class ModifyTermViewModel : BaseViewModel
+    public class EditTermViewModel : BaseViewModel
     {
-        private bool _propertiesInitialized = false;
-
         private int _id;
         public int Id
         {
@@ -21,11 +19,8 @@ namespace CourseManager.ViewModels
             set
             {
                 SetProperty(ref _id, value);
-                if (!_propertiesInitialized)
-                {
-                    InitializeProperties();
-                    _propertiesInitialized = true;
-                }
+                TermToModify = Services.TermService.GetTerm(Id);
+                InitializeProperties();
             }
         }
 
@@ -77,30 +72,35 @@ namespace CourseManager.ViewModels
         private bool _hasErrors = false;
         public bool HasErrors { get => _hasErrors; set => SetProperty(ref _hasErrors, value); }
 
-        public string TermNameErrorMessage { get; } = "Required";
+        public string TERM_NAME_REQUIRED { get; } = "Required";
+        public string TERM_NAME_TAKEN { get; } = "A term with this name already exists";
 
-        private bool _showTermNameErrorMessage = false;
-        public bool ShowTermNameErrorMessage { get => _showTermNameErrorMessage; set => SetProperty(ref _showTermNameErrorMessage, value); }
+        private bool _showTermNameRequiredErrorMessage = false;
+        public bool ShowTermNameRequiredErrorMessage { get => _showTermNameRequiredErrorMessage; set => SetProperty(ref _showTermNameRequiredErrorMessage, value); }
+
+        private bool _showTermNameTakenErrorMessage = false;
+        public bool ShowTermNameTakenErrorMessage { get => _showTermNameTakenErrorMessage; set => SetProperty(ref _showTermNameTakenErrorMessage, value); }
 
         public Command SaveCommand { get; }
         public Command RemoveCommand { get; }
         public Command NavigateBackCommand { get; }
 
-        public ModifyTermViewModel()
+        public Term TermToModify;
+
+        public EditTermViewModel()
         {
-            Title = "Modify Term";
+            Title = "Edit Term";
             SaveCommand = new Command(Save);
             RemoveCommand = new Command(Remove);
             NavigateBackCommand = new Command(NavigateBack);
 
-            MinStartDate = DateTime.Now;
-            StartDate = MinStartDate;
+            MinStartDate = DateTime.Now.AddDays(-365);
+            MaxEndDate = DateTime.Now.AddDays(365);
+            MaxStartDate = MaxEndDate.AddDays(-1);
+            MinEndDate = MinStartDate.AddDays(1);
 
-            MinEndDate = StartDate.AddDays(1);
-            EndDate = StartDate.AddDays(1);
-
-            MaxStartDate = EndDate;
-            MaxEndDate = MaxStartDate.AddDays(30);
+            StartDate = DateTime.Now;
+            EndDate = DateTime.Now.AddDays(1);
         }
 
         private async void Save()
@@ -112,12 +112,11 @@ namespace CourseManager.ViewModels
                 return;
             }
 
-            var termToModify = Services.TermService.GetTerm(Id);
-            termToModify.TermName = TermName;
-            termToModify.StartDate = StartDate;
-            termToModify.EndDate = EndDate;
-            await Services.TermService.UpdateTerm(termToModify);
-            Debug.WriteLine($"Updated term {termToModify.TermName}");
+            TermToModify.TermName = TermName;
+            TermToModify.StartDate = StartDate;
+            TermToModify.EndDate = EndDate;
+            await Services.TermService.UpdateTerm(TermToModify);
+            Debug.WriteLine($"Updated term {TermToModify.TermName}");
 
             await Shell.Current.GoToAsync("..");
         }
@@ -130,11 +129,7 @@ namespace CourseManager.ViewModels
             await Shell.Current.GoToAsync("..");
         }
 
-        private async void NavigateBack()
-        {
-            await Shell.Current.GoToAsync("..");
-        }
-
+        private async void NavigateBack() => await Shell.Current.GoToAsync("..");
 
         private void InitializeProperties()
         {
@@ -156,8 +151,11 @@ namespace CourseManager.ViewModels
 
         private void Validate()
         {
-            ShowTermNameErrorMessage = string.IsNullOrWhiteSpace(TermName);
-            HasErrors = ShowTermNameErrorMessage;
+            ShowTermNameRequiredErrorMessage = string.IsNullOrWhiteSpace(TermName);
+            ShowTermNameTakenErrorMessage = TermName != TermToModify.TermName && Services.TermService.TermGroups.Any(x => x.Name == TermName);
+            
+            
+            HasErrors = ShowTermNameRequiredErrorMessage || ShowTermNameTakenErrorMessage;
         }
     }
 }

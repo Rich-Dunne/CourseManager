@@ -37,8 +37,8 @@
     <Compile Update="Views\AddCoursePage.xaml.cs">
       <DependentUpon>AddCoursePage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\ModifyTermPage.xaml.cs">
-      <DependentUpon>ModifyTermPage.xaml</DependentUpon>
+    <Compile Update="Views\EditTermPage.xaml.cs">
+      <DependentUpon>EditTermPage.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\AddTermPage.xaml.cs">
       <DependentUpon>AddTermPage.xaml</DependentUpon>

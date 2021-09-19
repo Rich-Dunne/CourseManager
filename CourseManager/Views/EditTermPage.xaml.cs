@@ -10,9 +10,9 @@ using Xamarin.Forms.Xaml;
 namespace CourseManager.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ModifyTermPage : ContentPage
+    public partial class EditTermPage : ContentPage
     {
-        public ModifyTermPage()
+        public EditTermPage()
         {
             InitializeComponent();
         }
