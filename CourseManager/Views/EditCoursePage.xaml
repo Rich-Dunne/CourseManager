@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:viewmodel="clr-namespace:CourseManager.ViewModels" 
+             xmlns:Helpers="clr-namespace:CourseManager.Helpers"
+             x:Class="CourseManager.Views.EditCoursePage"
+             x:DataType="viewmodel:EditCourseViewModel"
+             Title="{Binding Title}"
+             Shell.PresentationMode="Modal">
+    <ContentPage.BindingContext>
+        <viewmodel:EditCourseViewModel/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <Frame HasShadow="True" BackgroundColor="#e9e6d9" BorderColor="DarkGray">
+                    <StackLayout HorizontalOptions="FillAndExpand" >
+                        <Label Text="Edit Course Information" FontSize="Title" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#002f51"/>
+                    </StackLayout>
+                </Frame>
+                
+                <StackLayout Padding="20">
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="Course Name" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
+                        <Label Text="{Binding CourseNameErrorMessage}" IsVisible="{Binding ShowCourseNameErrorMessage}" TextColor="Red" FontSize="Small" VerticalTextAlignment="Center"/>
+                    </StackLayout>
+                    <Entry Text="{Binding CourseName}"/>
+
+                    <Label Text="Start Date" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
+                    <DatePicker MinimumDate="{Binding MinStartDate}" MaximumDate="{Binding MaxStartDate}" Date="{Binding StartDate}"/>
+
+                    <Label Text="Anticipated End Date" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
+                    <DatePicker MinimumDate="{Binding MinEndDate}" MaximumDate="{Binding MaxEndDate}" Date="{Binding EndDate}"/>
+
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="Enable Alerts" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="FillAndExpand"/>
+                        <Switch IsToggled="{Binding EnableAlerts}" ThumbColor="#4486a1" OnColor="CadetBlue"/>
+                    </StackLayout>
+
+                    <Label Text="Course Status" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
+                    <Picker ItemsSource="{Binding StatusList}" SelectedItem="{Binding Status}" FontAttributes="Italic"/>
+
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                        <Button Text="Cancel" BackgroundColor="Gray" Command="{Binding NavigateBackCommand}"/>
+                        <Button Text="Save" Command="{Binding SaveCommand}"/>
+                    </StackLayout>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
