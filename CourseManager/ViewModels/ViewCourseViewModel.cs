@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using Xamarin.Essentials;
 
 namespace CourseManager.ViewModels
 {
@@ -80,6 +81,7 @@ namespace CourseManager.ViewModels
         public Command NavigateEditCourseNotesCommand { get; }
         public Command EditCourseCommand { get; }
         public Command RemoveCourseCommand { get; }
+        public Command ShareCommand { get; }
 
         public ViewCourseViewModel()
         {
@@ -90,6 +92,7 @@ namespace CourseManager.ViewModels
             NavigateEditCourseNotesCommand = new Command(NavigateEditCourseNotes);
             EditCourseCommand = new Command(EditCourse);
             RemoveCourseCommand = new Command(RemoveCourse);
+            ShareCommand = new Command(Share);
 
             if(!_propertiesInitialized)
             {
@@ -169,6 +172,15 @@ namespace CourseManager.ViewModels
             await Services.CourseService.RemoveCourse(SelectedCourse);
 
             NavigateBack();
+        }
+
+        private async void Share()
+        {
+            await Xamarin.Essentials.Share.RequestAsync(new ShareTextRequest
+            {
+                Text = SelectedCourse.Notes,
+                Title = "Share course notes"
+            });
         }
     }
 }

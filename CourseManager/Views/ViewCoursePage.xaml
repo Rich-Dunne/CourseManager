@@ -128,7 +128,7 @@
                         <Frame BackgroundColor="#82bcd4" CornerRadius="5" HorizontalOptions="FillAndExpand" Padding="10">
                             <StackLayout Orientation="Horizontal">
                                 <Label Text="COURSE NOTES" FontSize="Large" TextColor="White" HorizontalOptions="Start"/>
-                                <ImageButton Source="share_icon.png" BackgroundColor="Transparent" HeightRequest="15" HorizontalOptions="StartAndExpand"/>
+                                <ImageButton Source="share_icon.png" BackgroundColor="Transparent" HeightRequest="15" HorizontalOptions="StartAndExpand" Command="{Binding ShareCommand}"/>
                                 <ImageButton Source="edit_icon.png" BackgroundColor="Transparent" HeightRequest="30" Command="{Binding NavigateEditCourseNotesCommand}"/>
                             </StackLayout>
                         </Frame>
