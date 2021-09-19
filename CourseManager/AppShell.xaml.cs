@@ -21,6 +21,7 @@ namespace CourseManager
             Routing.RegisterRoute(nameof(EditInstructorPage), typeof(EditInstructorPage));
             Routing.RegisterRoute(nameof(EditAssessmentsPage), typeof(EditAssessmentsPage));
             Routing.RegisterRoute(nameof(EditCourseNotesPage), typeof(EditCourseNotesPage));
+            Routing.RegisterRoute(nameof(EditCoursePage), typeof(EditCoursePage));
         }
 
         //private async void OnMenuItemClicked(object sender, EventArgs e)
