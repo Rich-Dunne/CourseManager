@@ -39,7 +39,7 @@
                                 </Label.FormattedText>
                             </Label>
                             <Image Source="notification_colored.png" BackgroundColor="Transparent" HeightRequest="15" HorizontalOptions="StartAndExpand" IsVisible="{Binding SelectedCourse.EnableNotifications}"/>
-                            <Label Text="{Binding SelectedCourse.Status}" HorizontalOptions="End" VerticalOptions="Center" FontSize="Subtitle" FontAttributes="Italic"/>
+                            <Label Text="{Binding SelectedCourse.Status}" HorizontalOptions="EndAndExpand" VerticalOptions="Center" FontSize="Subtitle" FontAttributes="Italic"/>
                         </StackLayout>
                     </StackLayout>
                 </Frame>
