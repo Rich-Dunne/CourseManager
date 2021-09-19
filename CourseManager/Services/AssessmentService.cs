@@ -51,7 +51,7 @@ namespace CourseManager.Services
                 if (result.EnableNotifications && (result.DueDate - DateTime.Now).TotalDays < 30)
                 {
                     Debug.WriteLine($"Assessment due soon");
-                    CrossLocalNotifications.Current.Show("Upcoming assessment", $"{result.Name} is on {result.DueDate.ToShortDateString()}", new Random().Next(0, 100), DateTime.Now.AddSeconds(5));
+                    CrossLocalNotifications.Current.Show("Upcoming assessment", $"{result.Name} is on {result.DueDate.ToShortDateString()}", result.Id, DateTime.Now.AddSeconds(5));
                 }
             }
         }

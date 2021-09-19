@@ -65,13 +65,13 @@ namespace CourseManager.Services
                 if (result.EnableNotifications && (result.StartDate - DateTime.Now).TotalDays < 7)
                 {
                     Debug.WriteLine($"Course starting soon");
-                    CrossLocalNotifications.Current.Show("Course starting soon", $"{result.CourseName} is starting on {result.StartDate.ToShortDateString()}", new Random().Next(0,100), DateTime.Now.AddSeconds(5));
+                    CrossLocalNotifications.Current.Show("Course starting soon", $"{result.CourseName} is starting on {result.StartDate.ToShortDateString()}", result.Id, DateTime.Now.AddSeconds(5));
                 }
 
                 if (result.EnableNotifications && (result.EndDate - DateTime.Now).TotalDays < 30)
                 {
                     Debug.WriteLine($"Course ending soon");
-                    CrossLocalNotifications.Current.Show("Course ending soon", $"{result.CourseName} is ending on {result.EndDate.ToShortDateString()}", new Random().Next(0, 100), DateTime.Now.AddSeconds(5));
+                    CrossLocalNotifications.Current.Show("Course ending soon", $"{result.CourseName} is ending on {result.EndDate.ToShortDateString()}", result.Id, DateTime.Now.AddSeconds(5));
                 }
             }
         }
