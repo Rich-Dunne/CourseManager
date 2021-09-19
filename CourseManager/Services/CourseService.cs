@@ -1,5 +1,6 @@
 ﻿using CourseManager.Enums;
 using CourseManager.Models;
+using Plugin.LocalNotifications;
 using SQLite;
 using System;
 using System.Collections.Generic;
@@ -60,6 +61,18 @@ namespace CourseManager.Services
             {
                 Debug.WriteLine($"ID: {result.Id}, Name: {result.CourseName}, Associated term: {result.AssociatedTermId}, Associated Instructor: {result.AssociatedInstructorId}");
                 Courses.Add(result);
+
+                if (result.EnableNotifications && (result.StartDate - DateTime.Now).TotalDays < 7)
+                {
+                    Debug.WriteLine($"Course starting soon");
+                    CrossLocalNotifications.Current.Show("Course starting soon", $"{result.CourseName} is starting on {result.StartDate.ToShortDateString()}", new Random().Next(0,100), DateTime.Now.AddSeconds(5));
+                }
+
+                if (result.EnableNotifications && (result.EndDate - DateTime.Now).TotalDays < 30)
+                {
+                    Debug.WriteLine($"Course ending soon");
+                    CrossLocalNotifications.Current.Show("Course ending soon", $"{result.CourseName} is ending on {result.EndDate.ToShortDateString()}", new Random().Next(0, 100), DateTime.Now.AddSeconds(5));
+                }
             }
         }
 

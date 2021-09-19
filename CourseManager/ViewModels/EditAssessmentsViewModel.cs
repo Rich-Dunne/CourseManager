@@ -254,7 +254,7 @@ namespace CourseManager.ViewModels
 
         private async void UpdateSecondAssessment()
         {
-            var assessmentType = Enum.TryParse(AssessmentType, out Enums.AssessmentType secondAssessmentType);
+            var assessmentType = Enum.TryParse(SecondAssessmentType, out Enums.AssessmentType secondAssessmentType);
 
             SecondAssessment.Name = SecondAssessmentName;
             SecondAssessment.DueDate = SecondDueDate;

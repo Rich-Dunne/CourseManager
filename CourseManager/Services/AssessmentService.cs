@@ -1,5 +1,6 @@
 ﻿using CourseManager.Enums;
 using CourseManager.Models;
+using Plugin.LocalNotifications;
 using SQLite;
 using System;
 using System.Collections.Generic;
@@ -47,6 +48,11 @@ namespace CourseManager.Services
             {
                 Debug.WriteLine($"ID: {result.Id}, Name: {result.Name}");
                 Assessments.Add(result);
+                if (result.EnableNotifications && (result.DueDate - DateTime.Now).TotalDays < 30)
+                {
+                    Debug.WriteLine($"Assessment due soon");
+                    CrossLocalNotifications.Current.Show("Upcoming assessment", $"{result.Name} is on {result.DueDate.ToShortDateString()}", new Random().Next(0, 100), DateTime.Now.AddSeconds(5));
+                }
             }
         }
 

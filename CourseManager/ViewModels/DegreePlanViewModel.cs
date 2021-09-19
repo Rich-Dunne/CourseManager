@@ -1,5 +1,6 @@
 ﻿using CourseManager.Models;
 using CourseManager.Views;
+using Plugin.LocalNotifications;
 using SQLite;
 using System;
 using System.Collections.Generic;
