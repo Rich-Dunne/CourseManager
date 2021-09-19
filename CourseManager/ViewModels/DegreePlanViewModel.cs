@@ -106,17 +106,8 @@ namespace CourseManager.ViewModels
             NavigateAddCourseCommand = new Command(NavigateAddCourse);
             NavigateViewCourseCommand = new Command(NavigateViewCourse);
 
-            PopulateTermsView();
             //Debug.WriteLine($"SelectedCourse: {SelectedCourse}");
             TermsExist = TermGroups.Count > 0;
-        }
-
-        private async void PopulateTermsView()
-        {
-            await Services.InstructorService.ImportInstructors();
-            await Services.CourseService.ImportCourses();
-            await Services.AssessmentService.ImportAssessments();
-            await Services.TermService.ImportTerms();
         }
 
             //private async void ListTables()

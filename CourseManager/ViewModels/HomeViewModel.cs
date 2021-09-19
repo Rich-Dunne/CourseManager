@@ -25,6 +25,15 @@ namespace CourseManager.ViewModels
         {
             Title = "Home";
             NavigateDegreePlanCommand = new Command(async () => await Shell.Current.GoToAsync($"///{nameof(DegreePlanPage)}?Username={Username}"));
+            ImportData();
+        }
+
+        private async void ImportData()
+        {
+            await Services.InstructorService.ImportInstructors();
+            await Services.CourseService.ImportCourses();
+            await Services.AssessmentService.ImportAssessments();
+            await Services.TermService.ImportTerms();
         }
     }
 }
