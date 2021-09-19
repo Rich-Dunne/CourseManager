@@ -98,10 +98,7 @@ namespace CourseManager.ViewModels
             }
         }
 
-        private async void NavigateBack()
-        {
-            await Shell.Current.GoToAsync("..");
-        }
+        private async void NavigateBack() => await Shell.Current.GoToAsync("..");
 
         private async void NavigateEditInstructor()
         {
@@ -161,17 +158,17 @@ namespace CourseManager.ViewModels
             Debug.WriteLine($"Viewing course \"{SelectedCourse.CourseName}\"");
         }
 
-        private void EditCourse()
+        private async void EditCourse()
         {
-
+            var route = $"{nameof(EditCoursePage)}?CourseId={CourseId}";
+            await Shell.Current.GoToAsync(route);
         }
 
         private async void RemoveCourse()
         {
             await Services.CourseService.RemoveCourse(SelectedCourse);
 
-            var route = $"///{nameof(DegreePlanPage)}";
-            await Shell.Current.GoToAsync(route);
+            NavigateBack();
         }
     }
 }
