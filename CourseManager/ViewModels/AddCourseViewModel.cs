@@ -71,7 +71,7 @@ namespace CourseManager.ViewModels
         private int _pickerIndex = 0;
         public int PickerIndex { get => _pickerIndex; set => SetProperty(ref _pickerIndex, value); }
 
-        private string _selectedTerm = Services.TermService.TermGroups.First().Name;
+        private string _selectedTerm = Services.TermService.TermGroups.First(x => x.Count < 6).Name;
         public string SelectedTerm
         {
             get => _selectedTerm;
@@ -200,10 +200,7 @@ namespace CourseManager.ViewModels
             await Shell.Current.GoToAsync(route);
         }
 
-        private async void NavigateBack()
-        {
-            await Shell.Current.GoToAsync("..");
-        }
+        private async void NavigateBack() => await Shell.Current.GoToAsync("..");
 
         private void InitializeSelectedTerm()
         {
