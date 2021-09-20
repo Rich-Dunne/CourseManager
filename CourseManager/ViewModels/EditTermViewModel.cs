@@ -143,7 +143,7 @@ namespace CourseManager.ViewModels
             StartDate = termGroupToEdit.StartDate;
             EndDate = termGroupToEdit.EndDate;
 
-            MinStartDate = DateTime.Now;
+            MinStartDate = StartDate;
             MaxStartDate = EndDate.AddDays(-1);
             MinEndDate = StartDate.AddDays(1);
             MaxEndDate = MaxStartDate.AddDays(30);
