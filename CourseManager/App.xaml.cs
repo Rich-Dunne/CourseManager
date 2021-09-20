@@ -14,7 +14,6 @@ namespace CourseManager
         {
             InitializeComponent();
 
-            DependencyService.Register<MockDataStore>();
             MainPage = new AppShell();
         }
 

@@ -3,6 +3,10 @@ using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using CourseManager.Views;
+using CourseManager.Models;
+using System.Diagnostics;
+using Plugin.LocalNotifications;
+using System.Threading.Tasks;
 
 namespace CourseManager.ViewModels
 {
