@@ -137,6 +137,7 @@ namespace CourseManager.ViewModels
 
         private void GetCourse()
         {
+            Debug.WriteLine($"Getting course");
             Course = Services.CourseService.GetCourse(CourseId);
             if(Course == null)
             {
@@ -144,12 +145,14 @@ namespace CourseManager.ViewModels
                 return;
             }
 
+            var courseTerm = Services.TermService.GetTerm(Course.AssociatedTermId);
+
             CourseName = Course.CourseName;
             Status = Course.Status.ToString();
             EnableAlerts = Course.EnableNotifications;
-
-            MaxEndDate = Course.EndDate;
-            EndDate = MaxEndDate;
+            
+            MaxEndDate = courseTerm.EndDate;
+            EndDate = Course.EndDate;
             MaxStartDate = MaxEndDate.AddDays(-1);
 
             MinStartDate = Course.StartDate;
