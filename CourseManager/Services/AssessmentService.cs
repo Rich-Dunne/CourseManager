@@ -17,6 +17,7 @@ namespace CourseManager.Services
     {
         public static SQLiteAsyncConnection database;
         public static ObservableCollection<Assessment> Assessments { get; } = new ObservableCollection<Assessment>();
+        private static bool _notificationsDisplayed = false;
 
         public static async Task Init()
         {
@@ -48,12 +49,17 @@ namespace CourseManager.Services
             {
                 Debug.WriteLine($"ID: {result.Id}, Name: {result.Name}");
                 Assessments.Add(result);
-                if (result.EnableNotifications && (result.DueDate - DateTime.Now).TotalDays < 30)
+                if (!_notificationsDisplayed)
                 {
-                    Debug.WriteLine($"Assessment due soon");
-                    CrossLocalNotifications.Current.Show("Upcoming assessment", $"{result.Name} is on {result.DueDate.ToShortDateString()}", result.Id, DateTime.Now.AddSeconds(5));
+                    if (result.EnableNotifications && (result.DueDate - DateTime.Now).TotalDays < 30)
+                    {
+                        Debug.WriteLine($"Assessment due soon");
+                        CrossLocalNotifications.Current.Show("Upcoming assessment", $"{result.Name} is on {result.DueDate.ToShortDateString()}", result.Id, DateTime.Now.AddSeconds(5));
+                    }
                 }
             }
+
+            _notificationsDisplayed = true;
         }
 
         public static async Task AddAssessment(Assessment assessment)

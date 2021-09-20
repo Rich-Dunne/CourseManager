@@ -17,6 +17,7 @@ namespace CourseManager.Services
     {
         public static SQLiteAsyncConnection database;
         public static ObservableCollection<Course> Courses { get; } = new ObservableCollection<Course>();
+        private static bool _notificationsDisplayed = false;
 
         public static async Task Init()
         {
@@ -62,18 +63,23 @@ namespace CourseManager.Services
                 Debug.WriteLine($"ID: {result.Id}, Name: {result.CourseName}, Associated term: {result.AssociatedTermId}, Associated Instructor: {result.AssociatedInstructorId}");
                 Courses.Add(result);
 
-                if (result.EnableNotifications && (result.StartDate - DateTime.Now).TotalDays < 7)
+                if(!_notificationsDisplayed)
                 {
-                    Debug.WriteLine($"Course starting soon");
-                    CrossLocalNotifications.Current.Show("Course starting soon", $"{result.CourseName} is starting on {result.StartDate.ToShortDateString()}", result.Id, DateTime.Now.AddSeconds(5));
-                }
+                    if (result.EnableNotifications && (result.StartDate - DateTime.Now).TotalDays < 7)
+                    {
+                        Debug.WriteLine($"Course starting soon");
+                        CrossLocalNotifications.Current.Show("Course starting soon", $"{result.CourseName} is starting on {result.StartDate.ToShortDateString()}", result.Id, DateTime.Now.AddSeconds(5));
+                    }
 
-                if (result.EnableNotifications && (result.EndDate - DateTime.Now).TotalDays < 30)
-                {
-                    Debug.WriteLine($"Course ending soon");
-                    CrossLocalNotifications.Current.Show("Course ending soon", $"{result.CourseName} is ending on {result.EndDate.ToShortDateString()}", result.Id, DateTime.Now.AddSeconds(5));
+                    if (result.EnableNotifications && (result.EndDate - DateTime.Now).TotalDays < 30)
+                    {
+                        Debug.WriteLine($"Course ending soon");
+                        CrossLocalNotifications.Current.Show("Course ending soon", $"{result.CourseName} is ending on {result.EndDate.ToShortDateString()}", result.Id, DateTime.Now.AddSeconds(5));
+                    }
                 }
             }
+
+            _notificationsDisplayed = true;
         }
 
 
