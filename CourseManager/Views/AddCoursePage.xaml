@@ -19,41 +19,41 @@
     <ContentPage.Content>
         <ScrollView>
             <StackLayout>
-                <Frame HasShadow="True" BackgroundColor="#e9e6d9" BorderColor="DarkGray">
+                <Frame HasShadow="True" BackgroundColor="{StaticResource Secondary}" BorderColor="DarkGray">
                     <StackLayout HorizontalOptions="FillAndExpand" >
-                        <Label Text="New Course Information" FontSize="Title" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#002f51"/>
+                        <Label Text="New Course Information" FontSize="Title" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="{StaticResource Primary}"/>
                     </StackLayout>
                 </Frame>
                 
                 <StackLayout Padding="20">
-                    <Label Text="Term" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
+                    <Label Text="Term" TextColor="{StaticResource Primary}" FontSize="Subtitle" FontAttributes="Bold"/>
                     <Picker ItemsSource="{Binding Terms}" SelectedItem="{Binding SelectedTerm}" FontAttributes="Italic"/>
 
                     <StackLayout Orientation="Horizontal">
-                        <Label Text="Course Name" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
+                        <Label Text="Course Name" TextColor="{StaticResource Primary}" FontSize="Subtitle" FontAttributes="Bold"/>
                         <Label Text="{Binding COURSE_NAME_REQUIRED}" IsVisible="{Binding ShowCourseNameRequiredErrorMessage}" TextColor="Red" FontSize="Small" VerticalTextAlignment="Center"/>
                         <Label Text="{Binding COURSE_NAME_TAKEN}" IsVisible="{Binding ShowCourseNameTakenErrorMessage}" TextColor="Red" FontSize="Small" VerticalTextAlignment="Center"/>
                     </StackLayout>
                     <Entry Text="{Binding CourseName}"/>
 
-                    <Label Text="Instructor" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
+                    <Label Text="Instructor" TextColor="{StaticResource Primary}" FontSize="Subtitle" FontAttributes="Bold"/>
                     <Picker ItemsSource="{Binding Instructors}" SelectedItem="{Binding SelectedInstructor}" FontAttributes="Italic"/>
 
-                    <Label Text="Start Date" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
+                    <Label Text="Start Date" TextColor="{StaticResource Primary}" FontSize="Subtitle" FontAttributes="Bold"/>
                     <DatePicker MinimumDate="{Binding MinStartDate}" MaximumDate="{Binding MaxStartDate}" Date="{Binding StartDate}"/>
 
-                    <Label Text="Anticipated End Date" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
+                    <Label Text="Anticipated End Date" TextColor="{StaticResource Primary}" FontSize="Subtitle" FontAttributes="Bold"/>
                     <DatePicker MinimumDate="{Binding MinEndDate}" MaximumDate="{Binding MaxEndDate}" Date="{Binding EndDate}"/>
 
                     <StackLayout Orientation="Horizontal">
-                        <Label Text="Enable Alerts" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="FillAndExpand"/>
-                        <Switch IsToggled="{Binding EnableAlerts}" ThumbColor="#4486a1" OnColor="CadetBlue"/>
+                        <Label Text="Enable Alerts" TextColor="{StaticResource Primary}" FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="FillAndExpand"/>
+                        <Switch IsToggled="{Binding EnableAlerts}" ThumbColor="{StaticResource Tertiary}" OnColor="CadetBlue"/>
                     </StackLayout>
 
-                    <Label Text="Course Status" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
+                    <Label Text="Course Status" TextColor="{StaticResource Primary}" FontSize="Subtitle" FontAttributes="Bold"/>
                     <Picker ItemsSource="{Binding StatusList}" SelectedItem="{Binding Status}" FontAttributes="Italic"/>
 
-                    <Label Text="Notes (optional)" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
+                    <Label Text="Notes (optional)" TextColor="{StaticResource Primary}" FontSize="Subtitle" FontAttributes="Bold"/>
                     <Editor Text="{Binding CourseNotes}" HeightRequest="100"/>
 
                     <StackLayout Orientation="Horizontal" HorizontalOptions="Center">

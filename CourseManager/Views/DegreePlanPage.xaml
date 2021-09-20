@@ -42,7 +42,7 @@
                 <CollectionView.GroupHeaderTemplate>
                     <DataTemplate x:Name="TermGroupDataTemplate" x:DataType="model:TermGroup">
                         <StackLayout Orientation="Horizontal" 
-                                     BackgroundColor="#4486a1" Padding="5">
+                                     BackgroundColor="{StaticResource Tertiary}" Padding="5">
                             <StackLayout HorizontalOptions="FillAndExpand">
                                 <Label Text="{Binding Name}" FontSize="Title" TextColor="White"/>
                                 <Label TextColor="White">

@@ -12,22 +12,22 @@
     
     <ContentPage.Content>
         <StackLayout>
-            <Frame HasShadow="True" BackgroundColor="#e9e6d9" BorderColor="DarkGray">
+            <Frame HasShadow="True" BackgroundColor="{StaticResource Secondary}" BorderColor="DarkGray">
                 <StackLayout HorizontalOptions="FillAndExpand" >
-                    <Label Text="New Term Information" FontSize="Title" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#002f51"/>
+                    <Label Text="New Term Information" FontSize="Title" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="{StaticResource Primary}"/>
                 </StackLayout>
             </Frame>
             <StackLayout Padding="20">
                 <StackLayout Orientation="Horizontal">
-                    <Label Text="Term Name" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
+                    <Label Text="Term Name" TextColor="{StaticResource Primary}" FontSize="Subtitle" FontAttributes="Bold"/>
                     <Label Text="{Binding TERM_NAME_REQUIRED}" IsVisible="{Binding ShowTermNameRequiredErrorMessage}" TextColor="Red" FontSize="Small" VerticalTextAlignment="Center"/>
                     <Label Text="{Binding TERM_NAME_TAKEN}" IsVisible="{Binding ShowTermNameTakenErrorMessage}" TextColor="Red" FontSize="Small" VerticalTextAlignment="Center"/>
                 </StackLayout>
                 <Entry Text="{Binding TermName}"/>
-                
-                <Label Text="Start Date" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
+
+                <Label Text="Start Date" TextColor="{StaticResource Primary}" FontSize="Subtitle" FontAttributes="Bold"/>
                 <DatePicker MinimumDate="{Binding MinStartDate}" MaximumDate="{Binding MaxStartDate}" Date="{Binding StartDate}"/>
-                <Label Text="End Date" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
+                <Label Text="End Date" TextColor="{StaticResource Primary}" FontSize="Subtitle" FontAttributes="Bold"/>
                 <DatePicker MinimumDate="{Binding MinEndDate}" MaximumDate="{Binding MaxEndDate}" Date="{Binding EndDate}"/>
 
 

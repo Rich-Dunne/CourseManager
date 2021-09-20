@@ -11,14 +11,14 @@
 
     <!-- Non-modal page only -->
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Edit course details" Command="{Binding EditCourseCommand}" Order="Secondary"/>
+        <ToolbarItem Text="Edit course details" Command="{Binding EditCourseCommand}" Order="Primary"/>
         <ToolbarItem Text="Remove course" Command="{Binding RemoveCourseCommand}" Order="Secondary"/>
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>
         <ScrollView>
             <StackLayout>
-                <Frame HasShadow="True" BackgroundColor="#e9e6d9" BorderColor="DarkGray">
+                <Frame HasShadow="True" BackgroundColor="{StaticResource Secondary}" BorderColor="DarkGray">
                     <StackLayout HorizontalOptions="FillAndExpand" >
                         <Label TextColor="#333" HorizontalOptions="StartAndExpand">
                                 <Label.FormattedText>

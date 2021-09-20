@@ -11,22 +11,17 @@
         <viewmodel:EditCourseNotesViewModel/>
     </ContentPage.BindingContext>
 
-    <!-- Non-modal page only -->
-    <!--<ContentPage.ToolbarItems>
-        <ToolbarItem Text="Next" Command="{Binding NavigateAddInstructorCommand}"/>
-    </ContentPage.ToolbarItems>-->
-
     <ContentPage.Content>
         <ScrollView>
             <StackLayout>
-                <Frame HasShadow="True" BackgroundColor="#e9e6d9" BorderColor="DarkGray">
+                <Frame HasShadow="True" BackgroundColor="{StaticResource Secondary}" BorderColor="DarkGray">
                     <StackLayout HorizontalOptions="FillAndExpand" >
-                        <Label Text="Edit Course Notes" FontSize="Title" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#002f51"/>
+                        <Label Text="Edit Course Notes" FontSize="Title" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="{StaticResource Primary}"/>
                     </StackLayout>
                 </Frame>
                 
                 <StackLayout Padding="20">
-                    <Label Text="Notes (optional)" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
+                    <Label Text="Notes (optional)" TextColor="{StaticResource Primary}" FontSize="Subtitle" FontAttributes="Bold"/>
                     <Editor Text="{Binding CourseNotes}" HeightRequest="100"/>
 
                     <StackLayout Orientation="Horizontal" HorizontalOptions="Center">

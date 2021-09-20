@@ -14,52 +14,52 @@
         <ContentView>
             <ScrollView>
                 <StackLayout>
-                    <Frame HasShadow="True" BackgroundColor="#e9e6d9" BorderColor="DarkGray">
+                    <Frame HasShadow="True" BackgroundColor="{StaticResource Secondary}" BorderColor="DarkGray">
                         <StackLayout HorizontalOptions="FillAndExpand" >
-                            <Label Text="Assessment Information" FontSize="Title" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#002f51"/>
+                            <Label Text="Assessment Information" FontSize="Title" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="{StaticResource Primary}"/>
                         </StackLayout>
                     </Frame>
 
                     <StackLayout Padding="20">
                         <StackLayout Orientation="Horizontal">
-                            <Label Text="Assessment Name" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
+                            <Label Text="Assessment Name" TextColor="{StaticResource Primary}" FontSize="Subtitle" FontAttributes="Bold"/>
                             <Label Text="{Binding AssessmentNameErrorMessage}" IsVisible="{Binding ShowAssessmentNameErrorMessage}" TextColor="Red" FontSize="Small" VerticalTextAlignment="Center"/>
                             <Label Text="{Binding ASSESSMENT_NAME_TAKEN}" IsVisible="{Binding ShowNameTakenErrorMessage}" TextColor="Red" FontSize="Small" VerticalTextAlignment="Center"/>
                         </StackLayout>
                         <Entry Text="{Binding AssessmentName}" Keyboard="Text"/>
 
-                        <Label Text="Assessment Type" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
+                        <Label Text="Assessment Type" TextColor="{StaticResource Primary}" FontSize="Subtitle" FontAttributes="Bold"/>
                         <Picker ItemsSource="{Binding AssessmentTypes}" SelectedItem="{Binding AssessmentType}" SelectedIndex="{Binding PickerIndex}"/>
 
-                        <Label Text="Due Date" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
+                        <Label Text="Due Date" TextColor="{StaticResource Primary}" FontSize="Subtitle" FontAttributes="Bold"/>
                         <DatePicker MinimumDate="{Binding MinDueDate}" MaximumDate="{Binding MaxDueDate}" Date="{Binding DueDate}"/>
                     </StackLayout>
 
                     <StackLayout Padding="20, 0, 20, 20" IsVisible="{Binding HasSecondAssessment}">
-                        <BoxView HorizontalOptions="FillAndExpand" WidthRequest="1" HeightRequest="1" Color="#e9e6d9"/>
+                        <BoxView HorizontalOptions="FillAndExpand" WidthRequest="1" HeightRequest="1" Color="{StaticResource Secondary}"/>
 
                         <StackLayout Orientation="Horizontal">
-                            <Label Text="Assessment Name" Padding="0, 10, 0, 0" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
+                            <Label Text="Assessment Name" Padding="0, 10, 0, 0" TextColor="{StaticResource Primary}" FontSize="Subtitle" FontAttributes="Bold"/>
                             <Label Text="{Binding AssessmentNameErrorMessage}" IsVisible="{Binding ShowSecondAssessmentNameErrorMessage}" TextColor="Red" FontSize="Small" VerticalTextAlignment="Center"/>
                             <Label Text="{Binding ASSESSMENT_NAME_TAKEN}" IsVisible="{Binding ShowSecondNameTakenErrorMessage}" TextColor="Red" FontSize="Small" VerticalTextAlignment="Center"/>
                         </StackLayout>
                         <Entry Text="{Binding SecondAssessmentName}" Keyboard="Text"/>
 
-                        <Label Text="Assessment Type" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
+                        <Label Text="Assessment Type" TextColor="{StaticResource Primary}" FontSize="Subtitle" FontAttributes="Bold"/>
                         <Picker ItemsSource="{Binding AssessmentTypes}" SelectedItem="{Binding SecondAssessmentType}" SelectedIndex="{Binding SecondPickerIndex}" IsEnabled="False"/>
 
-                        <Label Text="Due Date" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold"/>
+                        <Label Text="Due Date" TextColor="{StaticResource Primary}" FontSize="Subtitle" FontAttributes="Bold"/>
                         <DatePicker MinimumDate="{Binding MinDueDate}" MaximumDate="{Binding MaxDueDate}" Date="{Binding SecondDueDate}"/>
                     </StackLayout>
 
                     <StackLayout Padding="0, 0, 20, 0">
                         <StackLayout Orientation="Horizontal">
-                            <Label Text="Enable Alerts" Padding="20, 0, 0, 0" TextColor="#002f51" FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="FillAndExpand"/>
-                            <Switch IsToggled="{Binding EnableAlerts}" ThumbColor="#4486a1" OnColor="CadetBlue"/>
+                            <Label Text="Enable Alerts" Padding="20, 0, 0, 0" TextColor="{StaticResource Primary}" FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="FillAndExpand"/>
+                            <Switch IsToggled="{Binding EnableAlerts}" ThumbColor="{StaticResource Tertiary}" OnColor="CadetBlue"/>
                         </StackLayout>
-                        
-                        <Button Text="+ Assessment" FontSize="Small" HorizontalOptions="End" BackgroundColor="#4486a1" Command="{Binding AddSecondAssessmentCommand}" IsVisible="{Binding ShowAddAssessmentButton}"/>
-                        <Button Text="- Assessment" FontSize="Small" HorizontalOptions="End" BackgroundColor="#4486a1" Command="{Binding RemoveSecondAssessmentCommand}" IsVisible="{Binding HasSecondAssessment}"/>
+
+                        <Button Text="+ Assessment" FontSize="Small" HorizontalOptions="End" BackgroundColor="{StaticResource Tertiary}" Command="{Binding AddSecondAssessmentCommand}" IsVisible="{Binding ShowAddAssessmentButton}"/>
+                        <Button Text="- Assessment" FontSize="Small" HorizontalOptions="End" BackgroundColor="{StaticResource Tertiary}" Command="{Binding RemoveSecondAssessmentCommand}" IsVisible="{Binding HasSecondAssessment}"/>
                     </StackLayout>
 
                     <StackLayout Padding="20">

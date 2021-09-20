@@ -13,9 +13,9 @@
     <ContentPage.Content>
         <ScrollView>
             <StackLayout>
-                <Frame HasShadow="True" BackgroundColor="#e9e6d9" BorderColor="DarkGray">
+                <Frame HasShadow="True" BackgroundColor="{StaticResource Secondary}" BorderColor="DarkGray">
                     <StackLayout HorizontalOptions="FillAndExpand" >
-                        <Label Text="Instructor Information" FontSize="Title" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#002f51"/>
+                        <Label Text="Instructor Information" FontSize="Title" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="{StaticResource Primary}"/>
                     </StackLayout>
                 </Frame>
 
