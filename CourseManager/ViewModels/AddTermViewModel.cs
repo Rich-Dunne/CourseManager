@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CourseManager.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -96,7 +97,14 @@ namespace CourseManager.ViewModels
                 return;
             }
 
-            await Services.TermService.AddTerm(TermName, StartDate, EndDate);
+            Term newTerm = new Term
+            {
+                TermName = TermName,
+                StartDate = StartDate,
+                EndDate = EndDate
+            };
+
+            await Services.TermService.AddTerm(newTerm);
 
             await Shell.Current.GoToAsync("..");
         }
