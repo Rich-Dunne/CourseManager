@@ -258,12 +258,12 @@ namespace CourseManager.Services
         //    return term;
         //}
 
-        //public static async Task DropTable()
-        //{
-        //    await Init();
+        public static async Task DropTable()
+        {
+            await Init();
 
-        //    await database.DropTableAsync<Term>().ContinueWith((results) => Debug.WriteLine($"Table deleted."));
-        //}
+            await database.DropTableAsync<Term>().ContinueWith((results) => Debug.WriteLine($"Table dropped."));
+        }
 
         public static async Task ClearTable()
         {

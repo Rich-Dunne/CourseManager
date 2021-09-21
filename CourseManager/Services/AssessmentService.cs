@@ -87,7 +87,6 @@ namespace CourseManager.Services
                 return;
             }
 
-            //Assessments.Remove(matchingAssessment);
             await database.UpdateAsync(assessment);
             await ImportAssessments();
         }
@@ -123,6 +122,13 @@ namespace CourseManager.Services
             Assessments.Clear();
             await database.DeleteAllAsync<Assessment>();
             Debug.WriteLine($"The Assessments table has been cleared.");
+        }
+
+        public static async Task DropTable()
+        {
+            await Init();
+
+            await database.DropTableAsync<Assessment>().ContinueWith((results) => Debug.WriteLine($"Table dropped."));
         }
     }
 }

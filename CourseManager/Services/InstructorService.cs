@@ -75,7 +75,6 @@ namespace CourseManager.Services
                 return;
             }
 
-            //Instructors.Remove(matchingInstructor);
             await database.UpdateAsync(instructor);
             await ImportInstructors();
         }
@@ -113,6 +112,13 @@ namespace CourseManager.Services
             Instructors.Clear();
             await database.DeleteAllAsync<Instructor>();
             Debug.WriteLine($"The Instructors table has been cleared.");
+        }
+
+        public static async Task DropTable()
+        {
+            await Init();
+
+            await database.DropTableAsync<Instructor>().ContinueWith((results) => Debug.WriteLine($"Table dropped."));
         }
     }
 }

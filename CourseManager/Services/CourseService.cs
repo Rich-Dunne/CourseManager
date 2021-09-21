@@ -30,19 +30,6 @@ namespace CourseManager.Services
             await database.CreateTableAsync<Course>();
         }
 
-        //public static async Task ListTables()
-        //{
-        //    Debug.WriteLine($"Below is a list of tables which exist in the database:");
-        //    foreach (var table in database.TableMappings)
-        //    {
-        //        var tableInfo = await database.GetTableInfoAsync(table.TableName);
-        //        if (tableInfo.Count > 0)
-        //        {
-        //            Debug.WriteLine($"{table.TableName} ({tableInfo.Count} columns)");
-        //        }
-        //    }
-        //}
-
         public static async Task ImportCourses()
         {
             await Init();
@@ -81,29 +68,6 @@ namespace CourseManager.Services
 
             _notificationsDisplayed = true;
         }
-
-
-        //public static void GetTables()
-        //{
-        //    var table = database.Table<Course>();
-        //    if(table == null)
-        //    {
-        //        Debug.WriteLine($"The Courses table does not exist.");
-        //        return;
-        //    }
-
-        //    var query = table.Where(x => x.Id >= 0);
-        //    if(query.CountAsync().Result == 0)
-        //    {
-        //        Debug.WriteLine($"There are no courses in the table.");
-        //    }
-
-        //    query.ToListAsync().ContinueWith((t) =>
-        //    {
-        //        foreach (var course in t.Result)
-        //            Debug.WriteLine($"Course: {course.CourseName}");
-        //    });
-        //}
 
         public static async Task AddCourse(Course course)
         {
@@ -153,12 +117,12 @@ namespace CourseManager.Services
         //    return course;
         //}
 
-        //public static async Task DropTable()
-        //{
-        //    await Init();
+        public static async Task DropTable()
+        {
+            await Init();
 
-        //    await database.DropTableAsync<Course>().ContinueWith((results) => Debug.WriteLine($"Table deleted."));
-        //}
+            await database.DropTableAsync<Course>().ContinueWith((results) => Debug.WriteLine($"Table dropped."));
+        }
 
         public static async Task ClearTable()
         {
