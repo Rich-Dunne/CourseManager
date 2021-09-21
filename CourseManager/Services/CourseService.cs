@@ -109,13 +109,6 @@ namespace CourseManager.Services
         {
             await Init();
 
-            var query = await database.Table<Course>().FirstOrDefaultAsync(x => x.CourseName == course.CourseName);
-            if (query != null)
-            {
-                Debug.WriteLine($"\"{course.CourseName}\" already exists.");
-                return;
-            }
-
             await database.InsertAsync(course);
             Debug.WriteLine($"({course.Id}) \"{course.CourseName}\" added.");
 

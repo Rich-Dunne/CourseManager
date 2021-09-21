@@ -66,13 +66,6 @@ namespace CourseManager.Services
         {
             await Init();
 
-            var query = await database.Table<Assessment>().FirstOrDefaultAsync(x => x.Id == assessment.Id);
-            if (query != null)
-            {
-                Debug.WriteLine($"Assessment with ID \"{assessment.Id}\" already exists.");
-                return;
-            }
-
             var insertAssessment = database.InsertAsync(assessment).Result;
             Debug.WriteLine($"({assessment.Id}) \"{assessment.Name}\" added.");
 

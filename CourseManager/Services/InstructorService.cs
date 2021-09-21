@@ -54,13 +54,6 @@ namespace CourseManager.Services
         {
             await Init();
 
-            var query = await database.Table<Instructor>().FirstOrDefaultAsync(x => x.FirstName == instructor.FirstName && x.LastName == instructor.LastName);
-            if (query != null)
-            {
-                Debug.WriteLine($"Instructor with name \"{instructor.FirstName} {instructor.LastName}\" already exists.");
-                return;
-            }
-
             var insertInstructor = database.InsertAsync(instructor).Result;
             Debug.WriteLine($"({instructor.Id}) \"{instructor.FirstName} {instructor.LastName}\" added.");
 
