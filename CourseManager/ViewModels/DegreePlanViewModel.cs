@@ -128,22 +128,26 @@ namespace CourseManager.ViewModels
         private async void ClearTermTable()
         {
             await Services.TermService.ClearTable();
+            await Shell.Current.DisplayAlert("Table cleared", "The Terms table has been cleared successfully.", "Ok");
         }
 
         private async void ClearCourseTable()
         {
             await Services.CourseService.ClearTable();
+            await Shell.Current.DisplayAlert("Table cleared", "The Courses table has been cleared successfully.", "Ok");
             await Services.TermService.ImportTerms();
         }
 
         private async void ClearInstructorTable()
         {
             await Services.InstructorService.ClearTable();
+            await Shell.Current.DisplayAlert("Table cleared", "The Instructors table has been cleared successfully.", "Ok");
         }
 
         private async void ClearAssessmentTable()
         {
             await Services.AssessmentService.ClearTable();
+            await Shell.Current.DisplayAlert("Table cleared", "The Assessments table has been cleared successfully.", "Ok");
         }
 
         private async void NavigateAddTerm()
