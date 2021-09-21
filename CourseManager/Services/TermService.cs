@@ -1,4 +1,5 @@
-﻿using CourseManager.Models;
+﻿using CourseManager.Enums;
+using CourseManager.Models;
 using SQLite;
 using System;
 using System.Collections.Generic;
@@ -55,30 +56,105 @@ namespace CourseManager.Services
             TermGroups.Clear();
 
             var query = database.Table<Term>().ToListAsync();
-            //Debug.WriteLine($"Terms being imported from DB: {query.Result.Count}.");
+            if(query.Result.Count == 0)
+            {
+                Debug.WriteLine($"Creating mock data term");
+                CreateMockData();
+                return;
+            }
+
             foreach (var result in query.Result)
             {
-                //Debug.WriteLine($"ID: {result.Id}, Name: {result.TermName}");
-
                 var existingTermGroup = TermGroups.FirstOrDefault(x => x.Name == result.TermName);
                 if (existingTermGroup == null)
                 {
-                    var courses = new ObservableCollection<Course>();
-                    foreach (Course course in CourseService.Courses)
-                    {
-                        if (course.AssociatedTermId == result.Id && !courses.Any(x => x.Id == course.Id))
-                        {
-                            courses.Add(course);
-                            Debug.WriteLine($"Added \"{course.CourseName}\" to term group's course collection.");
-                        }
-                    }
-
-                    var newTermGroup = new TermGroup(result.Id, result.TermName, result.StartDate, result.EndDate, courses);
-
-                    TermGroups.Add(newTermGroup);
-                    Debug.WriteLine($"Added \"{newTermGroup.Name}\" to collection.");
+                    var courses = GetCourses(result);
+                    AddTermGroup(result, courses);
                 }
             }
+
+            ObservableCollection<Course> GetCourses(Term term)
+            {
+                var courses = new ObservableCollection<Course>();
+                foreach (Course course in CourseService.Courses)
+                {
+                    Debug.WriteLine($"Course: {course.CourseName}, Associated Term: {course.AssociatedTermId}");
+                    if (course.AssociatedTermId == term.Id && !courses.Any(x => x.Id == course.Id))
+                    {
+                        courses.Add(course);
+                        Debug.WriteLine($"Added \"{course.CourseName}\" to term group's course collection.");
+                    }
+                }
+
+                return courses;
+            }    
+        }
+
+        private static void AddTermGroup(Term term, ObservableCollection<Course> courses)
+        {
+            var newTermGroup = new TermGroup(term.Id, term.TermName, term.StartDate, term.EndDate, courses);
+
+            TermGroups.Add(newTermGroup);
+            Debug.WriteLine($"Added \"{newTermGroup.Name}\" to collection.");
+        }
+
+        private static async void CreateMockData()
+        {
+            var courses = new ObservableCollection<Course>();
+
+            var mockAssessmentOne = new Assessment
+            {
+                Name = "Mock Assessment One",
+                AssessmentType = AssessmentType.Objective,
+                DueDate = new DateTime(2021, 10, 31),
+                EnableNotifications = true
+            };
+            await AssessmentService.AddAssessment(mockAssessmentOne);
+
+            var mockAssessmentTwo = new Assessment
+            {
+                Name = "Mock Assessment Two",
+                AssessmentType = AssessmentType.Performance,
+                DueDate = new DateTime(2021, 10, 31),
+                EnableNotifications = true
+            };
+            await AssessmentService.AddAssessment(mockAssessmentTwo);
+
+            var mockInstructor = new Instructor
+            {
+                FirstName = "Rich",
+                LastName = "Dunne",
+                PhoneNumber = "2072192352",
+                Email = "rdunne5@wgu.edu"
+            };
+            await InstructorService.AddInstructor(mockInstructor);
+
+            var newCourse = new Course
+            {
+                CourseName = "Mock Course",
+                StartDate = new DateTime(2021, 10, 1),
+                EndDate = new DateTime(2021, 10, 31),
+                Status = Status.Active,
+                Notes = "This is a mock data course.",
+                EnableNotifications = true
+            };
+            newCourse.AssociatedInstructorId = mockInstructor.Id;
+            newCourse.FirstAssessmentId = mockAssessmentOne.Id;
+            newCourse.SecondAssessmentId = mockAssessmentTwo.Id;
+
+            Term mockTerm = new Term
+            {
+                TermName = "Mock Data Term",
+                StartDate = new DateTime(2021, 10, 1),
+                EndDate = new DateTime(2021, 10, 31)
+            };
+
+            await AddTerm(mockTerm);
+            newCourse.AssociatedTermId = mockTerm.Id;
+
+            await CourseService.AddCourse(newCourse);
+
+            await ImportTerms();
         }
 
 
@@ -104,26 +180,12 @@ namespace CourseManager.Services
         //    });
         //}
 
-        public static async Task AddTerm(string termName, DateTime startDate, DateTime endDate)
+        public static async Task AddTerm(Term term)
         {
             await Init();
 
-            var query = await database.Table<Term>().FirstOrDefaultAsync(x => x.TermName == termName);
-            if(query != null)
-            {
-                Debug.WriteLine($"\"{termName}\" already exists.");
-                return;
-            }
-
-            var term = new Term
-            {
-                TermName = termName,
-                StartDate = startDate,
-                EndDate = endDate,
-            };
-
             await database.InsertAsync(term);
-            Debug.WriteLine($"({term.Id}) \"{termName}\" added.");
+            Debug.WriteLine($"({term.Id}) \"{term.TermName}\" added.");
 
             await ImportTerms();
         }
@@ -142,7 +204,6 @@ namespace CourseManager.Services
                 Debug.WriteLine($"Matching group not found.");
                 return;
             }
-            //TermGroups.Remove(matchingGroup);
 
             await database.UpdateAsync(term);
             await ImportTerms();
