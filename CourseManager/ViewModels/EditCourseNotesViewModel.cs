@@ -61,6 +61,7 @@ namespace CourseManager.ViewModels
         private void GetCourse()
         {
             CurrentCourse = Services.CourseService.GetCourse(CourseId);
+            CourseNotes = CurrentCourse.Notes;
         }
     }
 }
