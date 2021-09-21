@@ -38,6 +38,7 @@ namespace CourseManager.ViewModels
         }
         #endregion
 
+        #region Form Properties
         private string _assessmentName;
         public string AssessmentName 
         { 
@@ -110,8 +111,8 @@ namespace CourseManager.ViewModels
         public string SecondAssessmentType { get => _secondAssessmentType; set => SetProperty(ref _secondAssessmentType, value); }
 
         private bool _hasSecondAssessment = false;
-        public bool HasSecondAssessment 
-        { 
+        public bool HasSecondAssessment
+        {
             get => _hasSecondAssessment;
             set
             {
@@ -122,7 +123,9 @@ namespace CourseManager.ViewModels
 
         private bool _showAddAssessmentButton = true;
         public bool ShowAddAssessmentButton { get => _showAddAssessmentButton; set => SetProperty(ref _showAddAssessmentButton, value); }
+        #endregion
 
+        #region Validation Properties
         private bool _hasErrors = false;
         public bool HasErrors { get => _hasErrors; set => SetProperty(ref _hasErrors, value); }
 
@@ -140,15 +143,18 @@ namespace CourseManager.ViewModels
 
         private bool _showSecondNameTakenErrorMessage;
         public bool ShowSecondNameTakenErrorMessage { get => _showSecondNameTakenErrorMessage; set => SetProperty(ref _showSecondNameTakenErrorMessage, value); }
+        #endregion
 
         public Course Course;
         public Instructor Instructor;
         public Assessment FirstAssessment, SecondAssessment;
 
+        #region Commands
         public Command SaveCommand { get; }
         public Command NavigateBackCommand { get; }
         public Command AddSecondAssessmentCommand { get; }
         public Command RemoveSecondAssessmentCommand { get; }
+        #endregion
 
         public AddAssessmentsViewModel()
         {
@@ -196,15 +202,12 @@ namespace CourseManager.ViewModels
             await Shell.Current.GoToAsync(route);
         }
 
-        private async void NavigateBack()
-        {
-            await Shell.Current.GoToAsync("..");
-        }
+        private async void NavigateBack() => await Shell.Current.GoToAsync("..");
 
         private void InitializeCourseProperties()
         {
             string[] courseValues = CourseValues.Split(',');
-            var status = Enum.TryParse(courseValues[4], out Enums.Status myStatus);
+            var canParse = Enum.TryParse(courseValues[4], out Enums.Status myStatus);
 
             Course = new Course
             {
@@ -220,14 +223,14 @@ namespace CourseManager.ViewModels
             MinDueDate = Course.StartDate.AddDays(1);
             MaxDueDate = Course.EndDate;
 
-            Debug.WriteLine($"Course/Id: {Course.CourseName}/{Course.Id}");
-            Debug.WriteLine($"Start: {Course.StartDate}");
-            Debug.WriteLine($"End: {Course.EndDate}");
-            Debug.WriteLine($"Notifications: {Course.EnableNotifications}");
-            Debug.WriteLine($"Status: {Course.Status}");
-            Debug.WriteLine($"Notes: {Course.Notes}");
-            Debug.WriteLine($"Associated Term: {Course.AssociatedTermId}");
-            Debug.WriteLine($"Associated Instructor: {Course.AssociatedInstructorId}");
+            //Debug.WriteLine($"Course/Id: {Course.CourseName}/{Course.Id}");
+            //Debug.WriteLine($"Start: {Course.StartDate}");
+            //Debug.WriteLine($"End: {Course.EndDate}");
+            //Debug.WriteLine($"Notifications: {Course.EnableNotifications}");
+            //Debug.WriteLine($"Status: {Course.Status}");
+            //Debug.WriteLine($"Notes: {Course.Notes}");
+            //Debug.WriteLine($"Associated Term: {Course.AssociatedTermId}");
+            //Debug.WriteLine($"Associated Instructor: {Course.AssociatedInstructorId}");
         }
 
         private void InitializeInstructorProperties()
@@ -248,16 +251,16 @@ namespace CourseManager.ViewModels
                 };
             }
 
-            Debug.WriteLine($"Instructor Id: {Instructor.Id}");
-            Debug.WriteLine($"Instructor First Name: {Instructor.FirstName}");
-            Debug.WriteLine($"Instructor Last Name: {Instructor.LastName}");
-            Debug.WriteLine($"Phone Number: {Instructor.PhoneNumber}");
-            Debug.WriteLine($"Email: {Instructor.Email}");
+            //Debug.WriteLine($"Instructor Id: {Instructor.Id}");
+            //Debug.WriteLine($"Instructor First Name: {Instructor.FirstName}");
+            //Debug.WriteLine($"Instructor Last Name: {Instructor.LastName}");
+            //Debug.WriteLine($"Phone Number: {Instructor.PhoneNumber}");
+            //Debug.WriteLine($"Email: {Instructor.Email}");
         }
 
         private void CreateAssessments()
         {
-            var assessmentType = Enum.TryParse(AssessmentType, out Enums.AssessmentType firstAssessmentType);
+            var canParse = Enum.TryParse(AssessmentType, out Enums.AssessmentType firstAssessmentType);
             FirstAssessment = new Assessment
             {
                 Name = AssessmentName,
@@ -269,7 +272,7 @@ namespace CourseManager.ViewModels
 
             if (HasSecondAssessment)
             {
-                assessmentType = Enum.TryParse(SecondAssessmentType, out Enums.AssessmentType secondAssessmentType);
+                canParse = Enum.TryParse(SecondAssessmentType, out Enums.AssessmentType secondAssessmentType);
                 SecondAssessment = new Assessment
                 {
                     Name = SecondAssessmentName,
