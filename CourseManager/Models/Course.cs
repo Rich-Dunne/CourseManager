@@ -1,8 +1,6 @@
 ﻿using CourseManager.Enums;
 using SQLite;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CourseManager.Models
 {
