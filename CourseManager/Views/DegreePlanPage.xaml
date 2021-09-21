@@ -11,25 +11,13 @@
     </ContentPage.BindingContext>
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Clear Term Table" Command="{Binding ClearTermTableCommand}" Order="Secondary"/>
+        <!--<ToolbarItem Text="Clear Term Table" Command="{Binding ClearTermTableCommand}" Order="Secondary"/>
         <ToolbarItem Text="Clear Course Table" Command="{Binding ClearCourseTableCommand}" Order="Secondary"/>
         <ToolbarItem Text="Clear Instructor Table" Command="{Binding ClearInstructorTableCommand}" Order="Secondary"/>
-        <ToolbarItem Text="Clear Assessment Table" Command="{Binding ClearAssessmentTableCommand}" Order="Secondary"/>
+        <ToolbarItem Text="Clear Assessment Table" Command="{Binding ClearAssessmentTableCommand}" Order="Secondary"/>-->
         <ToolbarItem Text="Add Course" Command="{Binding NavigateAddCourseCommand}" Clicked="ToolbarItem_Clicked"/>
     </ContentPage.ToolbarItems>
 
-    <!--<StackLayout VerticalOptions="Center">
-        <Button Text="Show All Tables in DB" Command="{Binding GetTablesCommand}"/>
-        <Button Text="Show Table Objects" Command="{Binding ShowTableContentsCommand}"/>
-        <Button Text="Add Term" Command="{Binding AddTermCommand}"/>
-        <Button Text="Clear All Term Objects" Command="{Binding ClearTableCommand}"/>
-        <Button Text="Drop Table" Command="{Binding DropTableCommand}" />
-    </StackLayout>-->
-    
-    <!--
-      x:DataType enables compiled bindings for better performance and compile time validation of binding expressions.
-      https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/data-binding/compiled-bindings
-    -->
     <RefreshView x:DataType="local:DegreePlanViewModel" Command="{Binding LoadItemsCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
         <StackLayout>
             <CollectionView x:Name="TermsListView"
@@ -85,6 +73,5 @@
             </CollectionView>
             <Button Text="Add Term" Command="{Binding NavigateAddTermCommand}"/>
         </StackLayout>
-        
     </RefreshView>
 </ContentPage>
