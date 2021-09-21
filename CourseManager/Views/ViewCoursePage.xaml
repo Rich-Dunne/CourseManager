@@ -63,8 +63,16 @@
                                         </FormattedString>
                                     </Label.FormattedText>
                                 </Label>
-                                <Label Text="{Binding Instructor.PhoneNumber}" FontSize="Medium" TextColor="#0066a2"/>
-                                <Label Text="{Binding Instructor.Email}" FontSize="Medium" TextColor="#0066a2"/>
+                                <Label Text="{Binding Instructor.PhoneNumber}" FontSize="Medium" TextColor="#0066a2">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding OpenPhoneDialerCommand}"/>
+                                    </Label.GestureRecognizers>
+                                </Label>
+                                <Label Text="{Binding Instructor.Email}" FontSize="Medium" TextColor="#0066a2">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding OpenEmailCommand}"/>
+                                    </Label.GestureRecognizers>
+                                </Label>
                             </StackLayout>
                         </Frame>
                     </StackLayout>

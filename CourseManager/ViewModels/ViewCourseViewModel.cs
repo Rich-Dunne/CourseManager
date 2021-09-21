@@ -82,6 +82,8 @@ namespace CourseManager.ViewModels
         public Command EditCourseCommand { get; }
         public Command RemoveCourseCommand { get; }
         public Command ShareCommand { get; }
+        public Command OpenPhoneDialerCommand { get; }
+        public Command OpenEmailCommand { get; }
 
         public ViewCourseViewModel()
         {
@@ -93,6 +95,8 @@ namespace CourseManager.ViewModels
             EditCourseCommand = new Command(EditCourse);
             RemoveCourseCommand = new Command(RemoveCourse);
             ShareCommand = new Command(Share);
+            OpenPhoneDialerCommand = new Command(OpenPhoneDialer);
+            OpenEmailCommand = new Command(OpenEmail);
 
             if(!_propertiesInitialized)
             {
@@ -181,6 +185,22 @@ namespace CourseManager.ViewModels
                 Text = SelectedCourse.Notes,
                 Title = "Share course notes"
             });
+        }
+
+        private void OpenPhoneDialer()
+        {
+            PhoneDialer.Open(Instructor.PhoneNumber);
+        }
+
+        private async void OpenEmail()
+        {
+            var message = new EmailMessage
+            {
+                Subject = "",
+                Body = "",
+                To = new List<string>() { Instructor.Email }
+            };
+            await Email.ComposeAsync(message);
         }
     }
 }
