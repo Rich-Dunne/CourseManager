@@ -1,14 +1,10 @@
-﻿using CourseManager.Enums;
-using CourseManager.Models;
+﻿using CourseManager.Models;
 using Plugin.LocalNotifications;
 using SQLite;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CourseManager.Services
@@ -33,13 +29,6 @@ namespace CourseManager.Services
         public static async Task ImportAssessments()
         {
             await Init();
-
-            var tableInfo = await database.GetTableInfoAsync("Assessments");
-            if(tableInfo.Count == 0)
-            {
-                Debug.WriteLine($"Assessments table doesn't exist - Creating new table.");
-                return;
-            }
 
             Assessments.Clear();
 
@@ -66,53 +55,33 @@ namespace CourseManager.Services
         {
             await Init();
 
-            var insertAssessment = database.InsertAsync(assessment).Result;
+            await database.InsertAsync(assessment);
             Debug.WriteLine($"({assessment.Id}) \"{assessment.Name}\" added.");
 
             await ImportAssessments();
         }
 
-        public static Assessment GetAssessment(int id)
-        {
-            var course = database.FindAsync<Assessment>(id).Result;
-            return course;
-        }
+        public static Assessment GetAssessment(int id) => database.FindAsync<Assessment>(id).Result;
 
         public static async Task UpdateAssessment(Assessment assessment)
         {
-            var matchingAssessment = Assessments.FirstOrDefault(x => x.Id == assessment.Id);
-            if (matchingAssessment == null)
-            {
-                Debug.WriteLine($"Matching assessment not found.");
-                return;
-            }
-
             await database.UpdateAsync(assessment);
             await ImportAssessments();
         }
 
-        public static async Task RemoveAssessment(Assessment assessment)
-        {
-            await Init();
+        // This method is never used, but may be used in later development
+        //public static async Task RemoveAssessment(Assessment assessment)
+        //{
+        //    await Init();
 
-            var matchingCourse = Assessments.FirstOrDefault(x => x.Id == assessment.Id);
-            if (matchingCourse != null)
-            {
-                Assessments.Remove(matchingCourse);
-            }
-
-            await database.DeleteAsync<Assessment>(assessment.Id);
-            Debug.WriteLine($"({assessment.Id}) \"{assessment.Name}\" removed.");
-        }
+        //    Assessments.Remove(assessment);
+        //    await database.DeleteAsync<Assessment>(assessment.Id);
+        //    Debug.WriteLine($"({assessment.Id}) \"{assessment.Name}\" removed.");
+        //}
 
         public static async Task ClearTable()
         {
-            var table = database.Table<Assessment>();
-            if (table == null)
-            {
-                Debug.WriteLine($"The Assessments table does not exist.");
-                return;
-            }
+            await Init();
 
             foreach (Assessment assessment in Assessments)
             {

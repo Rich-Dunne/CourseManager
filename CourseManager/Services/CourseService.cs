@@ -1,14 +1,11 @@
-﻿using CourseManager.Enums;
-using CourseManager.Models;
+﻿using CourseManager.Models;
 using Plugin.LocalNotifications;
 using SQLite;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CourseManager.Services
@@ -33,13 +30,6 @@ namespace CourseManager.Services
         public static async Task ImportCourses()
         {
             await Init();
-
-            var tableInfo = await database.GetTableInfoAsync("Courses");
-            if(tableInfo.Count == 0)
-            {
-                Debug.WriteLine($"Courses table doesn't exist - Creating new table.");
-                return;
-            }
 
             Courses.Clear();
 
@@ -79,11 +69,7 @@ namespace CourseManager.Services
             await ImportCourses();
         }
 
-        public static Course GetCourse(int id)
-        {
-            var course = database.FindAsync<Course>(id).Result;
-            return course;
-        }
+        public static Course GetCourse(int id) => database.FindAsync<Course>(id).Result;
 
         public static async Task UpdateCourse(Course course)
         {
@@ -97,25 +83,11 @@ namespace CourseManager.Services
         {
             await Init();
 
-            var matchingCourse = Courses.FirstOrDefault(x => x.CourseName == course.CourseName);
-            if (matchingCourse != null)
-            {
-                Courses.Remove(matchingCourse);
-            }
-
+            Courses.Remove(course);
             await TermService.RemoveCourseFromTerm(course);
-
             await database.DeleteAsync<Course>(course.Id);
             Debug.WriteLine($"({course.Id}) \"{course.CourseName}\" removed.");
         }
-
-        //public static async Task<IEnumerable<Course>> GetCourses()
-        //{
-        //    await Init();
-
-        //    var course = await database.Table<Course>().ToListAsync();
-        //    return course;
-        //}
 
         public static async Task DropTable()
         {
@@ -126,12 +98,7 @@ namespace CourseManager.Services
 
         public static async Task ClearTable()
         {
-            var table = database.Table<Course>();
-            if (table == null)
-            {
-                Debug.WriteLine($"The Courses table does not exist.");
-                return;
-            }
+            await Init();
 
             foreach(TermGroup termGroup in TermService.TermGroups)
             {
@@ -183,20 +150,5 @@ namespace CourseManager.Services
                 await database.UpdateAsync(course);
             }
         }
-
-        //public static void GetTableRows()
-        //{
-        //    var query = database.QueryAsync<Course>("SELECT * from Course");
-
-        //    if(query.Result.Count == 0)
-        //    {
-        //        Debug.WriteLine($"There are no courses.");
-        //    }
-
-        //    foreach(var c in query.Result)
-        //    {
-        //        Debug.WriteLine($"Result: {c.CourseName}");
-        //    }
-        //}
     }
 }

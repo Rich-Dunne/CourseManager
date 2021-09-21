@@ -1,13 +1,9 @@
-﻿using CourseManager.Enums;
-using CourseManager.Models;
+﻿using CourseManager.Models;
 using SQLite;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CourseManager.Services
@@ -32,13 +28,6 @@ namespace CourseManager.Services
         {
             await Init();
 
-            var tableInfo = await database.GetTableInfoAsync("Instructors");
-            if(tableInfo.Count == 0)
-            {
-                Debug.WriteLine($"Instructors table doesn't exist - Creating new table.");
-                return;
-            }
-
             Instructors.Clear();
 
             var query = await database.Table<Instructor>().ToListAsync();
@@ -54,27 +43,16 @@ namespace CourseManager.Services
         {
             await Init();
 
-            var insertInstructor = database.InsertAsync(instructor).Result;
+            await database.InsertAsync(instructor);
             Debug.WriteLine($"({instructor.Id}) \"{instructor.FirstName} {instructor.LastName}\" added.");
 
             await ImportInstructors();
         }
 
-        public static Instructor GetInstructor(int id)
-        {
-            var course = database.FindAsync<Instructor>(id).Result;
-            return course;
-        }
+        public static Instructor GetInstructor(int id) => database.FindAsync<Instructor>(id).Result;
 
         public static async Task UpdateInstructor(Instructor instructor)
         {
-            var matchingInstructor = Instructors.FirstOrDefault(x => x.Id == instructor.Id);
-            if (matchingInstructor == null)
-            {
-                Debug.WriteLine($"Matching instructor not found.");
-                return;
-            }
-
             await database.UpdateAsync(instructor);
             await ImportInstructors();
         }
@@ -83,11 +61,7 @@ namespace CourseManager.Services
         {
             await Init();
 
-            var matchingCourse = Instructors.FirstOrDefault(x => x.Id == instructor.Id);
-            if (matchingCourse != null)
-            {
-                Instructors.Remove(matchingCourse);
-            }
+            Instructors.Remove(instructor);
 
             CourseService.RemoveInstructorFromCourse(instructor);
 
@@ -97,12 +71,7 @@ namespace CourseManager.Services
 
         public static async Task ClearTable()
         {
-            var table = database.Table<Instructor>();
-            if (table == null)
-            {
-                Debug.WriteLine($"The Instructors table does not exist.");
-                return;
-            }
+            await Init();
 
             foreach (Instructor instructor in Instructors)
             {

@@ -2,12 +2,10 @@
 using CourseManager.Models;
 using SQLite;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CourseManager.Services
@@ -45,13 +43,6 @@ namespace CourseManager.Services
         public static async Task ImportTerms()
         {
             await Init();
-
-            var tableInfo = database.GetTableInfoAsync("Terms");
-            if(tableInfo.Result.Count == 0)
-            {
-                Debug.WriteLine($"Terms table doesn't exist - Creating new table.");
-                return;
-            }
 
             TermGroups.Clear();
 
@@ -100,8 +91,6 @@ namespace CourseManager.Services
 
         private static async void CreateMockData()
         {
-            var courses = new ObservableCollection<Course>();
-
             var mockAssessmentOne = new Assessment
             {
                 Name = "Mock Assessment One",
@@ -157,29 +146,6 @@ namespace CourseManager.Services
             await ImportTerms();
         }
 
-
-        //public static void GetTables()
-        //{
-        //    var table = database.Table<Term>();
-        //    if(table == null)
-        //    {
-        //        Debug.WriteLine($"The Terms table does not exist.");
-        //        return;
-        //    }
-
-        //    var query = table.Where(x => x.Id >= 0);
-        //    if(query.CountAsync().Result == 0)
-        //    {
-        //        Debug.WriteLine($"There are no terms in the table.");
-        //    }
-
-        //    query.ToListAsync().ContinueWith((t) =>
-        //    {
-        //        foreach (var term in t.Result)
-        //            Debug.WriteLine($"Term: {term.TermName}");
-        //    });
-        //}
-
         public static async Task AddTerm(Term term)
         {
             await Init();
@@ -190,21 +156,10 @@ namespace CourseManager.Services
             await ImportTerms();
         }
 
-        public static Term GetTerm(int id)
-        {
-            var term = database.FindAsync<Term>(id).Result;
-            return term;
-        }
+        public static Term GetTerm(int id) => database.FindAsync<Term>(id).Result;
 
         public static async Task UpdateTerm(Term term)
         {
-            var matchingGroup = TermGroups.FirstOrDefault(x => x.Id == term.Id);
-            if(matchingGroup == null)
-            {
-                Debug.WriteLine($"Matching group not found.");
-                return;
-            }
-
             await database.UpdateAsync(term);
             await ImportTerms();
         }
@@ -250,14 +205,6 @@ namespace CourseManager.Services
             await ImportTerms();
         }
 
-        //public static async Task<IEnumerable<Term>> GetTerms()
-        //{
-        //    await Init();
-
-        //    var term = await database.Table<Term>().ToListAsync();
-        //    return term;
-        //}
-
         public static async Task DropTable()
         {
             await Init();
@@ -267,34 +214,14 @@ namespace CourseManager.Services
 
         public static async Task ClearTable()
         {
-            var table = database.Table<Term>();
-            if (table == null)
-            {
-                Debug.WriteLine($"The Terms table does not exist.");
-                return;
-            }
+            await Init();
+
+            TermGroups.Clear();
 
             await database.DeleteAllAsync<Term>();
             Debug.WriteLine($"The Terms table has been cleared.");
 
-            TermGroups.Clear();
-
             await ImportTerms();
         }
-
-        //public static void GetTableRows()
-        //{
-        //    var query = database.QueryAsync<Term>("SELECT * from Term");
-
-        //    if(query.Result.Count == 0)
-        //    {
-        //        Debug.WriteLine($"There are no terms.");
-        //    }
-
-        //    foreach(var t in query.Result)
-        //    {
-        //        Debug.WriteLine($"Result: {t.TermName}");
-        //    }
-        //}
     }
 }
