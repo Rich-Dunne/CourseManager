@@ -160,10 +160,7 @@ namespace CourseManager.ViewModels
             await Shell.Current.GoToAsync(route);
         }
 
-        private async void NavigateBack()
-        {
-            await Shell.Current.GoToAsync("..");
-        }
+        private async void NavigateBack() => await Shell.Current.GoToAsync("..");
 
         private void ValidateInput()
         {
