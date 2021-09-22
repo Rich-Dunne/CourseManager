@@ -1,13 +1,11 @@
 ﻿using CourseManager.Views;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Xamarin.Forms;
 
 namespace CourseManager.ViewModels
 {
     public class LoginViewModel : BaseViewModel
     {
+        #region Form Properties
         private string _username;
         public string Username 
         { 
@@ -18,7 +16,9 @@ namespace CourseManager.ViewModels
                 Validate();
             }
         }
+        #endregion
 
+        #region Validation Properties
         private string _usernameErrorMessage = "Required";
         public string UsernameErrorMessage { get => _usernameErrorMessage; }
 
@@ -27,8 +27,11 @@ namespace CourseManager.ViewModels
 
         private bool _hasErrors = false;
         public bool HasErrors { get => _hasErrors; set => SetProperty(ref _hasErrors, value); }
+        #endregion
 
+        #region Command Properties
         public Command LoginCommand { get; }
+        #endregion
 
         public LoginViewModel()
         {

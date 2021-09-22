@@ -191,18 +191,19 @@ namespace CourseManager.Services
             await ImportTerms();
         }
 
-        public static async Task RemoveCourseFromTerm(Course course)
+        public static void RemoveCourseFromTerm(Course course)
         {
             var matchingGroup = TermGroups.FirstOrDefault(x => x.Id == course.AssociatedTermId);
             if (matchingGroup == null)
             {
-                Debug.WriteLine($"Matching group not found.");
+                Debug.WriteLine($"Matching group not found in RemoveCourseFromTerm.");
                 return;
             }
 
             matchingGroup.Remove(course);
+            course.AssociatedTermId = 0;
             Debug.WriteLine($"Course \"{course.CourseName}\" removed from term \"{matchingGroup.Name}\".");
-            await ImportTerms();
+            //await ImportTerms();
         }
 
         public static async Task DropTable()

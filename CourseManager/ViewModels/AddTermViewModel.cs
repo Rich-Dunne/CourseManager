@@ -1,9 +1,6 @@
 ﻿using CourseManager.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace CourseManager.ViewModels
@@ -22,6 +19,7 @@ namespace CourseManager.ViewModels
             }
         }
 
+        #region Form Properties
         private DateTime _minStartDate = DateTime.Now;
         public DateTime MinStartDate { get => _minStartDate; set => SetProperty(ref _minStartDate, value); }
 
@@ -55,7 +53,9 @@ namespace CourseManager.ViewModels
                 MaxStartDate = EndDate.AddDays(-1);
             }
         }
+        #endregion
 
+        #region Validation Properties
         private bool _hasErrors = false;
         public bool HasErrors { get => _hasErrors; set => SetProperty(ref _hasErrors, value); }
 
@@ -67,9 +67,12 @@ namespace CourseManager.ViewModels
 
         private bool _showTermNameTakenErrorMessage = false;
         public bool ShowTermNameTakenErrorMessage { get => _showTermNameTakenErrorMessage; set => SetProperty(ref _showTermNameTakenErrorMessage, value); }
+        #endregion
 
+        #region Command Properties
         public Command SaveCommand { get; }
         public Command NavigateBackCommand { get; }
+        #endregion
 
         public AddTermViewModel()
         {
@@ -84,8 +87,7 @@ namespace CourseManager.ViewModels
             EndDate = StartDate.AddDays(1);
 
             MaxStartDate = EndDate;
-            MaxEndDate = MaxStartDate.AddDays(30);
-            
+            MaxEndDate = MaxStartDate.AddDays(30);       
         }
 
         private async void Save()
@@ -109,10 +111,7 @@ namespace CourseManager.ViewModels
             await Shell.Current.GoToAsync("..");
         }
 
-        public async void NavigateBack()
-        {
-            await Shell.Current.GoToAsync("..");
-        }
+        public async void NavigateBack() => await Shell.Current.GoToAsync("..");
 
         private void Validate()
         {

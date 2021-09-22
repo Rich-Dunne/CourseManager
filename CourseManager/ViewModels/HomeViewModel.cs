@@ -1,12 +1,6 @@
-﻿using System;
-using System.Windows.Input;
-using Xamarin.Essentials;
+﻿using System.Windows.Input;
 using Xamarin.Forms;
 using CourseManager.Views;
-using CourseManager.Models;
-using System.Diagnostics;
-using Plugin.LocalNotifications;
-using System.Threading.Tasks;
 
 namespace CourseManager.ViewModels
 {
@@ -14,14 +8,7 @@ namespace CourseManager.ViewModels
     public class HomeViewModel : BaseViewModel
     {
         private string _username;
-        public string Username 
-        { 
-            get => _username; 
-            set
-            {
-                SetProperty(ref _username, value);
-            }
-        }
+        public string Username { get => _username; set => SetProperty(ref _username, value); }
 
         public ICommand NavigateDegreePlanCommand { get; }
 

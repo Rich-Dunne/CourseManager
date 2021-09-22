@@ -1,11 +1,8 @@
 ﻿using CourseManager.Models;
-using CourseManager.Views;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace CourseManager.ViewModels
@@ -13,6 +10,7 @@ namespace CourseManager.ViewModels
     [QueryProperty(nameof(CourseId), nameof(CourseId))]
     public class EditCourseViewModel : BaseViewModel
     {
+        public Course Course;
         public List<string> StatusList { get; } = new List<string>() { "Inactive", "Active", "Planned", "Dropped", "Completed" };
         public List<string> Instructors { get; } = new List<string>() {  "New Instructor"  };
 
@@ -27,6 +25,7 @@ namespace CourseManager.ViewModels
             }
         }
 
+        #region Form Properties
         private string _courseName;
         public string CourseName
         {
@@ -80,7 +79,9 @@ namespace CourseManager.ViewModels
 
         private int _pickerIndex = 0;
         public int PickerIndex { get => _pickerIndex; set => SetProperty(ref _pickerIndex, value); }
+        #endregion
 
+        #region Validation Properties
         private bool _hasErrors = false;
         public bool HasErrors { get => _hasErrors; set => SetProperty(ref _hasErrors, value); }
 
@@ -92,10 +93,12 @@ namespace CourseManager.ViewModels
 
         private bool _showCourseNameTakenErrorMessage = false;
         public bool ShowCourseNameTakenErrorMessage { get => _showCourseNameTakenErrorMessage; set => SetProperty(ref _showCourseNameTakenErrorMessage, value); }
+        #endregion
 
-        public Course Course;
+        #region Command Properties
         public Command SaveCommand { get; }
         public Command NavigateBackCommand { get; }
+        #endregion
 
         public EditCourseViewModel()
         {
@@ -121,7 +124,7 @@ namespace CourseManager.ViewModels
                 return;
             }
 
-            var status = Enum.TryParse(Status, out Enums.Status myStatus);
+            var canParse = Enum.TryParse(Status, out Enums.Status myStatus);
             Course.CourseName = CourseName;
             Course.StartDate = StartDate;
             Course.EndDate = EndDate;

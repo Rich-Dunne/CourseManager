@@ -5,8 +5,6 @@ using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -16,34 +14,16 @@ namespace CourseManager.ViewModels
     public class DegreePlanViewModel : BaseViewModel
     {
         private string _username;
-        public string Username
-        {
-            get => _username;
-            set
-            {
-                SetProperty(ref _username, value);
-            }
-        }
+        public string Username { get => _username; set => SetProperty(ref _username, value); }
+
+        public ObservableCollection<TermGroup> TermGroups { get; } = Services.TermService.TermGroups;
+        public ObservableCollection<Course> Courses { get; } = Services.CourseService.Courses;
 
         private Term _selectedTerm;
-        public Term SelectedTerm
-        {
-            get => _selectedTerm;
-            set
-            {
-                SetProperty(ref _selectedTerm, value);
-            }
-        }
+        public Term SelectedTerm { get => _selectedTerm; set => SetProperty(ref _selectedTerm, value); }
 
         private Course _recentlySelectedCourse;
-        public Course RecentlySelectedCourse
-        {
-            get => _recentlySelectedCourse;
-            set
-            {
-                SetProperty(ref _recentlySelectedCourse, value);
-            }
-        }
+        public Course RecentlySelectedCourse { get => _recentlySelectedCourse; set => SetProperty(ref _recentlySelectedCourse, value); }
 
         private Course _selectedCourse = null;
         public Course SelectedCourse
@@ -64,13 +44,8 @@ namespace CourseManager.ViewModels
         private bool _termsExist = false;
         public bool TermsExist { get => _termsExist; set => SetProperty(ref _termsExist, value); }
 
-        public ObservableCollection<TermGroup> TermGroups { get; } = Services.TermService.TermGroups;
-        public ObservableCollection<Course> Courses { get; } = Services.CourseService.Courses;
+        #region Command Properties
         public Command LoadItemsCommand { get; }
-        //public Command<Term> TermTapped { get; }
-        //public Command GetTablesCommand { get; }
-        //public Command ShowTableContentsCommand { get; }
-        //public Command DropTableCommand { get; }
         public Command ClearTermTableCommand { get; }
         public Command ClearCourseTableCommand { get; }
         public Command ClearInstructorTableCommand { get; }
@@ -79,6 +54,7 @@ namespace CourseManager.ViewModels
         public Command<TermGroup> NavigateModifyTermCommand { get; }
         public Command NavigateAddCourseCommand { get; }
         public Command NavigateViewCourseCommand { get; }
+        #endregion
 
         public DegreePlanViewModel()
         {
@@ -91,10 +67,6 @@ namespace CourseManager.ViewModels
             var initAssessments = Services.AssessmentService.Init();
             var initTerms = Services.TermService.Init();
 
-            //GetTablesCommand = new Command(ListTables);
-            //ShowTableContentsCommand = new Command(ShowTableContents);
-            //DropTableCommand = new Command(DropTable);
-
             ClearTermTableCommand = new Command(ClearTermTable);
             ClearCourseTableCommand = new Command(ClearCourseTable);
             ClearInstructorTableCommand = new Command(ClearInstructorTable);
@@ -106,24 +78,8 @@ namespace CourseManager.ViewModels
             NavigateAddCourseCommand = new Command(NavigateAddCourse);
             NavigateViewCourseCommand = new Command(NavigateViewCourse);
 
-            //Debug.WriteLine($"SelectedCourse: {SelectedCourse}");
             TermsExist = TermGroups.Count > 0;
         }
-
-            //private async void ListTables()
-            //{
-            //    await Services.TermService.ListTables();
-            //}
-
-            //private void ShowTableContents()
-            //{
-            //    Services.TermService.GetTables();
-            //}
-
-            //private void DropTable()
-            //{
-            //    var dropTable = Services.TermService.DropTable();
-            //}
 
         private async void ClearTermTable()
         {
@@ -172,11 +128,6 @@ namespace CourseManager.ViewModels
             var route = $"{nameof(AddCoursePage)}";
             await Shell.Current.GoToAsync(route);
         }
-
-        //private async void ClearDatabase()
-        //{
-        //    await Services.TermService.DropTable();
-        //}
 
         async Task ExecuteLoadItemsCommand()
         {

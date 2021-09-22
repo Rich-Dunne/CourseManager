@@ -4,8 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace CourseManager.ViewModels
@@ -191,7 +189,11 @@ namespace CourseManager.ViewModels
                 Course.SecondAssessmentId = SecondAssessment.Id;
             }
 
-            await Services.InstructorService.AddInstructor(Instructor);     
+            if (Services.InstructorService.GetInstructor(Instructor.Id) == null)
+            {
+                Debug.WriteLine($"Matching instructor is null");
+                await Services.InstructorService.AddInstructor(Instructor);
+            }
             Course.AssociatedInstructorId = Instructor.Id;
 
             await Services.CourseService.AddCourse(Course);

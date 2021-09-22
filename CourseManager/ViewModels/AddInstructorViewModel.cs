@@ -1,12 +1,6 @@
-﻿using CourseManager.Models;
-using CourseManager.Views;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using CourseManager.Views;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace CourseManager.ViewModels
@@ -15,15 +9,11 @@ namespace CourseManager.ViewModels
     public class AddInstructorViewModel : BaseViewModel
     {
         private string _courseValues;
-        public string CourseValues
-        {
-            get => _courseValues;
-            set
-            {
-                SetProperty(ref _courseValues, value);
-            }
-        }
+        public string CourseValues { get => _courseValues; set { SetProperty(ref _courseValues, value); } }
+        private string _PHONE_NUMBER_REGEX = "^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$";
+        private string _EMAIL_REGEX = "^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$";
 
+        #region Form Properties
         private string _instructorFirstName;
         public string InstructorFirstName 
         { 
@@ -93,7 +83,9 @@ namespace CourseManager.ViewModels
                 HasErrors = ShowEmailErrorMessage;
             }
         }
+        #endregion
 
+        #region Validation Properties
         private bool _showFirstNameErrorMessage;
         public bool ShowFirstNameErrorMessage { get => _showFirstNameErrorMessage; set => SetProperty(ref _showFirstNameErrorMessage, value); }
         
@@ -110,11 +102,7 @@ namespace CourseManager.ViewModels
         public bool ShowEmailErrorMessage { get => _showEmailErrorMessage; set => SetProperty(ref _showEmailErrorMessage, value); }
 
         private bool _hasErrors = false;
-        public bool HasErrors
-        {
-            get => _hasErrors;
-            set => SetProperty(ref _hasErrors, value);
-        }
+        public bool HasErrors { get => _hasErrors; set => SetProperty(ref _hasErrors, value); }
 
         public string FirstNameErrorMessage { get; } = "Required";
         public string LastNameErrorMessage { get; } = "Required";
@@ -125,19 +113,12 @@ namespace CourseManager.ViewModels
 
         private string _emailErrorMessage;
         public string EmailErrorMessage { get => _emailErrorMessage; private set => SetProperty(ref _emailErrorMessage, value); }
+        #endregion
 
-        private Color _backgroundColor;
-        public Color BackgroundColor
-        {
-            get =>_backgroundColor;
-            set => SetProperty(ref _backgroundColor, value);
-        }
-
-        private string _PHONE_NUMBER_REGEX = "^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$";
-        private string _EMAIL_REGEX = "^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$";
-
+        #region Command Properties
         public Command NavigateAddAssessmentsCommand { get; }
         public Command NavigateBackCommand { get; }
+        #endregion
 
         public AddInstructorViewModel()
         {

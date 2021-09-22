@@ -1,12 +1,7 @@
 ﻿using CourseManager.Models;
-using CourseManager.Views;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace CourseManager.ViewModels
@@ -37,6 +32,16 @@ namespace CourseManager.ViewModels
             }
         }
 
+        private Instructor _currentInstructor;
+        public Instructor CurrentInstructor { get => _currentInstructor; set => SetProperty(ref _currentInstructor, value); }
+
+        private Course _associatedCourse;
+        public Course AssociatedCourse { get => _associatedCourse; set => SetProperty(ref _associatedCourse, value); }
+
+        private string _PHONE_NUMBER_REGEX = "^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$";
+        private string _EMAIL_REGEX = "^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$";
+
+        #region Form Properties
         private string _instructorFirstName;
         public string InstructorFirstName
         {
@@ -107,37 +112,6 @@ namespace CourseManager.ViewModels
             }
         }
 
-        private bool _showFirstNameErrorMessage;
-        public bool ShowFirstNameErrorMessage { get => _showFirstNameErrorMessage; set => SetProperty(ref _showFirstNameErrorMessage, value); }
-
-        private bool _showLastNameErrorMessage;
-        public bool ShowLastNameErrorMessage { get => _showLastNameErrorMessage; set => SetProperty(ref _showLastNameErrorMessage, value); }
-
-        private bool _showNameTakenErrorMessage;
-        public bool ShowNameTakenErrorMessage { get => _showNameTakenErrorMessage; set => SetProperty(ref _showNameTakenErrorMessage, value); }
-
-        private bool _showPhoneNumberErrorMessage;
-        public bool ShowPhoneNumberErrorMessage { get => _showPhoneNumberErrorMessage; set => SetProperty(ref _showPhoneNumberErrorMessage, value); }
-
-        private bool _showEmailErrorMessage;
-        public bool ShowEmailErrorMessage { get => _showEmailErrorMessage; set => SetProperty(ref _showEmailErrorMessage, value); }
-
-        private bool _hasErrors = false;
-        public bool HasErrors { get => _hasErrors; set => SetProperty(ref _hasErrors, value); }
-
-        public string FirstNameErrorMessage { get; } = "Required";
-        public string LastNameErrorMessage { get; } = "Required";
-        public string INSTRUCTOR_NAME_TAKEN { get; } = "An instructor with this first and last name already exists";
-
-        private string _phoneNumberErrorMessage;
-        public string PhoneNumberErrorMessage { get => _phoneNumberErrorMessage; private set => SetProperty(ref _phoneNumberErrorMessage, value); }
-
-        private string _emailErrorMessage;
-        public string EmailErrorMessage { get => _emailErrorMessage; private set => SetProperty(ref _emailErrorMessage, value); }
-
-        private string _PHONE_NUMBER_REGEX = "^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$";
-        private string _EMAIL_REGEX = "^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$";
-
         private bool _currentInstructorChecked = true;
         public bool CurrentInstructorChecked
         {
@@ -178,29 +152,42 @@ namespace CourseManager.ViewModels
                 }
             }
         }
+        #endregion
 
-        private Instructor _currentInstructor;
-        public Instructor CurrentInstructor
-        {
-            get => _currentInstructor;
-            set
-            {
-                SetProperty(ref _currentInstructor, value);
-            }
-        }
+        #region Validation Properties
+        private bool _showFirstNameErrorMessage;
+        public bool ShowFirstNameErrorMessage { get => _showFirstNameErrorMessage; set => SetProperty(ref _showFirstNameErrorMessage, value); }
 
-        private Course _associatedCourse;
-        public Course AssociatedCourse
-        {
-            get => _associatedCourse;
-            set
-            {
-                SetProperty(ref _associatedCourse, value);
-            }
-        }
+        private bool _showLastNameErrorMessage;
+        public bool ShowLastNameErrorMessage { get => _showLastNameErrorMessage; set => SetProperty(ref _showLastNameErrorMessage, value); }
 
+        private bool _showNameTakenErrorMessage;
+        public bool ShowNameTakenErrorMessage { get => _showNameTakenErrorMessage; set => SetProperty(ref _showNameTakenErrorMessage, value); }
+
+        private bool _showPhoneNumberErrorMessage;
+        public bool ShowPhoneNumberErrorMessage { get => _showPhoneNumberErrorMessage; set => SetProperty(ref _showPhoneNumberErrorMessage, value); }
+
+        private bool _showEmailErrorMessage;
+        public bool ShowEmailErrorMessage { get => _showEmailErrorMessage; set => SetProperty(ref _showEmailErrorMessage, value); }
+
+        private bool _hasErrors = false;
+        public bool HasErrors { get => _hasErrors; set => SetProperty(ref _hasErrors, value); }
+
+        public string FirstNameErrorMessage { get; } = "Required";
+        public string LastNameErrorMessage { get; } = "Required";
+        public string INSTRUCTOR_NAME_TAKEN { get; } = "An instructor with this first and last name already exists";
+
+        private string _phoneNumberErrorMessage;
+        public string PhoneNumberErrorMessage { get => _phoneNumberErrorMessage; private set => SetProperty(ref _phoneNumberErrorMessage, value); }
+
+        private string _emailErrorMessage;
+        public string EmailErrorMessage { get => _emailErrorMessage; private set => SetProperty(ref _emailErrorMessage, value); }
+        #endregion
+
+        #region Command Properties
         public Command NavigateBackCommand { get; }
         public Command NavigateSaveCommand { get; }
+        #endregion
 
         public EditInstructorViewModel()
         {
@@ -232,7 +219,6 @@ namespace CourseManager.ViewModels
             if(AssociatedCourse == null)
             {
                 Debug.WriteLine($"AssociatedCourse not found.");
-                return;
             }
         }
 
@@ -272,7 +258,7 @@ namespace CourseManager.ViewModels
                 Debug.WriteLine($"Added new instructor {newInstructor.FirstName} {newInstructor.LastName}");
             }
 
-            await Shell.Current.GoToAsync("..");
+            NavigateBack();
         }
 
         private void ValidateInput()

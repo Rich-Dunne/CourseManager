@@ -1,10 +1,7 @@
 ﻿using CourseManager.Models;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace CourseManager.ViewModels
@@ -24,6 +21,9 @@ namespace CourseManager.ViewModels
             }
         }
 
+        public Term TermToModify;
+
+        #region Form Properties
         private string _termName;
         public string TermName
         {
@@ -68,7 +68,9 @@ namespace CourseManager.ViewModels
                 MaxStartDate = EndDate.AddDays(-1);
             }
         }
+        #endregion
 
+        #region Validation Properties
         private bool _hasErrors = false;
         public bool HasErrors { get => _hasErrors; set => SetProperty(ref _hasErrors, value); }
 
@@ -80,12 +82,13 @@ namespace CourseManager.ViewModels
 
         private bool _showTermNameTakenErrorMessage = false;
         public bool ShowTermNameTakenErrorMessage { get => _showTermNameTakenErrorMessage; set => SetProperty(ref _showTermNameTakenErrorMessage, value); }
+        #endregion
 
+        #region Command Properties
         public Command SaveCommand { get; }
         public Command RemoveCommand { get; }
         public Command NavigateBackCommand { get; }
-
-        public Term TermToModify;
+        #endregion
 
         public EditTermViewModel()
         {
@@ -118,7 +121,7 @@ namespace CourseManager.ViewModels
             await Services.TermService.UpdateTerm(TermToModify);
             Debug.WriteLine($"Updated term {TermToModify.TermName}");
 
-            await Shell.Current.GoToAsync("..");
+            NavigateBack();
         }
 
         private async void Remove()
@@ -126,7 +129,7 @@ namespace CourseManager.ViewModels
             var termToRemove = Services.TermService.GetTerm(Id);
             await Services.TermService.RemoveTerm(termToRemove);
 
-            await Shell.Current.GoToAsync("..");
+            NavigateBack();
         }
 
         private async void NavigateBack() => await Shell.Current.GoToAsync("..");
@@ -153,7 +156,6 @@ namespace CourseManager.ViewModels
         {
             ShowTermNameRequiredErrorMessage = string.IsNullOrWhiteSpace(TermName);
             ShowTermNameTakenErrorMessage = TermName != TermToModify.TermName && Services.TermService.TermGroups.Any(x => x.Name == TermName);
-            
             
             HasErrors = ShowTermNameRequiredErrorMessage || ShowTermNameTakenErrorMessage;
         }

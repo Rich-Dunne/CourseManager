@@ -5,6 +5,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CourseManager.Services
@@ -40,7 +41,7 @@ namespace CourseManager.Services
                 Assessments.Add(result);
                 if (!_notificationsDisplayed)
                 {
-                    if (result.EnableNotifications && (result.DueDate - DateTime.Now).TotalDays < 30)
+                    if (result.EnableNotifications && CourseService.Courses.Any(x => x.FirstAssessmentId == result.Id || x.SecondAssessmentId == result.Id) && (result.DueDate - DateTime.Now).TotalDays < 30)
                     {
                         Debug.WriteLine($"Assessment due soon");
                         CrossLocalNotifications.Current.Show("Upcoming assessment", $"{result.Name} is on {result.DueDate.ToShortDateString()}", result.Id, DateTime.Now.AddSeconds(5));

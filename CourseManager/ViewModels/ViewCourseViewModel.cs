@@ -1,13 +1,10 @@
 ﻿using CourseManager.Models;
 using CourseManager.Views;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Essentials;
+using System.Linq;
 
 namespace CourseManager.ViewModels
 {
@@ -15,6 +12,7 @@ namespace CourseManager.ViewModels
     public class ViewCourseViewModel : BaseViewModel
     {
         private bool _propertiesInitialized = false;
+        
         private int _courseId;
         public int CourseId
         {
@@ -27,54 +25,27 @@ namespace CourseManager.ViewModels
         }
 
         private Instructor _instructor;
-        public Instructor Instructor
-        {
-            get => _instructor;
-            set
-            {
-                SetProperty(ref _instructor, value);
-            }
-        }
+        public Instructor Instructor { get => _instructor; set => SetProperty(ref _instructor, value); }
 
         private Assessment _firstAssessment;
-        public Assessment FirstAssessment
-        {
-            get => _firstAssessment;
-            set
-            {
-                SetProperty(ref _firstAssessment, value);
-            }
-        }
+        public Assessment FirstAssessment { get => _firstAssessment; set => SetProperty(ref _firstAssessment, value); }
 
         private string _firstAssessmentDueDate;
         public string FirstAssessmentDueDate { get => _firstAssessmentDueDate; set => SetProperty(ref _firstAssessmentDueDate, value); }
 
         private Assessment _secondAssessment;
-        public Assessment SecondAssessment
-        {
-            get => _secondAssessment;
-            set
-            {
-                SetProperty(ref _secondAssessment, value);
-            }
-        }
+        public Assessment SecondAssessment { get => _secondAssessment; set => SetProperty(ref _secondAssessment, value); }
 
         private string _secondAssessmentDueDate;
         public string SecondAssessmentDueDate { get => _secondAssessmentDueDate; set => SetProperty(ref _secondAssessmentDueDate, value); }
 
         private Course _selectedCourse;
-        public Course SelectedCourse 
-        { 
-            get => _selectedCourse;
-            set
-            {
-                SetProperty(ref _selectedCourse, value);
-            }
-        }
+        public Course SelectedCourse { get => _selectedCourse; set => SetProperty(ref _selectedCourse, value); }
 
         private bool _hasSecondAssessment = false;
         public bool HasSecondAssessment { get => _hasSecondAssessment; set => SetProperty(ref _hasSecondAssessment, value); }
 
+        #region Command Properties
         public Command NavigateBackCommand { get; }
         public Command NavigateEditInstructorCommand { get; }
         public Command NavigateEditAssessmentsCommand { get; }
@@ -84,6 +55,7 @@ namespace CourseManager.ViewModels
         public Command ShareCommand { get; }
         public Command OpenPhoneDialerCommand { get; }
         public Command OpenEmailCommand { get; }
+        #endregion
 
         public ViewCourseViewModel()
         {
@@ -173,7 +145,13 @@ namespace CourseManager.ViewModels
 
         private async void RemoveCourse()
         {
-            await Services.CourseService.RemoveCourse(SelectedCourse);
+            var matchingCourse = Services.CourseService.Courses.FirstOrDefault(x => x.Id == SelectedCourse.Id);
+            if(matchingCourse == null)
+            {
+                Debug.WriteLine($"Matching course is null in RemoveCourse");
+                return;
+            }
+            await Services.CourseService.RemoveCourse(matchingCourse);
 
             NavigateBack();
         }
@@ -187,10 +165,7 @@ namespace CourseManager.ViewModels
             });
         }
 
-        private void OpenPhoneDialer()
-        {
-            PhoneDialer.Open(Instructor.PhoneNumber);
-        }
+        private void OpenPhoneDialer() => PhoneDialer.Open(Instructor.PhoneNumber);
 
         private async void OpenEmail()
         {

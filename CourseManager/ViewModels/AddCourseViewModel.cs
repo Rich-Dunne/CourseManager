@@ -4,8 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace CourseManager.ViewModels
@@ -28,6 +26,7 @@ namespace CourseManager.ViewModels
             }
         }
 
+        #region Form Properties
         private DateTime _minStartDate;
         public DateTime MinStartDate { get => _minStartDate; set => SetProperty(ref _minStartDate, value); }
 
@@ -105,7 +104,9 @@ namespace CourseManager.ViewModels
 
         private bool _newInstructor = true;
         public bool NewInstructor { get => _newInstructor; set => SetProperty(ref _newInstructor, value); }
+        #endregion
 
+        #region Validation Properties
         private bool _hasErrors = false;
         public bool HasErrors { get => _hasErrors; set => SetProperty(ref _hasErrors, value); }
 
@@ -117,10 +118,13 @@ namespace CourseManager.ViewModels
 
         private bool _showCourseNameTakenErrorMessage = false;
         public bool ShowCourseNameTakenErrorMessage { get => _showCourseNameTakenErrorMessage; set => SetProperty(ref _showCourseNameTakenErrorMessage, value); }
+        #endregion
 
+        #region Command Properties
         public Command NavigateAddInstructorCommand { get; }
         public Command NavigateAddAssessmentsCommand { get; }
         public Command NavigateBackCommand { get; }
+        #endregion
 
         public AddCourseViewModel()
         {
@@ -187,14 +191,16 @@ namespace CourseManager.ViewModels
                 await Shell.Current.DisplayAlert("Oops!", "It looks like your form has some errors that need to be fixed before continuing.", "OK");
                 return;
             }
-            var termID = Services.TermService.TermGroups.FirstOrDefault(x => x.Name == SelectedTerm).Id;
-            string courseValues = $"{CourseName},{StartDate.ToShortDateString()},{EndDate.ToShortDateString()},{EnableAlerts},{Status},{CourseNotes},{termID}";
+
             var instructor = Services.InstructorService.Instructors.FirstOrDefault(x => $"{x.FirstName} {x.LastName}" == SelectedInstructor);
             if (instructor == null)
             {
                 Debug.WriteLine($"Instructor \"{SelectedInstructor}\" doesn't exist.");
                 return;
             }
+
+            var termID = Services.TermService.TermGroups.FirstOrDefault(x => x.Name == SelectedTerm).Id;
+            string courseValues = $"{CourseName},{StartDate.ToShortDateString()},{EndDate.ToShortDateString()},{EnableAlerts},{Status},{CourseNotes},{termID}";
 
             var route = $"{nameof(AddAssessmentsPage)}?CourseValues={courseValues}&InstructorValues={instructor.Id}";
             await Shell.Current.GoToAsync(route);

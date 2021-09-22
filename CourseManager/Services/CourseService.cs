@@ -84,7 +84,7 @@ namespace CourseManager.Services
             await Init();
 
             Courses.Remove(course);
-            await TermService.RemoveCourseFromTerm(course);
+            TermService.RemoveCourseFromTerm(course);
             await database.DeleteAsync<Course>(course.Id);
             Debug.WriteLine($"({course.Id}) \"{course.CourseName}\" removed.");
         }

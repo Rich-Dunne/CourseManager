@@ -1,11 +1,4 @@
 ﻿using CourseManager.Models;
-using CourseManager.Views;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace CourseManager.ViewModels
@@ -23,11 +16,14 @@ namespace CourseManager.ViewModels
                 GetCourse();
             }
         }
+        public Course CurrentCourse;
 
+        #region Form Properties
         public string _courseNotes;
         public string CourseNotes { get => _courseNotes; set => SetProperty(ref _courseNotes, value); }
+        #endregion
 
-
+        #region Validation Properties
         private bool _hasErrors = false;
         public bool HasErrors { get => _hasErrors; set => SetProperty(ref _hasErrors, value); }
 
@@ -35,10 +31,12 @@ namespace CourseManager.ViewModels
 
         private bool _showCourseNameErrorMessage = false;
         public bool ShowCourseNameErrorMessage { get => _showCourseNameErrorMessage; set => SetProperty(ref _showCourseNameErrorMessage, value); }
+        #endregion
 
-        public Course CurrentCourse;
+        #region Command Properties
         public Command SaveCommand { get; }
         public Command NavigateBackCommand { get; }
+        #endregion
 
         public EditCourseNotesViewModel()
         {

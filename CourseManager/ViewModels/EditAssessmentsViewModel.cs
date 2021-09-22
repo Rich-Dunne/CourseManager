@@ -1,11 +1,8 @@
 ﻿using CourseManager.Models;
-using CourseManager.Views;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace CourseManager.ViewModels
@@ -50,6 +47,7 @@ namespace CourseManager.ViewModels
         }
         #endregion
 
+        #region Form Properties
         private string _assessmentName;
         public string AssessmentName 
         { 
@@ -135,7 +133,9 @@ namespace CourseManager.ViewModels
 
         private bool _showAddAssessmentButton = true;
         public bool ShowAddAssessmentButton { get => _showAddAssessmentButton; set => SetProperty(ref _showAddAssessmentButton, value); }
+        #endregion
 
+        #region Validation Properties
         private bool _hasErrors = false;
         public bool HasErrors { get => _hasErrors; set => SetProperty(ref _hasErrors, value); }
 
@@ -153,14 +153,17 @@ namespace CourseManager.ViewModels
 
         private bool _showSecondNameTakenErrorMessage;
         public bool ShowSecondNameTakenErrorMessage { get => _showSecondNameTakenErrorMessage; set => SetProperty(ref _showSecondNameTakenErrorMessage, value); }
+        #endregion
 
-        public Course Course;
-        public Assessment FirstAssessment, SecondAssessment;
-
+        #region Command Properties
         public Command SaveCommand { get; }
         public Command NavigateBackCommand { get; }
         public Command AddSecondAssessmentCommand { get; }
         public Command RemoveSecondAssessmentCommand { get; }
+        #endregion
+
+        public Course Course;
+        public Assessment FirstAssessment, SecondAssessment;
 
         public EditAssessmentsViewModel()
         {
@@ -253,7 +256,7 @@ namespace CourseManager.ViewModels
 
         private async void UpdateFirstAssessment()
         {
-            var assessmentType = Enum.TryParse(AssessmentType, out Enums.AssessmentType firstAssessmentType);
+            var canParse = Enum.TryParse(AssessmentType, out Enums.AssessmentType firstAssessmentType);
 
             FirstAssessment.Name = AssessmentName;
             FirstAssessment.DueDate = DueDate;
@@ -264,7 +267,7 @@ namespace CourseManager.ViewModels
 
         private async void UpdateSecondAssessment()
         {
-            var assessmentType = Enum.TryParse(SecondAssessmentType, out Enums.AssessmentType secondAssessmentType);
+            var canParse = Enum.TryParse(SecondAssessmentType, out Enums.AssessmentType secondAssessmentType);
 
             SecondAssessment.Name = SecondAssessmentName;
             SecondAssessment.DueDate = SecondDueDate;
