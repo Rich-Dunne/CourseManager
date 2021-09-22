@@ -22,8 +22,8 @@ namespace CourseManager.ViewModels
         private async void ImportData()
         {
             await Services.InstructorService.ImportInstructors();
-            await Services.CourseService.ImportCourses();
             await Services.AssessmentService.ImportAssessments();
+            await Services.CourseService.ImportCourses();
             await Services.TermService.ImportTerms();
         }
     }
