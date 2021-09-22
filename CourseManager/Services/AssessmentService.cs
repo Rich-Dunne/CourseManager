@@ -39,14 +39,6 @@ namespace CourseManager.Services
             {
                 Debug.WriteLine($"ID: {result.Id}, Name: {result.Name}");
                 Assessments.Add(result);
-                if (!_notificationsDisplayed)
-                {
-                    if (result.EnableNotifications && CourseService.Courses.Any(x => x.FirstAssessmentId == result.Id || x.SecondAssessmentId == result.Id) && (result.DueDate - DateTime.Now).TotalDays < 30)
-                    {
-                        Debug.WriteLine($"Assessment due soon");
-                        CrossLocalNotifications.Current.Show("Upcoming assessment", $"{result.Name} is on {result.DueDate.ToShortDateString()}", result.Id, DateTime.Now.AddSeconds(5));
-                    }
-                }
             }
 
             _notificationsDisplayed = true;
