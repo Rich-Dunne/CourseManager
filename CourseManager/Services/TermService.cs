@@ -1,5 +1,6 @@
 ﻿using CourseManager.Enums;
 using CourseManager.Models;
+using Plugin.LocalNotifications;
 using SQLite;
 using System;
 using System.Collections.ObjectModel;
@@ -26,19 +27,6 @@ namespace CourseManager.Services
 
             await database.CreateTableAsync<Term>();
         }
-
-        //public static async Task ListTables()
-        //{
-        //    Debug.WriteLine($"Below is a list of tables which exist in the database:");
-        //    foreach (var table in database.TableMappings)
-        //    {
-        //        var tableInfo = await database.GetTableInfoAsync(table.TableName);
-        //        if (tableInfo.Count > 0)
-        //        {
-        //            Debug.WriteLine($"{table.TableName} ({tableInfo.Count} columns)");
-        //        }
-        //    }
-        //}
 
         public static async Task ImportTerms()
         {
@@ -91,11 +79,18 @@ namespace CourseManager.Services
 
         private static async void CreateMockData()
         {
+            Term mockTerm = new Term
+            {
+                TermName = "Mock Data Term",
+                StartDate = new DateTime(2021, 10, 1),
+                EndDate = new DateTime(2022, 4, 30)
+            };
+
             var mockAssessmentOne = new Assessment
             {
                 Name = "Mock Assessment One",
                 AssessmentType = AssessmentType.Objective,
-                DueDate = new DateTime(2021, 10, 31),
+                DueDate = new DateTime(2021, 10, 15),
                 EnableNotifications = true
             };
             await AssessmentService.AddAssessment(mockAssessmentOne);
@@ -121,9 +116,9 @@ namespace CourseManager.Services
             var newCourse = new Course
             {
                 CourseName = "Mock Course",
-                StartDate = new DateTime(2021, 10, 1),
+                StartDate = mockTerm.StartDate,
                 EndDate = new DateTime(2021, 10, 31),
-                Status = Status.Active,
+                Status = Status.Planned,
                 Notes = "This is a mock data course.",
                 EnableNotifications = true
             };
@@ -131,19 +126,18 @@ namespace CourseManager.Services
             newCourse.FirstAssessmentId = mockAssessmentOne.Id;
             newCourse.SecondAssessmentId = mockAssessmentTwo.Id;
 
-            Term mockTerm = new Term
-            {
-                TermName = "Mock Data Term",
-                StartDate = new DateTime(2021, 10, 1),
-                EndDate = new DateTime(2021, 10, 31)
-            };
-
             await AddTerm(mockTerm);
             newCourse.AssociatedTermId = mockTerm.Id;
 
             await CourseService.AddCourse(newCourse);
 
             await ImportTerms();
+
+            foreach (Assessment assessment in AssessmentService.Assessments.Where(x => x.EnableNotifications && (mockAssessmentOne.Id == x.Id || mockAssessmentTwo.Id == x.Id) && (x.DueDate - DateTime.Now).TotalDays < 30))
+            {
+                Debug.WriteLine($"Assessment due soon");
+                CrossLocalNotifications.Current.Show("Upcoming assessment", $"{assessment.Name} is due on {assessment.DueDate.ToShortDateString()}", assessment.Id, DateTime.Now.AddSeconds(5));
+            }
         }
 
         public static async Task AddTerm(Term term)
@@ -203,7 +197,6 @@ namespace CourseManager.Services
             matchingGroup.Remove(course);
             course.AssociatedTermId = 0;
             Debug.WriteLine($"Course \"{course.CourseName}\" removed from term \"{matchingGroup.Name}\".");
-            //await ImportTerms();
         }
 
         public static async Task DropTable()
