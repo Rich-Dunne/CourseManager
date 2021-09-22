@@ -53,6 +53,12 @@ namespace CourseManager.Services
                         Debug.WriteLine($"Course ending soon");
                         CrossLocalNotifications.Current.Show("Course ending soon", $"{result.CourseName} is ending on {result.EndDate.ToShortDateString()}", result.Id, DateTime.Now.AddSeconds(5));
                     }
+
+                    foreach(Assessment assessment in AssessmentService.Assessments.Where(x => x.EnableNotifications && (result.FirstAssessmentId == x.Id || result.SecondAssessmentId == x.Id) && (x.DueDate - DateTime.Now).TotalDays < 30))
+                    {
+                        Debug.WriteLine($"Assessment due soon");
+                        CrossLocalNotifications.Current.Show("Upcoming assessment", $"{assessment.Name} is due on {assessment.DueDate.ToShortDateString()}", assessment.Id, DateTime.Now.AddSeconds(5));
+                    }
                 }
             }
 
